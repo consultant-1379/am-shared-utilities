@@ -1,0 +1,102 @@
+#
+# COPYRIGHT Ericsson 2024
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+---
+tosca_definitions_version: tosca_simple_yaml_1_2
+description: VNF Descriptor for Ericsson Signaling Controller
+imports:
+- etsi_nfv_sol001_vnfd_2_5_1_types.yaml
+data_types:
+  ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      pm_reporter_storage_size:
+        type: string
+        description: PM Bulk Reporter'á€™s persistent volume claim size per volume (one
+          volume is created)
+        required: false
+        default: 10Gi
+        metadata:
+          chart_param: eric-pm-bulk-reporter.persistentVolumeClaim.size
+node_types:
+  Ericsson.SC:
+    derived_from: tosca.nodes.nfv.VNF
+    properties:
+      descriptor_id:
+        type: string
+        constraints:
+          valid_values:
+          - b98450dd-f532-4a42-8419-e3dc04327318
+        default: b98450dd-f532-4a42-8419-e3dc04327318
+      descriptor_version:
+        type: string
+        constraints:
+          valid_values:
+          - CXP_903_8365/1_R2A808
+        default: "CXP_903_8365/1_R2A808"
+      provider:
+        type: string
+        constraints:
+          valid_values:
+          - Ericsson
+        default: Ericsson
+      product_name:
+        type: string
+        constraints:
+          valid_values:
+          - Signaling_Controller
+        default: Signaling_Controller
+      software_version:
+        type: string
+        constraints:
+          valid_values:
+          - 1.1.0+808
+        default: "1.1.0+808"
+      vnfm_info:
+        type: list
+        entry_schema:
+          type: string
+          constraints:
+            valid_values:
+            - 3881:E-VNFM
+        default:
+        - 3881:E-VNFM
+      flavour_id:
+        type: string
+        constraints:
+          valid_values:
+          - default
+        default: default
+      flavour_description:
+        type: string
+        default: ''
+    interfaces:
+      Vnflcm:
+        type: tosca.interfaces.nfv.Vnflcm
+        instantiate:
+          inputs:
+            additional_parameters:
+              type: ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters
+              required: true
+    artifacts:
+      helm_package:
+        description: Helm package associated with this descriptor
+        type: tosca.artifacts.File
+        file: "Definitions/OtherTemplates/eric-sc-umbrella-1.1.0+808.tgz"
+      software_images:
+        description: Location of the software images being used in this package
+        type: tosca.artifacts.nfv.SwImage
+        file: Files/images/docker.tar

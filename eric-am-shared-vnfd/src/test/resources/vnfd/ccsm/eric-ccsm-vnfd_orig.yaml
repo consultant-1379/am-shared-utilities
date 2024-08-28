@@ -1,0 +1,1360 @@
+#
+# COPYRIGHT Ericsson 2024
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+tosca_definitions_version: tosca_simple_yaml_1_2
+
+description: VNF Descriptor for ericsson CCSM (PDU UDM & Policy)
+
+# INFO:
+# - Based on ETSI GS NFV-SOL 001 V2.5.1
+
+imports:
+  - etsi_nfv_sol001_vnfd_2_5_1_types.yaml
+
+data_types:
+  ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      skipVerification:
+        type: boolean
+        description: >
+          Flag indicating whether to bypass the Application Verification Checks.
+        required: true
+        default: true
+      manoControlledScaling:
+        type: boolean
+        description: >
+          Indicates how the scaling of the deployment is handled. Defaulted to false,
+          which means by the Kubernetes Horizontal Pod Autoscalers (HPA).  Set to true
+          if scale is to be controlled manually by EVNFM controlling the HPA through
+          ScaleVnfRequests from the user.
+        required: true
+        default: false
+  ericsson.datatypes.nfv.UpgradeVnfOperationAdditionalParameters:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      helmNoHooks:
+        type: boolean
+        description: skipping the execution of helm hooks
+        required: true
+        default: false
+      skipVerification:
+        type: boolean
+        description: skipping the verification of the application deployment
+        required: true
+        default: true
+      isAutoRollbackAllowed:
+        type: boolean
+        description: disabling the auto-rollback after failed upgrade
+        required: false
+        default: false
+  ericsson.datatypes.nfv.TerminateVnfOperationAdditionalParameters:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      skipVerification:
+        type: boolean
+        description: skipping the verification of the application deployment
+        required: true
+        default: true
+  ericsson.datatypes.nfv.VnfDummyManualRollback:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties: {}
+  ericsson.datatypes.nfv.VnfManualRollback_to_ccsm_1.4.4-9:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      eric-ccsm-service-mesh.eric-ingressgw-ausf-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-eir-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-epc-soap-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udm-internal-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udm-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udr-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+  ericsson.datatypes.nfv.VnfManualRollback_to_ccsm_1.4.4-10:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      eric-ccsm-service-mesh.eric-ingressgw-ausf-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-eir-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-epc-soap-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udm-internal-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udm-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udr-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+  ericsson.datatypes.nfv.VnfManualRollback_to_ccsm_1.4.4-11:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      eric-ccsm-service-mesh.eric-ingressgw-ausf-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-eir-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-epc-soap-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udm-internal-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udm-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udr-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+  ericsson.datatypes.nfv.VnfManualRollback_to_ccsm_1.4.4-12:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      eric-ccsm-service-mesh.eric-ingressgw-ausf-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-eir-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-epc-soap-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udm-internal-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udm-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udr-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+  ericsson.datatypes.nfv.VnfManualRollback_to_ccsm_1.4.4-13:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      eric-ccsm-service-mesh.eric-ingressgw-ausf-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-eir-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-epc-soap-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udm-internal-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udm-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udr-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+  ericsson.datatypes.nfv.VnfManualRollback_to_ccsm_1.4.4-14:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      eric-ccsm-service-mesh.eric-ingressgw-ausf-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-eir-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-epc-soap-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udm-internal-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udm-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+      eric-ccsm-service-mesh.eric-ingressgw-udr-traffic.enabled:
+        type: boolean
+        description: manual rollback aditional parameter
+        required: true
+        default: false
+
+interface_types:
+  ericsson.interfaces.nfv.ChangeCurrentVnfPackage:
+    derived_from: tosca.interfaces.nfv.ChangeCurrentVnfPackage
+    operations:
+      ccsm_dummy_rollback:
+        description: Operation for dummy rollback
+        inputs:
+          additional_parameters:
+            type: ericsson.datatypes.nfv.VnfDummyManualRollback
+      rollback_to_ccsm_1.4.4-9:
+        description: Operation for change from CCSM version 1.5.4-9 to 1.4.4-9
+        inputs:
+          additional_parameters:
+            type: ericsson.datatypes.nfv.VnfManualRollback_to_ccsm_1.4.4-9
+      rollback_to_ccsm_1.4.4-10:
+        description: Operation for change from CCSM version 1.5.4-9 to 1.4.4-10
+        inputs:
+          additional_parameters:
+            type: ericsson.datatypes.nfv.VnfManualRollback_to_ccsm_1.4.4-10
+      rollback_to_ccsm_1.4.4-11:
+        description: Operation for change from CCSM version 1.5.4-9 to 1.4.4-11
+        inputs:
+          additional_parameters:
+            type: ericsson.datatypes.nfv.VnfManualRollback_to_ccsm_1.4.4-11
+      rollback_to_ccsm_1.4.4-12:
+        description: Operation for change from CCSM version 1.5.4-9 to 1.4.4-12
+        inputs:
+          additional_parameters:
+            type: ericsson.datatypes.nfv.VnfManualRollback_to_ccsm_1.4.4-12
+      rollback_to_ccsm_1.4.4-13:
+        description: Operation for change from CCSM version 1.5.4-9 to 1.4.4-13
+        inputs:
+          additional_parameters:
+            type: ericsson.datatypes.nfv.VnfManualRollback_to_ccsm_1.4.4-13
+      rollback_to_ccsm_1.4.4-14:
+        description: Operation for change from CCSM version 1.5.4-9 to 1.4.4-14
+        inputs:
+          additional_parameters:
+            type: ericsson.datatypes.nfv.VnfManualRollback_to_ccsm_1.4.4-14
+
+node_types:
+  Ericsson.CCSM.1_5_4-9.0_0_1:
+    derived_from: tosca.nodes.nfv.VNF
+    properties:
+      descriptor_id:
+        type: string
+        constraints: [ valid_values: [ ebc8bace-cdaf-4b5c-abe2-ba8e7f1f5d79 ] ]
+        default: ebc8bace-cdaf-4b5c-abe2-ba8e7f1f5d79
+      descriptor_version:
+        type: string
+        constraints: [ valid_values: [ 0.0.1 ] ]
+        default: 0.0.1
+      provider:
+        type: string
+        constraints: [ valid_values: [ Ericsson ] ]
+        default: Ericsson
+      product_name:
+        type: string
+        constraints: [ valid_values: [ CCSM ] ]
+        default: CCSM
+      software_version:
+        type: string
+        constraints: [ valid_values: [ '1.5.4-9' ] ]
+        default: '1.5.4-9'
+      # TODO: VNFM identifier to be defined
+      vnfm_info:
+        type: list
+        entry_schema:
+          type: string
+          constraints: [ valid_values: [ '3881:E-VNFM' ] ]
+        default: [ '3881:E-VNFM' ]
+      #configurable_properties: # Not used
+      #modifiable_attributes: # Not used
+      flavour_id:
+        type: string
+        constraints: [ valid_values: [ default ] ]
+        default: default
+      flavour_description:
+        type: string
+        default: ''
+    interfaces:
+      Vnflcm:
+        type: tosca.interfaces.nfv.Vnflcm
+        instantiate:
+          inputs:
+            helm_packages:
+              type: list
+              required: true
+              description: List of all helm charts
+            additional_parameters:
+              type: ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters
+              required: false
+        change_package:
+          inputs:
+            additional_parameters:
+              type: ericsson.datatypes.nfv.UpgradeVnfOperationAdditionalParameters
+              required: false
+        scale: {}
+        terminate:
+          inputs:
+            additional_parameters:
+              type: ericsson.datatypes.nfv.TerminateVnfOperationAdditionalParameters
+              required: false
+      EricssonChangeCurrentVnfPackage:
+        type: ericsson.interfaces.nfv.ChangeCurrentVnfPackage
+    artifacts:
+      helm_package1:
+        description: CCSM Service Mesh Helm package associated with this descriptor
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/eric-ccsm-service-mesh-1.5.4-1.tgz
+      helm_package2:
+        description: CCSM Helm package associated with this descriptor
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/eric-ccsm-1.5.4-9.tgz
+      software_images:
+        description: Location of the software images being used in this package
+        type: tosca.artifacts.nfv.SwImage
+        file: Files/images/docker.tar
+##
+# VNF Manual-triggered rollback and scale policies
+##
+topology_template:
+  node_templates:
+    CCSM:
+      type: Ericsson.CCSM.1_5_4-9.0_0_1
+      properties: {}
+      interfaces:
+        Vnflcm:
+          instantiate:
+            inputs:
+              helm_packages: [get_artifact: [SELF, helm_package1], get_artifact: [SELF, helm_package2]]
+          change_package:
+            inputs:
+              helm_packages: [get_artifact: [SELF, helm_package1], get_artifact: [SELF, helm_package2]]
+          terminate: {}
+          scale: {}
+  policies:
+    - ccsm_dummy_rollback:
+        type: tosca.policies.nfv.VnfPackageChange
+        properties:
+          selector:
+            source_descriptor_id: ebc8bace-cdaf-4b5c-abe2-ba8e7f1f5d79
+            destination_descriptor_id: ebc8bace-cdaf-4b5c-abe2-ba8e7f1f5d79
+            source_flavour_id: default
+          modification_qualifier: down
+          additional_modification_description: ..
+          destination_flavour_id: default
+    - rollback_to_ccsm_1.4.4-9:
+        type: tosca.policies.nfv.VnfPackageChange
+        properties:
+          selector:
+            source_descriptor_id: ebc8bace-cdaf-4b5c-abe2-ba8e7f1f5d79
+            destination_descriptor_id: 5060cc66-01ed-4bfd-aeeb-df79e3e51f64
+            source_flavour_id: default
+          modification_qualifier: down
+          additional_modification_description: ..
+          destination_flavour_id: default
+    - rollback_to_ccsm_1.4.4-10:
+        type: tosca.policies.nfv.VnfPackageChange
+        properties:
+          selector:
+            source_descriptor_id: ebc8bace-cdaf-4b5c-abe2-ba8e7f1f5d79
+            destination_descriptor_id: 4e0b24c8-c907-4d66-b28b-acee9e802809
+            source_flavour_id: default
+          modification_qualifier: down
+          additional_modification_description: ..
+          destination_flavour_id: default
+    - rollback_to_ccsm_1.4.4-11:
+        type: tosca.policies.nfv.VnfPackageChange
+        properties:
+          selector:
+            source_descriptor_id: ebc8bace-cdaf-4b5c-abe2-ba8e7f1f5d79
+            destination_descriptor_id: e0c78320-0857-4ca1-b64b-9b3077896a84
+            source_flavour_id: default
+          modification_qualifier: down
+          additional_modification_description: ..
+          destination_flavour_id: default
+    - rollback_to_ccsm_1.4.4-12:
+        type: tosca.policies.nfv.VnfPackageChange
+        properties:
+          selector:
+            source_descriptor_id: ebc8bace-cdaf-4b5c-abe2-ba8e7f1f5d79
+            destination_descriptor_id: fa119fea-88eb-4b9c-98a7-23c972273a08
+            source_flavour_id: default
+          modification_qualifier: down
+          additional_modification_description: ..
+          destination_flavour_id: default
+    - rollback_to_ccsm_1.4.4-13:
+        type: tosca.policies.nfv.VnfPackageChange
+        properties:
+          selector:
+            source_descriptor_id: ebc8bace-cdaf-4b5c-abe2-ba8e7f1f5d79
+            destination_descriptor_id: 014c1610-0b12-4464-a9fb-f9c190f31f7b
+            source_flavour_id: default
+          modification_qualifier: down
+          additional_modification_description: ..
+          destination_flavour_id: default
+    - rollback_to_ccsm_1.4.4-14:
+        type: tosca.policies.nfv.VnfPackageChange
+        properties:
+          selector:
+            source_descriptor_id: ebc8bace-cdaf-4b5c-abe2-ba8e7f1f5d79
+            destination_descriptor_id: ff2a8374-2dcc-4e89-afb8-adf9a3c75014
+            source_flavour_id: default
+          modification_qualifier: down
+          additional_modification_description: ..
+          destination_flavour_id: default
+    - scaling_aspects:
+        type: tosca.policies.nfv.ScalingAspects
+        properties:
+          aspects:
+            AUSF_3GPP_UE-AUTH_ASPECT:
+              name: AUSF_3GPP_UE-AUTH_ASPECT
+              description: >
+                Scale level of UDM 3GPP Authentication Service
+              max_scale_level: 9
+              step_deltas:
+                - delta_1
+            UDM_3GPP_5G-UE-AUTH_ASPECT:
+              name: UDM_3GPP_5G-UE-AUTH_ASPECT
+              description: >
+                Scale level of UDM 3GPP UE Authentication
+              max_scale_level: 9
+              step_deltas:
+                - delta_1
+            UDM_3GPP_UE-REGISTRATION_ASPECT:
+              name: UDM_3GPP_UE-REGISTRATION_ASPECT
+              description: >
+                Scale level of UDM 3GPP UE Registration
+              max_scale_level: 9
+              step_deltas:
+                - delta_1
+            UDM_3GPP_PDU-SESSION-MNGMT_ASPECT:
+              name: UDM_3GPP_PDU-SESSION-MNGMT_ASPECT
+              description: >
+                Scale level of UDM 3GPP PDU Session Management
+              max_scale_level: 9
+              step_deltas:
+                - delta_1
+            UDM_3GPP_APP-SERVICES_ASPECT:
+              name: UDM_3GPP_APP-SERVICES_ASPECT
+              description: >
+                Scale level of UDM 3GPP Application Services
+              max_scale_level: 9
+              step_deltas:
+                - delta_1
+            UDM_3GPP_NUDR-NOTIFICATIONS_ASPECT:
+              name: UDM_3GPP_NUDR-NOTIFICATIONS_ASPECT
+              description: >
+                Scale level of Nudr Notifications
+              max_scale_level: 9
+              step_deltas:
+                - delta_1
+            UDM_3GPP_EPC-IMS-GBA-UE-AUTH_ASPECT:
+              name: UDM_3GPP_EPC-IMS-GBA-UE-AUTH_ASPECT
+              description: >
+                Scale level of UDM 3GPP EPC-IMS-GBA UE Authentication
+              max_scale_level: 9
+              step_deltas:
+                - delta_1
+            EIR_3GPP_EQUIPMENT-CHECK_ASPECT:
+              name: EIR_3GPP_EQUIPMENT-CHECK_ASPECT
+              description: >
+                Scale level of EIR 3GPP Equipment Check
+              max_scale_level: 9
+              step_deltas:
+                - delta_1
+            CCSM_MTSMS_ASPECT:
+              name: CCSM_MTSMS_ASPECT
+              description: >
+                Scale level of CCSM MTSMS
+              max_scale_level: 9
+              step_deltas:
+                - delta_1
+    ##
+    # VDU InitialDeltas
+    # Where:
+    # - VDU Initial Delta name: will be used to represent the full path to sub-chart to
+    #   apply when Instantiate with helm install command, the EO E-VNFM will add the suffixe
+    #   --set vdu.initial.delta.ReplicaCount=2
+    ##
+    - eric-ccsm-ausf.eric-ausf-engine:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-ausf-engine ]
+    - eric-ccsm-ausf.eric-ausf-capacity:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-ausf-capacity ]
+    - eric-ccsm-udm.eric-udm-ueauth:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-ueauth ]
+    - eric-ccsm-udm.eric-udm-sidf:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-sidf ]
+    - eric-ccsm-udm.eric-udm-pcscfrestoration:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-pcscfrestoration ]
+    - eric-ccsm-udm.eric-udm-uecmamfget:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-uecmamfget ]
+    - eric-ccsm-udm.eric-udm-ueshcm:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-ueshcm ]
+    - eric-ccsm-udm.eric-udm-iratamflocation:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-iratamflocation ]
+    - eric-ccsm-udm.eric-udm-cancelepclocation:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-cancelepclocation ]
+    - eric-ccsm-udm.eric-udm-capacity:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-capacity ]
+    - eric-ccsm-udm.eric-udm-hss4gnotifier:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-hss4gnotifier ]
+    - eric-ccsm-udm.eric-udm-sdmamdata:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-sdmamdata ]
+    - eric-ccsm-udm.eric-udm-sdmsmfselect:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-sdmsmfselect ]
+    - eric-ccsm-udm.eric-udm-sdmsubscriptions:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-sdmsubscriptions ]
+    - eric-ccsm-udm.eric-udm-sdmuectxtsmf:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-sdmuectxtsmf ]
+    - eric-ccsm-udm.eric-udm-uecmamfregupdate:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-uecmamfregupdate ]
+    - eric-ccsm-udm.eric-udm-uecmreg:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-uecmreg ]
+    - eric-ccsm-udm.eric-udm-uecmamfderegnotifier:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-uecmamfderegnotifier ]
+    - eric-ccsm-udm.eric-udm-sdmnotif:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-sdmnotif ]
+    - eric-ccsm-udm.eric-udm-sdmnssai:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-sdmnssai ]
+    - eric-ccsm-udm.eric-udm-sdmmultipledataset:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-sdmmultipledataset ]
+    - eric-ccsm-udm.eric-udm-iwk5g2g:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-iwk5g2g ]
+    - eric-ccsm-udm.eric-udm-sdmsmdata:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-sdmsmdata ]
+    - eric-ccsm-udm.eric-udm-uecmsmfderegistration:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-uecmsmfderegistration ]
+    - eric-ccsm-udm.eric-udm-uecmsmfregistration:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-uecmsmfregistration ]
+    - eric-ccsm-udm.eric-udm-eapauth:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-eapauth ]
+    - eric-ccsm-udm.eric-udm-eapprimeauth:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-eapprimeauth ]
+    - eric-ccsm-udm.eric-udm-epsauth:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-epsauth ]
+    - eric-ccsm-udm.eric-udm-gbaauth:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-gbaauth ]
+    - eric-ccsm-udm.eric-udm-imsauth:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-imsauth ]
+    - eric-ccsm-udm.eric-udm-mtsmsroutinginfo:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-mtsmsroutinginfo ]
+    - eric-ccsm-udm.eric-udm-mtsmsdeliverystatus:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-mtsmsdeliverystatus ]
+    - eric-ccsm-udm.eric-udm-mtsmswaitingdata:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-mtsmswaitingdata ]
+    - eric-ccsm-udm.eric-udm-amfeesubscriptions:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-amfeesubscriptions ]
+    - eric-ccsm-udm.eric-udm-amfeenotifications:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-amfeenotifications ]
+    - eric-ccsm-udm.eric-udm-sdmsmsdata:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-sdmsmsdata ]
+    - eric-ccsm-udm.eric-udm-sdmsmsmngdata:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-sdmsmsmngdata ]
+    - eric-ccsm-udm.eric-udm-sdmuectxtsmsf:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-sdmuectxtsmsf ]
+    - eric-ccsm-udm.eric-udm-uecmsmsfdereg:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-uecmsmsfdereg ]
+    - eric-ccsm-udm.eric-udm-uecmsmsfregget:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-uecmsmsfregget ]
+    - eric-ccsm-udm.eric-udm-uecmsmsfregistration:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-udm-uecmsmsfregistration ]
+    - eric-ccsm-eir.eric-eir-eireic:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-eir-eireic ]
+    - eric-ccsm-eir.eric-eir-httpnotifier:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-eir-httpnotifier ]
+    - eric-ccsm-smsengine:
+        type: tosca.policies.nfv.VduInitialDelta
+        properties:
+          initial_delta:
+            number_of_instances: 2
+        targets: [ eric-ccsm-smsengine ]
+    #- LI_INITIAL_DELTA
+    ##
+    # AUSF_3GPP_UE-AUTH_ASPECT related
+    # ScalingAspectDeltas
+    # Where:
+    # - VDU Scaling Aspect Delta name: just identify the name, will not be used with
+    #   helm or kubectl command to control the scale by EO E-VNFM
+    # - aspect: should be one of the aspects defined in tosca.policies.nfv.ScalingAspects
+    # - targets: should be the Deployment/ReplicaSet/StatefulSet name required for EO E-VNFM
+    #   to verify whether the scale is applied to desired resource using kubectl command
+    #   is used to set disc deployment replicas targets should be set as
+    #   from workflow
+    # With helm upgrade command, the EO E-VNFM will add the suffixes
+    #   --set vdu.initial.delta.ReplicaCount=3
+    #   --set vdu.initial.delta.minReplicas=3
+    #   --set vdu.initial.delta.maxReplicas=3
+    ##
+    - eric-ausf-engine_ausf_3gpp_ue-auth_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: AUSF_3GPP_UE-AUTH_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-ausf-engine ]
+    - eric-ausf-capacity_ausf_3gpp_ue-auth_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: AUSF_3GPP_UE-AUTH_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-ausf-capacity ]
+    ##
+    # UDM_3GPP_5G-UE-AUTH_ASPECT related
+    # ScalingAspectDeltas
+    # Where:
+    # - VDU Scaling Aspect Delta name: just identify the name, will not be used with
+    #   helm or kubectl command to control the scale by EO E-VNFM
+    # - aspect: should be one of the aspects defined in tosca.policies.nfv.ScalingAspects
+    # - targets: should be the Deployment/ReplicaSet/StatefulSet name required for EO E-VNFM
+    #   to verify whether the scale is applied to desired resource using kubectl command
+    #   is used to set disc deployment replicas targets should be set as
+    #   from workflow
+    # With helm upgrade command, the EO E-VNFM will add the suffixes
+    #   --set vdu.initial.delta.ReplicaCount=3
+    #   --set vdu.initial.delta.minReplicas=3
+    #   --set vdu.initial.delta.maxReplicas=3
+    ##
+    - eric-udm-ueauth_udm_3gpp_5g-ue-auth_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_5G-UE-AUTH_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-ueauth ]
+    - eric-udm-sidf_udm_3gpp_5g-ue-auth_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_5G-UE-AUTH_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-udm-sidf ]
+    - eric-udm-capacity_udm_3gpp_5g-ue-auth_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_5G-UE-AUTH_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-udm-capacity ]
+    ##
+    # UDM_3GPP_APP-SERVICES_ASPECT related
+    # ScalingAspectDeltas
+    # Where:
+    # - VDU Scaling Aspect Delta name: just identify the name, will not be used with
+    #   helm or kubectl command to control the scale by EO E-VNFM
+    # - aspect: should be one of the aspects defined in tosca.policies.nfv.ScalingAspects
+    # - targets: should be the Deployment/ReplicaSet/StatefulSet name required for EO E-VNFM
+    #   to verify whether the scale is applied to desired resource using kubectl command
+    #   is used to set disc deployment replicas targets should be set as
+    #   from workflow
+    # With helm upgrade command, the EO E-VNFM will add the suffixes
+    #   --set vdu.initial.delta.ReplicaCount=3
+    #   --set vdu.initial.delta.minReplicas=3
+    #   --set vdu.initial.delta.maxReplicas=3
+    ##
+    - eric-udm-pcscfrestoration_udm_3gpp_app-services_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_APP-SERVICES_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-udm-pcscfrestoration ]
+    - eric-udm-uecmamfget_udm_3gpp_app-services_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_APP-SERVICES_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-udm-uecmamfget ]
+    - eric-udm-ueshcm_udm_3gpp_app-services_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_APP-SERVICES_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-udm-ueshcm ]
+    - eric-udm-uecmsmsfregget_udm_3gpp_app-services_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_APP-SERVICES_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-udm-uecmsmsfregget ]
+
+    ##
+    # UDM_3GPP_UE-REGISTRATION_ASPECT related
+    # ScalingAspectDeltas
+    # Where:
+    # - VDU Scaling Aspect Delta name: just identify the name, will not be used with
+    #   helm or kubectl command to control the scale by EO E-VNFM
+    # - aspect: should be one of the aspects defined in tosca.policies.nfv.ScalingAspects
+    # - targets: should be the Deployment/ReplicaSet/StatefulSet name required for EO E-VNFM
+    #   to verify whether the scale is applied to desired resource using kubectl command
+    #   is used to set disc deployment replicas targets should be set as
+    #   from workflow
+    # With helm upgrade command, the EO E-VNFM will add the suffixes
+    #   --set vdu.initial.delta.ReplicaCount=3
+    #   --set vdu.initial.delta.minReplicas=3
+    #   --set vdu.initial.delta.maxReplicas=3
+    ##
+    - eric-udm-iratamflocation_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-iratamflocation ]
+    - eric-udm-cancelepclocation_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-cancelepclocation ]
+    - eric-udm-capacity_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-udm-capacity ]
+    - eric-udm-hss4gnotifier_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-hss4gnotifier ]
+    - eric-udm-sdmamdata_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-sdmamdata ]
+    - eric-udm-sdmsmfselect_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-sdmsmfselect ]
+    - eric-udm-sdmsubscriptions_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 6
+        targets: [ eric-udm-sdmsubscriptions ]
+    - eric-udm-sdmuectxtsmf_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-sdmuectxtsmf ]
+    - eric-udm-uecmamfregupdate_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-uecmamfregupdate ]
+    - eric-udm-uecmreg_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 4
+        targets: [ eric-udm-uecmreg ]
+    - eric-udm-uecmamfderegnotifier_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 4
+        targets: [ eric-udm-uecmamfderegnotifier ]
+    - eric-udm-sdmnssai_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-sdmnssai ]
+    - eric-udm-sdmmultipledataset_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-sdmmultipledataset ]
+    - eric-udm-iwk5g2g_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-iwk5g2g ]
+    - eric-udm-sdmsmsdata_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-sdmsmsdata ]
+    - eric-udm-sdmsmsmngdata_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-sdmsmsmngdata ]
+    - eric-udm-sdmuectxtsmsf_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-sdmuectxtsmsf ]
+    - eric-udm-uecmsmsfdereg_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-uecmsmsfdereg ]
+    - eric-udm-uecmsmsfregistration_udm_3gpp_ue-registration_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_UE-REGISTRATION_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 4
+        targets: [ eric-udm-uecmsmsfregistration ]
+
+
+    #- LI_REGISTRATION_ASPECT_DELTA
+    ##
+    # UDM_3GPP_PDU-SESSION-MNGMT_ASPECT related
+    # ScalingAspectDeltas
+    # Where:
+    # - VDU Scaling Aspect Delta name: just identify the name, will not be used with
+    #   helm or kubectl command to control the scale by EO E-VNFM
+    # - aspect: should be one of the aspects defined in tosca.policies.nfv.ScalingAspects
+    # - targets: should be the Deployment/ReplicaSet/StatefulSet name required for EO E-VNFM
+    #   to verify whether the scale is applied to desired resource using kubectl command
+    #   is used to set disc deployment replicas targets should be set as
+    #   from workflow
+    # With helm upgrade command, the EO E-VNFM will add the suffixes
+    #   --set vdu.initial.delta.ReplicaCount=3
+    #   --set vdu.initial.delta.minReplicas=3
+    #   --set vdu.initial.delta.maxReplicas=3
+    ##
+    - eric-udm-sdmsmdata_udm_3gpp_pdu-session-mngmt_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_PDU-SESSION-MNGMT_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 4
+        targets: [ eric-udm-sdmsmdata ]
+    - eric-udm-uecmsmfderegistration_udm_3gpp_pdu-session-mngmt_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_PDU-SESSION-MNGMT_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-uecmsmfderegistration ]
+    - eric-udm-uecmsmfregistration_udm_3gpp_pdu-session-mngmt_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_PDU-SESSION-MNGMT_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 4
+        targets: [ eric-udm-uecmsmfregistration ]
+    - eric-udm-sdmsubscriptions_udm_3gpp_pdu-session-mngmt_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_PDU-SESSION-MNGMT_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 8
+        targets: [ eric-udm-sdmsubscriptions ]
+    - eric-udm-capacity_udm_3gpp_pdu-session-mngmt_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_PDU-SESSION-MNGMT_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-udm-capacity ]
+    ##
+    # UDM_3GPP_NUDR-NOTIFICATIONS_ASPECT related
+    # ScalingAspectDeltas
+    # Where:
+    # - VDU Scaling Aspect Delta name: just identify the name, will not be used with
+    #   helm or kubectl command to control the scale by EO E-VNFM
+    # - aspect: should be one of the aspects defined in tosca.policies.nfv.ScalingAspects
+    # - targets: should be the Deployment/ReplicaSet/StatefulSet name required for EO E-VNFM
+    #   to verify whether the scale is applied to desired resource using kubectl command
+    #   is used to set disc deployment replicas targets should be set as
+    #   from workflow
+    # With helm upgrade command, the EO E-VNFM will add the suffixes
+    #   --set vdu.initial.delta.ReplicaCount=3
+    #   --set vdu.initial.delta.minReplicas=3
+    #   --set vdu.initial.delta.maxReplicas=3
+    ##
+    - eric-udm-sdmnotif_udm_3gpp_nudr-notifications_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_NUDR-NOTIFICATIONS_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-udm-sdmnotif ]
+    ##
+    # UDM_3GPP_EPC-IMS-GBA-UE-AUTH_ASPECT related
+    # ScalingAspectDeltas
+    # Where:
+    # - VDU Scaling Aspect Delta name: just identify the name, will not be used with
+    #   helm or kubectl command to control the scale by EO E-VNFM
+    # - aspect: should be one of the aspects defined in tosca.policies.nfv.ScalingAspects
+    # - targets: should be the Deployment/ReplicaSet/StatefulSet name required for EO E-VNFM
+    #   to verify whether the scale is applied to desired resource using kubectl command
+    #   is used to set disc deployment replicas targets should be set as
+    #   from workflow
+    # With helm upgrade command, the EO E-VNFM will add the suffixes
+    #   --set vdu.initial.delta.ReplicaCount=3
+    #   --set vdu.initial.delta.minReplicas=3
+    #   --set vdu.initial.delta.maxReplicas=3
+    ##
+    - eric-udm-eapauth_udm_3gpp_epc-ims-gba-ue-auth_aspect_delta:
+
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_EPC-IMS-GBA-UE-AUTH_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-eapauth ]
+    - eric-udm-eapprimeauth_udm_3gpp_epc-ims-gba-ue-auth_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_EPC-IMS-GBA-UE-AUTH_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-eapprimeauth ]
+    - eric-udm-epsauth_udm_3gpp_epc-ims-gba-ue-auth_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_EPC-IMS-GBA-UE-AUTH_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-epsauth ]
+    - eric-udm-gbaauth_udm_3gpp_epc-ims-gba-ue-auth_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_EPC-IMS-GBA-UE-AUTH_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-udm-gbaauth ]
+    - eric-udm-imsauth_udm_3gpp_epc-ims-gba-ue-auth_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_EPC-IMS-GBA-UE-AUTH_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 2
+        targets: [ eric-udm-imsauth ]
+    - eric-udm-capacity_udm_3gpp_epc-ims-gba-ue-auth_aspect_delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: UDM_3GPP_EPC-IMS-GBA-UE-AUTH_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-udm-capacity ]
+    ##
+    # EIR_3GPP_EQUIPMENT-CHECK_ASPECT related
+    # ScalingAspectDeltas
+    # Where:
+    # - VDU Scaling Aspect Delta name: just identify the name, will not be used with
+    #   helm or kubectl command to control the scale by EO E-VNFM
+    # - aspect: should be one of the aspects defined in tosca.policies.nfv.ScalingAspects
+    # - targets: should be the Deployment/ReplicaSet/StatefulSet name required for EO E-VNFM
+    #   to verify whether the scale is applied to desired resource using kubectl command
+    #   is used to set disc deployment replicas targets should be set as
+    #   from workflow
+    # With helm upgrade command, the EO E-VNFM will add the suffixes
+    #   --set vdu.initial.delta.ReplicaCount=3
+    #   --set vdu.initial.delta.minReplicas=3
+    #   --set vdu.initial.delta.maxReplicas=3
+    ##
+    - eric-eir-eireic_eir_3gpp_equipment-check_aspect_delta:
+
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: EIR_3GPP_EQUIPMENT-CHECK_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 3
+        targets: [ eric-eir-eireic ]
+
+    - eric-eir-httpnotifier_eir_3gpp_equipment-check_aspect_delta:
+
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: EIR_3GPP_EQUIPMENT-CHECK_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-eir-httpnotifier ]
+    ##
+    # CCSM_MTSMS_ASPECT related
+    # ScalingAspectDeltas
+    # Where:
+    # - VDU Scaling Aspect Delta name: just identify the name, will not be used with
+    #   helm or kubectl command to control the scale by EO E-VNFM
+    # - aspect: should be one of the aspects defined in tosca.policies.nfv.ScalingAspects
+    # - targets: should be the Deployment/ReplicaSet/StatefulSet name required for EO E-VNFM
+    #   to verify whether the scale is applied to desired resource using kubectl command
+    #   is used to set disc deployment replicas targets should be set as
+    #   from workflow
+    # With helm upgrade command, the EO E-VNFM will add the suffixes
+    #   --set vdu.initial.delta.ReplicaCount=3
+    #   --set vdu.initial.delta.minReplicas=3
+    #   --set vdu.initial.delta.maxReplicas=3
+    ##
+    - eric-ccsm-smsengine_ccsm_mtsms_aspect delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: CCSM_MTSMS_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-ccsm-smsengine ]
+
+    - eric-udm-mtsmsroutinginfo_ccsm_mtsms_aspect delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: CCSM_MTSMS_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 4
+        targets: [ eric-udm-mtsmsroutinginfo ]
+
+    - eric-udm-mtsmsdeliverystatus_ccsm_mtsms_aspect delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: CCSM_MTSMS_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-udm-mtsmsdeliverystatus ]
+
+    - eric-udm-mtsmswaitingdata_ccsm_mtsms_aspect delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: CCSM_MTSMS_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-udm-mtsmswaitingdata ]
+
+    - eric-udm-amfeesubscriptions_ccsm_mtsms_aspect delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: CCSM_MTSMS_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-udm-amfeesubscriptions ]
+
+    - eric-udm-amfeenotifications_ccsm_mtsms_aspect delta:
+        type: tosca.policies.nfv.VduScalingAspectDeltas
+        properties:
+          aspect: CCSM_MTSMS_ASPECT
+          deltas:
+            delta_1:
+              number_of_instances: 1
+        targets: [ eric-udm-amfeenotifications ]

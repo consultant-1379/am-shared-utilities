@@ -1,0 +1,1344 @@
+#
+# COPYRIGHT Ericsson 2024
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+tosca_definitions_version: tosca_simple_yaml_1_2
+
+description: VNF Descriptor for Ericsson Packet Core Controller
+
+imports:
+  - etsi_nfv_sol001_vnfd_2_5_1_types.yaml
+
+data_types:
+  ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+# Generic set of parameters to be part of every VNFD to pass necessary params to EVNFM
+      overrideGlobalRegistry:
+        type: boolean
+        default: true
+        required: false
+      vnfInstanceName:
+        type: string
+        required: false
+      vnfInstanceDescription:
+        type: string
+        required: false
+      namespace:
+        type: string
+        required: false
+      releaseName:
+        type: string
+        required: false
+      skipVerification:
+        default: true
+        type: boolean
+        required: false
+      skipJobVerification:
+        default: true
+        type: boolean
+        required: false
+      helmWait:
+        default: false
+        type: boolean
+        required: false
+      cleanupResources:
+        default: true
+        type: boolean
+        required: false
+      applicationTimeOut:
+        default: 450
+        type: integer
+        required: false
+      commandTimeOut:
+        default: 500
+        type: integer
+        required: false
+      addNodeToOSS:
+        default: false
+        type: boolean
+        required: false
+      # VNF Specific  parameters
+      # ENM Specific parameters
+      ossTopology.managedElementId:
+         type: string
+         description: The name the VNF will have in ENM
+         required: false
+         default: ""
+      ossTopology.disableLdapUser:
+         type: boolean
+         description: Whether to enable or disable node remote authentication with ENM COM-AA. If the parameter is not provided, the default is enable.
+         required: false
+      ossTopology.networkElementType:
+         type: string
+         description: The Network element type.
+         required: false
+         default: PCC
+      ossTopology.networkElementVersion:
+         type: string
+         description: The Version of the Network Element. Becomes mandatory depending on the "networkElementType".
+         required: false
+         default: " "
+      ossTopology.networkElementUsername:
+        type: string
+        description: Username to access the the VNF.
+        required: false
+        default: my-user
+      ossTopology.networkElementPassword:
+        type: string
+        description: Password to access the the VNF.
+        required: false
+        default: my-password
+      ossTopology.nodeIpAddress:
+        type: string
+        description: The O&M IP Address of the Network Element. Not applicable for AXE compact nodes.
+        required: false
+        default: 10.210.174.59
+      ossTopology.communityString:
+        type: string
+        description: Community string for SNMP. If not provided,default string "enm-public" would be taken. Not applicable for AXE based nodes.
+        required: false
+      ossTopology.snmpPort:
+        type: string
+        description: SNMP port. Not applicable for AXE based nodes. If port is not provided, then the default port 161 will be set.
+        required: false
+      ossTopology.snmpVersion:
+        type: string
+        description: SNMP Version. Not applicable for AXE based nodes. In ENM for SNMP V3, it is mandatory to provide as "SNMP_V3".
+        required: false
+      ossTopology.snmpSecurityLevel:
+        type: string
+        description: applicable in case of SNMP V3
+        required: false
+        default: "NO_AUTH_NO_PRIV"
+        constraints: [ valid_values: [ 'AUTH_PRIV', 'AUTH_NO_PRIV', 'NO_AUTH_NO_PRIV' ] ]
+      ossTopology.snmpSecurityName:
+        type: string
+        description: applicable in case of SNMP V3
+        required: false
+      ossTopology.snmpAuthProtocol:
+        type: string
+        description: Authentication protocol used to authorize the identity of user. Not applicable for AXE based nodes.Applicable if SNMP V3 is used and the security level is either AUTH_NO_PRIV or AUTH_PRIV
+        required: false
+        constraints: [ valid_values: [  'SHA1', 'MD5' ] ]
+        default: 'MD5'
+      ossTopology.snmpPrivProtocol:
+        type: string
+        description: Authentication protocol used to authorize the identity of user. Not applicable for AXE based nodes.Applicable if SNMP V3 is used and the security level is either AUTH_NO_PRIV or AUTH_PRIV
+        required: false
+        constraints: [ valid_values: [  'AES128', 'DES' ] ]
+        default: 'AES128'
+      ossTopology.snmpAuthPassword:
+        type: string
+        description: Applicable only for ENM when SNMP V3 is used and the security level is AUTH_NO_PRIV or AUTH_PRIV. Password set for authentication with the provided Authentication Protocol for secure authorization.
+        required: false
+      ossTopology.snmpPrivacyPassword:
+        type: string
+        description: Applicable only for ENM when SNMP V3 is used and the security level is AUTH_NO_PRIV or AUTH_PRIV. Password set for authentication with the provided Authentication Protocol for secure authorization.
+        required: false
+      ossTopology.pmFunction:
+        type: boolean
+        description: PmFunction is used to switch on and off PMIC Mediation flows for each Network Element. If PmFunction is on, all file collection, subscription activation, subscription deactivation, scanner polling and scanner master functionality is available for the Network Element. Default value is false.
+        constraints: [ valid_values: [  true, false ] ]
+        default: false
+        required: false
+      ossTopology.cmNodeHeartbeatSupervision:
+        type: boolean
+        description: Used only in case of ENM. Enabling CM Supervision will copy the current status of the configuration data of the node into ENM and enable CM Notifications. Enabling CM Notifications ensures that the node will notify ENM of any configuration data changes. Default value is true.
+        constraints: [ valid_values: [  true, false ] ]
+        default: true
+        required: false
+      ossTopology.fmAlarmSupervision:
+        type: boolean
+        description: FmAlarmSupervision is used to enable or disable alarms in case of any failures. Default value is true.
+        constraints: [ valid_values: [  true, false ] ]
+        default: true
+        required: false
+      ossTopology.netConfPort:
+        type: string
+        description: NetConf port number.Not applicable for AXE based nodes.
+        required: false
+      ossTopology.subNetworks:
+        type: string
+        description: SubNetwork is used for logical grouping of nodes within ENM.
+        required: false
+      ossTopology.timeZone:
+        type: string
+        description:  Applicable only for AXE based nodes in ENM. If timeZone is not provided, then the timeZone of the system will be set.
+        required: false
+      ossTopology.transportProtocol:
+        type: string
+        description:  If transportProtocol is not provided, then the default value SSH will be set
+        required: false
+        constraints: [ valid_values: [  'SSH', 'TLS' ] ]
+        default: 'SSH'
+
+## Values Params ##
+
+      appArmorProfile:
+          default: docker-pcc
+          required: false
+          type: string
+      eric-cm-mediator.resources.cm-mediator.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-cm-mediator.resources.cm-mediator.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-cnom-document-database-mg.resources.eric-cnom-document-database-mg.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-cnom-document-database-mg.resources.eric-cnom-document-database-mg.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-cnom-server.demoScripts.enabled:
+          default: true
+          required: false
+          type: boolean
+      eric-cnom-server.demoScripts.host:
+          default: 10.81.10.77
+          required: false
+          type: string
+      eric-cnom-server.demoScripts.keySecret:
+          default: cnom-demo-key
+          required: false
+          type: string
+      eric-cnom-server.demoScripts.path:
+          default: /home/eccd/issu
+          required: false
+          type: string
+      eric-cnom-server.demoScripts.user:
+          default: eccd
+          required: false
+          type: string
+      eric-cnom-server.resources.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-cnom-server.resources.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-cnom-server.service.type:
+          default: NodePort
+          required: false
+          type: string
+      eric-data-coordinator-zk.resources.datacoordinatorzk.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-coordinator-zk.resources.datacoordinatorzk.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-coordinator-zk.resources.jmxExporter.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-coordinator-zk.resources.jmxExporter.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-distributed-coordinator-ed.resources.etcd.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-distributed-coordinator-ed.resources.etcd.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg.resources.base_os.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg.resources.base_os.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg.resources.kube_client.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg.resources.kube_client.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg.resources.metrics.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg.resources.metrics.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg.resources.postgres.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg.resources.postgres.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-ah.resources.base_os.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-ah.resources.base_os.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-ah.resources.kube_client.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-ah.resources.kube_client.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-ah.resources.metrics.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-ah.resources.metrics.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-ah.resources.postgres.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-ah.resources.postgres.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-cm.resources.base_os.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-cm.resources.base_os.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-cm.resources.kube_client.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-cm.resources.kube_client.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-cm.resources.metrics.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-cm.resources.metrics.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-cm.resources.postgres.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-cm.resources.postgres.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-fh.resources.base_os.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-fh.resources.base_os.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-fh.resources.kube_client.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-fh.resources.kube_client.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-fh.resources.metrics.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-fh.resources.metrics.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-fh.resources.postgres.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-fh.resources.postgres.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-iam.resources.base_os.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-iam.resources.base_os.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-iam.resources.kube_client.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-iam.resources.kube_client.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-iam.resources.metrics.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-iam.resources.metrics.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-iam.resources.postgres.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-iam.resources.postgres.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-sec.resources.base_os.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-sec.resources.base_os.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-sec.resources.kube_client.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-sec.resources.kube_client.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-sec.resources.metrics.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-sec.resources.metrics.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-sec.resources.postgres.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-document-database-pg-sec.resources.postgres.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-message-bus-kf.resources.jmxExporter.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-message-bus-kf.resources.jmxExporter.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-message-bus-kf.resources.messagebuskf.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-message-bus-kf.resources.messagebuskf.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-search-engine.resources.data.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-search-engine.resources.data.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-search-engine.resources.ingest.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-search-engine.resources.ingest.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-data-search-engine.resources.master.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-data-search-engine.resources.master.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-dst-agent.resources.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-dst-agent.resources.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-dst-collector.resources.cassandra.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-dst-collector.resources.cassandra.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-dst-collector.resources.elasticsearch.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-dst-collector.resources.elasticsearch.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-dst-query.resources.cassandra.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-dst-query.resources.cassandra.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-dst-query.resources.elasticsearch.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-dst-query.resources.elasticsearch.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-fh-alarm-handler.resources.alarmhandler.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-fh-alarm-handler.resources.alarmhandler.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-fh-snmp-alarm-provider.imageCredentials.registry.url:
+          default: ''
+          required: false
+          type: string
+      eric-fh-snmp-alarm-provider.resources.alarmprovider.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-fh-snmp-alarm-provider.resources.alarmprovider.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-log-shipper.resources.logshipper.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-log-shipper.resources.logshipper.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-log-transformer.resources.logtransformer.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-log-transformer.resources.logtransformer.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-log-transformer.resources.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-log-transformer.resources.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-odca-diagnostic-data-collector.resources.promReceiver.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-odca-diagnostic-data-collector.resources.promReceiver.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-pc-key-value-database-rd.eric-pc-kvdb-rd-operator.resources.limits.cpu:
+          default: 500m
+          required: false
+          type: string
+      eric-pc-key-value-database-rd.eric-pc-kvdb-rd-operator.resources.limits.memory:
+          default: 200Mi
+          required: false
+          type: string
+      eric-pc-key-value-database-rd.eric-pc-kvdb-rd-operator.resources.requests.cpu:
+          default: 500m
+          required: false
+          type: string
+      eric-pc-key-value-database-rd.eric-pc-kvdb-rd-operator.resources.requests.memory:
+          default: 200Mi
+          required: false
+          type: string
+      eric-pc-key-value-database-rd.eric-pc-kvdb-rd-server.resources.metricExporter.limits.cpu:
+          default: 100m
+          required: false
+          type: string
+      eric-pc-key-value-database-rd.eric-pc-kvdb-rd-server.resources.metricExporter.limits.memory:
+          default: 200Mi
+          required: false
+          type: string
+      eric-pc-key-value-database-rd.eric-pc-kvdb-rd-server.resources.metricExporter.requests.cpu:
+          default: 100m
+          required: false
+          type: string
+      eric-pc-key-value-database-rd.eric-pc-kvdb-rd-server.resources.metricExporter.requests.memory:
+          default: 200Mi
+          required: false
+          type: string
+      eric-pc-key-value-database-rd.eric-pc-kvdb-rd-server.resources.node.limits.cpu:
+          default: 500m
+          required: false
+          type: string
+      eric-pc-key-value-database-rd.eric-pc-kvdb-rd-server.resources.node.limits.memory:
+          default: 750Mi
+          required: false
+          type: string
+      eric-pc-key-value-database-rd.eric-pc-kvdb-rd-server.resources.node.requests.cpu:
+          default: 500m
+          required: false
+          type: string
+      eric-pc-key-value-database-rd.eric-pc-kvdb-rd-server.resources.node.requests.memory:
+          default: 750Mi
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-controller.configMap:
+          default: IyEvYmluL3NoIC1mXG5cblxuc2V0IC14XG5nc2ggbW9kaWZ5X25lIC1uaSBycC1wY2MtMSAtbWdpIDEgLW1jIDEKICAgICAgLWFyaSAxIC1hc2kgMSAtYXAgMVxuZ3NoIGNyZWF0ZV9pbXNpbnMgLWltc2kgMjQwODAgLXJzIGhvbWUgLWRuIG1uYzA4MC5tY2MyNDAuZ3BycwogICAgICAtbnAgZTIxNCAtYWMgdHJ1ZSAtbmEgaW50ZXJuYXRpb25hbCAtcmQgNSAtYWQgODY1ODIgLW0xIE5VTEwgLW0yIE5VTEwgLW0zIE5VTEwKICAgICAgLWVwbHAgTlVMTCAtcm4gZXJpY3Nzb24uc2UgLWhuIGVzbSAtczggZ3RwIC1nY2MgTlVMTCAtd2NjIE5VTEwgLWxjYyBOVUxMIC1yZnNwCiAgICAgIE5VTEwgLWFycGggMSAtYXJwbSAyIC1nc3MgZ3IgLXZsYm8gTlVMTCAtYWlmdiB0cnVlIC1tYXZzIDEgLW1hdnIgMiAtZWFycGxyIDAKICAgICAgLXN0IHRydWUgLXNyYSBub2FjdGlvbiAtc3NjIE5VTEwgLWllc3MgTlVMTCAtcGNyIGZhbHNlIC1zcHM4IE5VTEwgLWl2c3MgTlVMTAogICAgICAtc2Rzc2Mgbm9uZSAtcXBtbGwgTlVMTCAtc3JnciB0cnVlIC11dXQgTlVMTCAtbmlhIGRlbmllZCAtZHJjbCAwIC11cmNsIDAgLXZsYmFvaQogICAgICBOVUxMIC1pcmkgTlVMTCAtY3JzIGFsbG93ZWRfY3Nfc2VydmljZSAtYXJwbmwgTlVMTCAtcXBtdyAxIC1xcG1nIDEgLW1wcyBOVUxMXG5nc2gKICAgICAgY3JlYXRlX3BsbW4gLW1jYyAyNDAgLW1uYyA4MCAtcG4gMjQwODAgLWZubiBOVUxMIC1zbm4gTlVMTCAtY2kgZmFsc2UgLW1lIGZhbHNlCiAgICAgIC1zNSBndHAgLWxvY2FsIHRydWUgLXZvaXAgdm9pcF93aXRob3V0X2VtZXJnZW5jeSAtc2wgdHJ1ZSAtbmJ0IE5VTEwgLXVyY2wgMAogICAgICAtZHJjbCAwIC10ciBOVUxMIC1lY3ZoIHRydWUgLWdzd2dsaSBvZmZcblxuZ3NoIG1vZGlmeV9kYXRlX2FuZF90aW1lIC10eiBDRVRcbmdzaAogICAgICBjcmVhdGVfbnRwX3NlcnZlciAtaXAgMTAuMzUuMjE2LjE3MVxuZ3NoIGNyZWF0ZV9udHBfc2VydmVyIC1pcCAxMC4zNS4yMTYuMTcyXG5nc2gKICAgICAgY3JlYXRlX250cF9zZXJ2ZXIgLWlwIDEwLjM1LjIxNi4xNzNcblxuZ3NoIGNyZWF0ZV9ldGhfcG9ydCAtZXFwIDEuMSAtZXAgMSAtZmMKICAgICAgZmFsc2UgLWFzIHVwXG5cbmdzaCBjcmVhdGVfaXBfbmV0d29yayAtbncgcmFuIC1sb2NhbCBmYWxzZVxuZ3NoIGNyZWF0ZV9ldGhfdmxhbgogICAgICAtZXFwIDEuMSAtZXAgMSAtdmlkIDIwMTZcbmdzaCBjcmVhdGVfaW5ib3VuZF9wZl9wb2xpY3kgLWlmcCBFVEhfMV8xXzFfMjAxNl9yYW5cbmdzaAogICAgICBjcmVhdGVfaW5ib3VuZF9wZl9ydWxlIC1pZnAgRVRIXzFfMV8xXzIwMTZfcmFuIC1mciAxIC1yIHBlcm1pdCAtcCBpcCAtZCBOVUxMCiAgICAgIC1kbSBOVUxMIC1zaXAgMC4wLjAuMCAtc2lwbSAwLjAuMC4wIC1kaXAgMC4wLjAuMCAtZGlwbSAwLjAuMC4wIC1wcCAwIC1wcHEgZ3QKICAgICAgLWlwbyB0cnVlIC1zcCAwIC1zcHEgZ3QgLWRwIDAgLWRwcSBndCAtdGYgTlVMTCAtdGZtIE5VTEwgLWl0IDAgLWl0cSBndCAtc2QgTlVMTAogICAgICAtbHQgZmFsc2VcbmdzaCBjcmVhdGVfaXBfaW50ZXJmYWNlIC1pZm4gRVRIXzFfMV8xXzIwMTZfcmFuIC1pcCAyMS4yMS4yLjEgLW1hc2sKICAgICAgMjU1LjI1NS4yNTUuMCAtcmlwIE5VTEwgLWVxcCAxLjEgLWVwIDEgLXZpZCAyMDE2IC1pZnAgRVRIXzFfMV8xXzIwMTZfcmFuIC1udwogICAgICByYW5cbmdzaCBjcmVhdGVfcm91dGVyX2luc3RhbmNlIC1lcXAgMS4xIC1udyByYW4gLWlwIE5VTEwgLXNuIE5VTEwgLXNjIE5VTEwKICAgICAgLXNsIE5VTExcbmdzaCBjcmVhdGVfc3RhdGljX3JvdXRlIC1lcXAgMS4xIC1udyByYW4gLWRpcCAwLjAuMC4wIC1tYXNrIDAuMC4wLjAKICAgICAgLWdpcCAyMS4yMS4yLjI1NFxuZ3NoIGNyZWF0ZV9iZmQgLW53IHJhbiAtZHR4IDUwIC1tcnggNTAgLW11bHQgNVxuZ3NoIGNyZWF0ZV9iZmRfbmVpZ2hib3IKICAgICAgLW53IHJhbiAtaXAgMjEuMjEuMi4yNTRcbmdzaCBjcmVhdGVfaXBfc2VydmljZSAtc24gTjItMSAtZHNjcCBOVUxMIC1udyByYW5cbmdzaAogICAgICBjcmVhdGVfaXBfc2VydmljZV9hZGRyZXNzIC1zbiBOMi0xIC1pcCAxMC44MS44MC42NlxuZ3NoIGNyZWF0ZV9pcF9zZXJ2aWNlIC1zbgogICAgICBOMi0yIC1kc2NwIE5VTEwgLW53IHJhblxuZ3NoIGNyZWF0ZV9pcF9zZXJ2aWNlX2FkZHJlc3MgLXNuIE4yLTIgLWlwIDEwLjgxLjgwLjY3XG5nc2gKICAgICAgY3JlYXRlX2lwX3NlcnZpY2UgLXNuIFMxLU1NRS0xIC1kc2NwIE5VTEwgLW53IHJhblxuZ3NoIGNyZWF0ZV9pcF9zZXJ2aWNlX2FkZHJlc3MKICAgICAgLXNuIFMxLU1NRS0xIC1pcCAxMC44MS44MC42OFxuZ3NoIGNyZWF0ZV9pcF9zZXJ2aWNlIC1zbiBTMS1NTUUtMiAtZHNjcCBOVUxMCiAgICAgIC1udyByYW5cbmdzaCBjcmVhdGVfaXBfc2VydmljZV9hZGRyZXNzIC1zbiBTMS1NTUUtMiAtaXAgMTAuODEuODAuNjlcblxuZ3NoIGNyZWF0ZV9pcF9uZXR3b3JrCiAgICAgIC1udyBzaWcgLWxvY2FsIGZhbHNlXG5nc2ggY3JlYXRlX2V0aF92bGFuIC1lcXAgMS4xIC1lcCAxIC12aWQgMjAxNVxuZ3NoIGNyZWF0ZV9pbmJvdW5kX3BmX3BvbGljeQogICAgICAtaWZwIEVUSF8xXzFfMV8yMDE1X3NpZ1xuZ3NoIGNyZWF0ZV9pbmJvdW5kX3BmX3J1bGUgLWlmcCBFVEhfMV8xXzFfMjAxNV9zaWcKICAgICAgLWZyIDEgLXIgcGVybWl0IC1wIGlwIC1kIE5VTEwgLWRtIE5VTEwgLXNpcCAwLjAuMC4wIC1zaXBtIDAuMC4wLjAgLWRpcCAwLjAuMC4wCiAgICAgIC1kaXBtIDAuMC4wLjAgLXBwIDAgLXBwcSBndCAtaXBvIHRydWUgLXNwIDAgLXNwcSBndCAtZHAgMCAtZHBxIGd0IC10ZiBOVUxMIC10Zm0KICAgICAgTlVMTCAtaXQgMCAtaXRxIGd0IC1zZCBOVUxMIC1sdCBmYWxzZVxuZ3NoIGNyZWF0ZV9pcF9pbnRlcmZhY2UgLWlmbiBFVEhfMV8xXzFfMjAxNV9zaWcKICAgICAgLWlwIDIxLjIxLjEuMSAtbWFzayAyNTUuMjU1LjI1NS4wIC1yaXAgTlVMTCAtZXFwIDEuMSAtZXAgMSAtdmlkIDIwMTUgLWlmcCBFVEhfMV8xXzFfMjAxNV9zaWcKICAgICAgLW53IHNpZ1xuZ3NoIGNyZWF0ZV9yb3V0ZXJfaW5zdGFuY2UgLWVxcCAxLjEgLW53IHNpZyAtaXAgTlVMTCAtc24gTlVMTCAtc2MgTlVMTAogICAgICAtc2wgTlVMTFxuZ3NoIGNyZWF0ZV9zdGF0aWNfcm91dGUgLWVxcCAxLjEgLW53IHNpZyAtZGlwIDAuMC4wLjAgLW1hc2sgMC4wLjAuMAogICAgICAtZ2lwIDIxLjIxLjEuMjU0XG5nc2ggY3JlYXRlX2JmZCAtbncgc2lnIC1kdHggNTAgLW1yeCA1MCAtbXVsdCA1XG5nc2ggY3JlYXRlX2JmZF9uZWlnaGJvcgogICAgICAtbncgc2lnIC1pcCAyMS4yMS4xLjI1NFxuZ3NoIGNyZWF0ZV9pcF9zZXJ2aWNlIC1zbiBTQkktU2VydmVyIC1kc2NwIE5VTEwgLW53CiAgICAgIHNpZ1xuZ3NoIGNyZWF0ZV9pcF9zZXJ2aWNlX2FkZHJlc3MgLXNuIFNCSS1TZXJ2ZXIgLWlwIDEwLjgxLjgxLjEzXG5nc2ggY3JlYXRlX2lwX3NlcnZpY2UKICAgICAgLXNuIFNCSS1DbGllbnQgLWRzY3AgTlVMTCAtbncgc2lnXG5nc2ggY3JlYXRlX2lwX3NlcnZpY2VfYWRkcmVzcyAtc24gU0JJLUNsaWVudAogICAgICAtaXAgMTAuODEuODEuMTNcbmdzaCBjcmVhdGVfaXBfc2VydmljZSAtc24gUzZhLTEgLWRzY3AgTlVMTCAtbncgc2lnXG5nc2ggY3JlYXRlX2lwX3NlcnZpY2VfYWRkcmVzcwogICAgICAtc24gUzZhLTEgLWlwIDEwLjgxLjgxLjE0XG5nc2ggY3JlYXRlX2lwX3NlcnZpY2UgLXNuIFM2YS0yIC1kc2NwIE5VTEwgLW53IHNpZ1xuZ3NoCiAgICAgIGNyZWF0ZV9pcF9zZXJ2aWNlX2FkZHJlc3MgLXNuIFM2YS0yIC1pcCAxMC44MS44MS4xNVxuZ3NoIGNyZWF0ZV9pcF9zZXJ2aWNlIC1zbgogICAgICBTMTEtR1RQLUMgLWRzY3AgTlVMTCAtbncgc2lnXG5nc2ggY3JlYXRlX2lwX3NlcnZpY2VfYWRkcmVzcyAtc24gUzExLUdUUC1DIC1pcAogICAgICAxMC44MS44MS42MVxuZ3NoIGNyZWF0ZV9pcF9zZXJ2aWNlIC1zbiBTMTAtR1RQLUMgLWRzY3AgTlVMTCAtbncgc2lnXG5nc2ggY3JlYXRlX2lwX3NlcnZpY2VfYWRkcmVzcwogICAgICAtc24gUzEwLUdUUC1DIC1pcCAxMC44MS44MS42MVxuXG5nc2ggY3JlYXRlX2lwX25ldHdvcmsgLW53IG1haW4gLWxvY2FsIGZhbHNlXG5nc2gKICAgICAgY3JlYXRlX2V0aF92bGFuIC1lcXAgMS4xIC1lcCAxIC12aWQgMjAxNFxuZ3NoIGNyZWF0ZV9pbmJvdW5kX3BmX3BvbGljeSAtaWZwCiAgICAgIEVUSF8xXzFfMV8yMDE0X21haW5cbmdzaCBjcmVhdGVfaW5ib3VuZF9wZl9ydWxlIC1pZnAgRVRIXzFfMV8xXzIwMTRfbWFpbiAtZnIKICAgICAgMSAtciBwZXJtaXQgLXAgaXAgLWQgTlVMTCAtZG0gTlVMTCAtc2lwIDAuMC4wLjAgLXNpcG0gMC4wLjAuMCAtZGlwIDAuMC4wLjAgLWRpcG0KICAgICAgMC4wLjAuMCAtcHAgMCAtcHBxIGd0IC1pcG8gdHJ1ZSAtc3AgMCAtc3BxIGd0IC1kcCAwIC1kcHEgZ3QgLXRmIE5VTEwgLXRmbSBOVUxMCiAgICAgIC1pdCAwIC1pdHEgZ3QgLXNkIE5VTEwgLWx0IGZhbHNlXG5nc2ggY3JlYXRlX2lwX2ludGVyZmFjZSAtaWZuIEVUSF8xXzFfMV8yMDE0X21haW4KICAgICAgLWlwIDIxLjIxLjAuMSAtbWFzayAyNTUuMjU1LjI1NS4wIC1yaXAgTlVMTCAtZXFwIDEuMSAtZXAgMSAtdmlkIDIwMTQgLWlmcCBFVEhfMV8xXzFfMjAxNF9tYWluCiAgICAgIC1udyBtYWluXG5nc2ggY3JlYXRlX3JvdXRlcl9pbnN0YW5jZSAtZXFwIDEuMSAtbncgbWFpbiAtaXAgTlVMTCAtc24gTlVMTCAtc2MKICAgICAgTlVMTCAtc2wgTlVMTFxuZ3NoIGNyZWF0ZV9zdGF0aWNfcm91dGUgLWVxcCAxLjEgLW53IG1haW4gLWRpcCAwLjAuMC4wIC1tYXNrCiAgICAgIDAuMC4wLjAgLWdpcCAyMS4yMS4wLjI1NFxuZ3NoIGNyZWF0ZV9iZmQgLW53IG1haW4gLWR0eCA1MCAtbXJ4IDUwIC1tdWx0IDVcbmdzaAogICAgICBjcmVhdGVfYmZkX25laWdoYm9yIC1udyBtYWluIC1pcCAyMS4yMS4wLjI1NFxuZ3NoIGNyZWF0ZV9pcF9zZXJ2aWNlIC1zbiBPQU0KICAgICAgLWRzY3AgTlVMTCAtbncgbWFpblxuZ3NoIGNyZWF0ZV9pcF9zZXJ2aWNlX2FkZHJlc3MgLXNuIE9BTSAtaXAgMTAuODEuODAuMTMzXG5nc2gKICAgICAgY3JlYXRlX2lwX3NlcnZpY2UgLXNuIE5UUCAtZHNjcCBOVUxMIC1udyBtYWluXG5nc2ggY3JlYXRlX2lwX3NlcnZpY2VfYWRkcmVzcwogICAgICAtc24gTlRQIC1pcCAxMC44MS44MC4xMzNcbmdzaCBjcmVhdGVfaXBfc2VydmljZSAtc24gRE5TIC1kc2NwIE5VTEwgLW53IG1haW5cbmdzaAogICAgICBjcmVhdGVfaXBfc2VydmljZV9hZGRyZXNzIC1zbiBETlMgLWlwIDEwLjgxLjgwLjEzM1xuZ3NoIGNyZWF0ZV9pcF9zZXJ2aWNlIC1zbgogICAgICBFQk0gLWRzY3AgTlVMTCAtbncgbWFpblxuZ3NoIGNyZWF0ZV9pcF9zZXJ2aWNlX2FkZHJlc3MgLXNuIEVCTSAtaXAgMTAuODEuODAuMTMzXG5cblxuZ3NoCiAgICAgIGNyZWF0ZV9uMiAtbjIgbjIgLW5vIDNcbmdzaCBjcmVhdGVfczExIC1zMTEgczExXG5nc2ggY3JlYXRlX3MxX21tZSAtczEgczFfbW1lCiAgICAgIC1ubyAxXG5nc2ggbW9kaWZ5X2d0cF92MiAtZXJhIG9mZlxuXG4jIFNCSVxuZ3NoIGNyZWF0ZV9pcF9lbmRwb2ludF9saXN0IC1sbgogICAgICBOUkZEaXNjSHR0cFNlcnZlclxuZ3NoIGNyZWF0ZV9pcF9lbmRwb2ludF9saXN0IC1sbiBOUkZOZm1IdHRwU2VydmVyXG5nc2ggY3JlYXRlX2lwX2VuZHBvaW50X2xpc3QKICAgICAgLWxuIE5TU0ZIdHRwU2VydmVyXG5nc2ggY3JlYXRlX2lwX2VuZHBvaW50IC1sbiBOUkZEaXNjSHR0cFNlcnZlciAtaXBlcGlkIDEgLWlwCiAgICAgIDEwLjgxLjgxLjYwIC1wb3J0IDgwXG5nc2ggY3JlYXRlX2lwX2VuZHBvaW50IC1sbiBOUkZOZm1IdHRwU2VydmVyIC1pcGVwaWQgMQogICAgICAtaXAgMTAuODEuODEuNjAgLXBvcnQgODBcbmdzaCBjcmVhdGVfaXBfZW5kcG9pbnQgLWxuIE5TU0ZIdHRwU2VydmVyIC1pcGVwaWQKICAgICAgMSAtaXAgMTAuODEuODEuNjAgLXBvcnQgODNcbmdzaCBtb2RpZnlfbnJmIC1pcCAwLjAuMC4wIC1wb3J0IDAgLW5mdGwgTlVMTCAtaXB2NgogICAgICBOVUxMIC1jYWNoZSBvbiAtYmlwIE5VTEwgLWJpcHY2IE5VTEwgLWJwb3J0IE5VTExcbmdzaCBtb2RpZnlfbnJmX29wdGlvbiAtbmZ0bAogICAgICBOVUxMIC1jYWNoZSBvZmYgLW5zaSAwXG5nc2ggY3JlYXRlX25yZl9zZXJ2aWNlX2luc3RhbmNlIC1uc2luIG5ucmZfbmZtYW5hZ2VtZW50XzEKICAgICAgLW5zbiBubnJmX25mbWFuYWdlbWVudCAtbnIgcHJpbWFyeSAtbG4gTlJGTmZtSHR0cFNlcnZlclxuZ3NoIGNyZWF0ZV9ucmZfc2VydmljZV9pbnN0YW5jZQogICAgICAtbnNpbiBubnJmX25mZGlzY292ZXJ5XzEgLW5zbiBubnJmX25mZGlzY292ZXJ5IC1uciBwcmltYXJ5IC1sbiBOUkZEaXNjSHR0cFNlcnZlclxuZ3NoCiAgICAgIG1vZGlmeV9uc3NmIC1pcCAwLjAuMC4wIC1wb3J0IDAgLWlwdjYgTlVMTCAtYmlwIE5VTEwgLWJpcHY2IE5VTEwgLWJwb3J0IE5VTExcbmdzaAogICAgICBjcmVhdGVfbnNzZl9pbnN0YW5jZSAtaWQgbnNzZl8xIC1zZWxlY3Rpb25sbiBOU1NGSHR0cFNlcnZlclxuXG4jIFNDVFAgY29uZmlnXG5nc2gKICAgICAgY3JlYXRlX3NjdHBfcHJvZmlsZSAtcG4gUzFfTU1FX1NDVFAgLXBtdHUgMTQxOFxuZ3NoIGNyZWF0ZV9zY3RwX3Byb2ZpbGUgLXBuCiAgICAgIFM2YV9TQ1RQIC1wbXR1IDE0MThcbmdzaCBjcmVhdGVfc2N0cF9lbmRfcG9pbnQgLW5vIDEgLXBvcnRubyAzNjQxMiAtcG4gUzFfTU1FX1NDVFAKICAgICAgLXByaW1zbiBTMS1NTUUtMSAtc2Vjc24gUzEtTU1FLTIgXG5nc2ggY3JlYXRlX3NjdHBfZW5kX3BvaW50IC1ubyAyIC1wb3J0bm8gMzg2OAogICAgICAtcG4gUzZhX1NDVFAgLXByaW1zbiBTNmEtMSAtc2Vjc24gUzZhLTIgXG5nc2ggY3JlYXRlX3NjdHBfZW5kX3BvaW50IC1ubyAzIC1wb3J0bm8KICAgICAgMzg0MTIgLXBuIFMxX01NRV9TQ1RQIC1wcmltc24gTjItMSAtc2Vjc24gTjItMlxuXG4jIERpYW1ldGVyIGNvbmZpZ1xuZ3NoIGNyZWF0ZV9kaWFtZXRlcl9hcHBsaWNhdGlvbgogICAgICAtZGEgczZhIC1kaCBycC1wY2MtMS1tbWUgLXJuIGVyaWNzc29uLnNlXG5nc2ggY3JlYXRlX2xvY2FsX2RpYW1ldGVyX2hvc3QgLWRoCiAgICAgIHJwLXBjYy0xLW1tZSAtcm4gZXJpY3Nzb24uc2UgLW5vIDJcbmdzaCBjcmVhdGVfZGlhbWV0ZXJfcGVlciAtaXAgMTcyLjIuNDkuMQogICAgICAtcG4gMSAtcG9ydG5vIDM4NjggLXNpcCBOVUxMIC1wcmlvIE5VTEwgLWRoIHJwLXBjYy0xLW1tZSAtcm4gZXJpY3Nzb24uc2VcbmdzaAogICAgICBjcmVhdGVfZGlhbWV0ZXJfcmVhbG0gLWRhIHM2YSAtcm4gZXJpY3Nzb24uc2UgLWRwbCAxIC1scyB0cnVlIC1zZHBsIE5VTEwgLXNscwogICAgICB0cnVlXG5cblxuZ3NoIG1vZGlmeV9zdWJzY3JpYmVyX2F1dGhlbnRpY2F0aW9uIC1tYXZwIG9mZiAtc2F2cCBvZmZcbmdzaCBjcmVhdGVfc3VwaV9yYW5nZQogICAgICAtaW1zaSAyNDA4MCAtdm9wcyAzZ3BwIC1ycyBob21lXG5nc2ggY3JlYXRlX3N1cHBvcnRlZF9zbGljZSAtc24gMSAtc3N0IDEgLXNkCiAgICAgIDFcbmdzaCBtb2RpZnlfbmVhX2FsZ29yaXRobSAtbmFtZSBuZWEwIC1wcmlvIDFcbmdzaCBtb2RpZnlfbmVhX2FsZ29yaXRobSAtbmFtZQogICAgICBuZWExIC1wcmlvIDJcbmdzaCBtb2RpZnlfbmVhX2FsZ29yaXRobSAtbmFtZSBuZWEyIC1wcmlvIDNcbmdzaCBtb2RpZnlfbmVhX2FsZ29yaXRobQogICAgICAtbmFtZSBuZWEzIC1wcmlvIDBcbmdzaCBtb2RpZnlfbmlhX2FsZ29yaXRobSAtbmFtZSBuaWExIC1wcmlvIDJcbmdzaCBtb2RpZnlfbmlhX2FsZ29yaXRobQogICAgICAtbmFtZSBuaWEyIC1wcmlvIDFcbmdzaCBtb2RpZnlfbmlhX2FsZ29yaXRobSAtbmFtZSBuaWEzIC1wcmlvIDBcbmdzaCBtb2RpZnlfZWVhX2FsZ29yaXRobQogICAgICAtbmFtZSBlZWEwIC1wcmlvIDFcbmdzaCBtb2RpZnlfZWVhX2FsZ29yaXRobSAtbmFtZSBlZWExIC1wcmlvIDBcbmdzaCBtb2RpZnlfZWVhX2FsZ29yaXRobQogICAgICAtbmFtZSBlZWEyIC1wcmlvIDBcbmdzaCBtb2RpZnlfZWVhX2FsZ29yaXRobSAtbmFtZSBlZWEzIC1wcmlvIDBcbmdzaCBtb2RpZnlfZWlhX2FsZ29yaXRobQogICAgICAtbmFtZSBlaWExIC1wcmlvIDJcbmdzaCBtb2RpZnlfZWlhX2FsZ29yaXRobSAtbmFtZSBlaWEyIC1wcmlvIDFcbmdzaCBtb2RpZnlfZWlhX2FsZ29yaXRobQogICAgICAtbmFtZSBlaWEzIC1wcmlvIDBcblxuIyBTdGF0aWMgR1cgc2VsZWN0aW9uXG5nc2ggbW9kaWZ5X25vZGVfZnVuY3Rpb24gLW5hbWUKICAgICAgc3RhdGljX2d3X3NlbGVjdGlvbiAtc3RhdGUgb25cbmdzaCBjcmVhdGVfZ2EgLWdhbiBHQTFcbmdzaCBjcmVhdGVfZ2FfdGFfcmFuZ2UKICAgICAgLWdhbiBHQTEgLXRhbiBHQTFfVEEyIC1tY2MgMjQwIC1tbmMgODAgLWZpcnN0IDAgLWxhc3QgNjU1MzVcbmdzaCBjcmVhdGVfZ3dfc2VsZWN0aW9uX3NndwogICAgICAtc2d3IHJwLXBjYy0xLXNndyAtc2d3djQgMTAuODEuODEuMTAgLXNnd3Y2IE5VTEwgLWdjYXAgMTAwIC1nYW4gR0ExXG5nc2ggY3JlYXRlX2Fwbl9wZ3cKICAgICAgLWFpIDEgLXBndyBycC1wY2MtMS1wZ3dcbmdzaCBjcmVhdGVfZ3dfc2VsZWN0aW9uX3BndyAtcGd3IHJwLXBjYy0xLXBndyAtcGd3djQKICAgICAgMTAuODEuODEuNCAtcGd3djYgTlVMTCAtZ2NhcCAxMDAgLWd3dCBTR1dfQ09NQklORUQgLXB0IEdUUFYyIC1zZ3cgcnAtcGNjLTEtc2d3XG5nc2gKICAgICAgY3JlYXRlX2d3X3NlbGVjdGlvbl9hcG4gLWFpIDEgLWFuIGludGVybmV0IC1hbyBtbmMwODAubWNjMjQwLmdwcnNcblxuZ3NoIG1vZGlmeV9zdWJzY3JpYmVyX2F1dGhlbnRpY2F0aW9uCiAgICAgIC1tYXZwIG9mZiAtc2F2cCBvZmZcbmdzaCBtb2RpZnlfZmVhdHVyZV9zdGF0ZSAtZnNpIG1tZV9wb29sIC1mcyBBQ1RJVkFURURcbmdzaAogICAgICBtb2RpZnlfbm9kZV9mdW5jdGlvbiAtbmFtZSBkbnNfcHJpb3JfdG9fc3RhdGljX2d3X3NlbGVjdGlvbiAtc3RhdGUgb25cblxuIyBFUEMKICAgICAgRE5TIHNlcnZlclxuZ3NoIGNyZWF0ZV9kbnMgLWRuIGVwYy5tbmMwODAubWNjMjQwLjNncHBuZXR3b3JrLm9yZy4gLXF0IHJlY3Vyc2l2ZQogICAgICAtY3QgNjA0ODAwIC1sY3QgMzAwIC1kY20gY2VudHJhbFxuZ3NoIGNyZWF0ZV9kbnNfc2VydmVyIC1kbiBlcGMubW5jMDgwLm1jYzI0MC4zZ3BwbmV0d29yay5vcmcuCiAgICAgIC1ucyBuczEuXG5nc2ggY3JlYXRlX2Ruc19zZXJ2ZXJfYWRkcmVzcyAtZG4gZXBjLm1uYzA4MC5tY2MyNDAuM2dwcG5ldHdvcmsub3JnLgogICAgICAtbnMgbnMxLiAtaXAgMTAuODEuMTAuODFcblxuZ3NoIGFjdGlvbl9lbWVyZ2VuY3lfdW5sb2NrX2FjdGl2YXRl
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-controller.limits.cpu:
+          default: 1
+          required: false
+          type: integer
+      eric-pc-mm.eric-pc-mm-controller.limits.memory:
+          default: 5Gi
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-controller.replicaCount:
+          default: 1
+          required: false
+          type: integer
+      eric-pc-mm.eric-pc-mm-controller.requests.cpu:
+          default: 1
+          required: false
+          type: integer
+      eric-pc-mm.eric-pc-mm-controller.requests.memory:
+          default: 5Gi
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-controller.securityContext.appArmorProfile:
+          default: docker-pcc
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-forwarder.limits.cpu:
+          default: 1
+          required: false
+          type: integer
+      eric-pc-mm.eric-pc-mm-forwarder.limits.memory:
+          default: 1Gi
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-forwarder.networks.0.ipam.subnet:
+          default: 169.254.0.0/16
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-forwarder.networks.0.master:
+          default: eth2
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-forwarder.networks.0.name:
+          default: ext1
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-forwarder.networks.0.type:
+          default: macvlan
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-forwarder.replicaCount:
+          default: 1
+          required: false
+          type: integer
+      eric-pc-mm.eric-pc-mm-forwarder.requests.cpu:
+          default: 1
+          required: false
+          type: integer
+      eric-pc-mm.eric-pc-mm-forwarder.requests.memory:
+          default: 1Gi
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-forwarder.securityContext.appArmorProfile:
+          default: docker-pcc
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-mobility.limits.cpu:
+          default: 1
+          required: false
+          type: integer
+      eric-pc-mm.eric-pc-mm-mobility.limits.memory:
+          default: 4Gi
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-mobility.replicaCount:
+          default: 2
+          required: false
+          type: integer
+      eric-pc-mm.eric-pc-mm-mobility.requests.cpu:
+          default: 1
+          required: false
+          type: integer
+      eric-pc-mm.eric-pc-mm-mobility.requests.memory:
+          default: 4Gi
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-mobility.securityContext.appArmorProfile:
+          default: docker-pcc
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-sctp.limits.cpu:
+          default: 1
+          required: false
+          type: integer
+      eric-pc-mm.eric-pc-mm-sctp.limits.memory:
+          default: 1Gi
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-sctp.replicaCount:
+          default: 2
+          required: false
+          type: integer
+      eric-pc-mm.eric-pc-mm-sctp.requests.cpu:
+          default: 1
+          required: false
+          type: integer
+      eric-pc-mm.eric-pc-mm-sctp.requests.memory:
+          default: 1Gi
+          required: false
+          type: string
+      eric-pc-mm.eric-pc-mm-sctp.securityContext.appArmorProfile:
+          default: docker-pcc
+          required: false
+          type: string
+      eric-pc-mm-gtp-forwarder.replicaCount:
+          default: 1
+          required: false
+          type: integer
+      eric-pc-mm-gtp-forwarder.resources.limits.cpu:
+          default: 1
+          required: false
+          type: integer
+      eric-pc-mm-gtp-forwarder.resources.limits.memory:
+          default: 1Gi
+          required: false
+          type: string
+      eric-pc-mm-gtp-forwarder.resources.requests.cpu:
+          default: 1
+          required: false
+          type: integer
+      eric-pc-mm-gtp-forwarder.resources.requests.memory:
+          default: 1Gi
+          required: false
+          type: string
+      eric-pc-rs-controller.resources.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-pc-rs-controller.resources.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-pc-sm.eric-pc-sm-controller.controller.configMap:
+          default: PGNvbmZpZyB4bWxucz0iaHR0cDovL3RhaWwtZi5jb20vbnMvY29uZmlnLzEuMCI+CiAgICAgICAgICA8ZXBnIHhtbG5zPSJ1cm46cmRuczpjb206ZXJpY3Nzb246b2FtbW9kZWw6ZXJpY3Nzb24tZXBnIj4KICAgICAgICAgICAgPHNndz4KICAgICAgICAgICAgICA8bm9kZT5ycC1wY2MtMS1zZ3c8L25vZGU+CiAgICAgICAgICAgICAgPGludGVyZmFjZT4KICAgICAgICAgICAgICAgIDxzNHMxMS1jPgogICAgICAgICAgICAgICAgICA8bG9naWNhbC1pbnRlcmZhY2U+czRzMTEtYy1pZjwvbG9naWNhbC1pbnRlcmZhY2U+CiAgICAgICAgICAgICAgICA8L3M0czExLWM+CiAgICAgICAgICAgICAgICA8czVzOC1jPgogICAgICAgICAgICAgICAgICA8bG9naWNhbC1pbnRlcmZhY2U+c2d3LXM1czgtYy1pZjwvbG9naWNhbC1pbnRlcmZhY2U+CiAgICAgICAgICAgICAgICA8L3M1czgtYz4KICAgICAgICAgICAgICAgIDxzeD4KICAgICAgICAgICAgICAgICAgPGxvZ2ljYWwtaW50ZXJmYWNlPnN4LWEtaWY8L2xvZ2ljYWwtaW50ZXJmYWNlPgogICAgICAgICAgICAgICAgPC9zeD4KICAgICAgICAgICAgICA8L2ludGVyZmFjZT4KICAgICAgICAgICAgICA8dXNlci1wbGFuZT4KICAgICAgICAgICAgICAgIDxub2RlLW5hbWU+CiAgICAgICAgICAgICAgICAgIDxuYW1lPnJwLXBjZy0xPC9uYW1lPgogICAgICAgICAgICAgICAgICA8cGZjcC1hZGRyZXNzPjEwLjgxLjgxLjU2PC9wZmNwLWFkZHJlc3M+CiAgICAgICAgICAgICAgICAgIDxzMXM0czExczEyLXU+CiAgICAgICAgICAgICAgICAgICAgPG5ldHdvcmstaW5zdGFuY2U+UzF1TjM8L25ldHdvcmstaW5zdGFuY2U+CiAgICAgICAgICAgICAgICAgIDwvczFzNHMxMXMxMi11PgogICAgICAgICAgICAgICAgICA8czVzOC11PgogICAgICAgICAgICAgICAgICAgIDxuZXR3b3JrLWluc3RhbmNlPlM1dU45PC9uZXR3b3JrLWluc3RhbmNlPgogICAgICAgICAgICAgICAgICA8L3M1czgtdT4KICAgICAgICAgICAgICAgIDwvbm9kZS1uYW1lPgogICAgICAgICAgICAgIDwvdXNlci1wbGFuZT4KICAgICAgICAgICAgICA8dXNlci1wbGFuZS1wb29sPgogICAgICAgICAgICAgICAgPHBvb2w+CiAgICAgICAgICAgICAgICAgIDxuYW1lPnNndy11cGYtcG9vbDwvbmFtZT4KICAgICAgICAgICAgICAgICAgPG5vZGUtbmFtZT4KICAgICAgICAgICAgICAgICAgICA8bmFtZT5ycC1wY2ctMTwvbmFtZT4KICAgICAgICAgICAgICAgICAgPC9ub2RlLW5hbWU+CiAgICAgICAgICAgICAgICA8L3Bvb2w+CiAgICAgICAgICAgICAgPC91c2VyLXBsYW5lLXBvb2w+CiAgICAgICAgICAgICAgPHVzZXItcGxhbmUtc2VsZWN0aW9uPgogICAgICAgICAgICAgICAgPGRlZmF1bHQtcG9vbD5zZ3ctdXBmLXBvb2w8L2RlZmF1bHQtcG9vbD4KICAgICAgICAgICAgICA8L3VzZXItcGxhbmUtc2VsZWN0aW9uPgogICAgICAgICAgICAgIDxjaGFyZ2luZz4KICAgICAgICAgICAgICAgIDxjaGFyYWN0ZXJpc3RpY3M+CiAgICAgICAgICAgICAgICAgIDxkZWZhdWx0LXByb2ZpbGU+MDwvZGVmYXVsdC1wcm9maWxlPgogICAgICAgICAgICAgICAgICA8aWdub3JlLXByb2ZpbGUtZnJvbS1zZXJ2aW5nLW5vZGUvPgogICAgICAgICAgICAgICAgICA8cHJvZmlsZT4KICAgICAgICAgICAgICAgICAgICA8bmFtZT4wPC9uYW1lPgogICAgICAgICAgICAgICAgICAgIDxuby1jZHItZ2VuZXJhdGlvbi8+CiAgICAgICAgICAgICAgICAgIDwvcHJvZmlsZT4KICAgICAgICAgICAgICAgIDwvY2hhcmFjdGVyaXN0aWNzPgogICAgICAgICAgICAgIDwvY2hhcmdpbmc+CiAgICAgICAgICAgIDwvc2d3PgogICAgICAgICAgICA8cGd3PgogICAgICAgICAgICAgIDxub2RlPnJwLXBjYy0xLXNtZjwvbm9kZT4KICAgICAgICAgICAgICA8c2hhcmVkLWlwLXBvb2w+CiAgICAgICAgICAgICAgICA8bmFtZT5wb29sMTwvbmFtZT4KICAgICAgICAgICAgICAgIDxhZGRyZXNzPgogICAgICAgICAgICAgICAgICA8bmFtZT4xMC44MS44Mi4xMjgvMjU8L25hbWU+CiAgICAgICAgICAgICAgICA8L2FkZHJlc3M+CiAgICAgICAgICAgICAgICA8aXB2Ni1hZGRyZXNzPgogICAgICAgICAgICAgICAgICA8bmFtZT4yMDAxOjFiNzY6MjRjMDo0MDo6LzU4PC9uYW1lPgogICAgICAgICAgICAgICAgPC9pcHY2LWFkZHJlc3M+CiAgICAgICAgICAgICAgICA8YWRkcmVzcy1yZXVzZS10aW1lPjA8L2FkZHJlc3MtcmV1c2UtdGltZT4KICAgICAgICAgICAgICA8L3NoYXJlZC1pcC1wb29sPgogICAgICAgICAgICAgIDxhcG4+CiAgICAgICAgICAgICAgICA8bmFtZT5pbnRlcm5ldDwvbmFtZT4KICAgICAgICAgICAgICAgIDxuZXR3b3JrLWluc3RhbmNlPlNHaU42PC9uZXR3b3JrLWluc3RhbmNlPgogICAgICAgICAgICAgICAgPHJvdXRpbmctaW5zdGFuY2U+ZGVmYXVsdDwvcm91dGluZy1pbnN0YW5jZT4KICAgICAgICAgICAgICAgIDx1c2VyLXByb2ZpbGUtc2VsZWN0aW9uPgogICAgICAgICAgICAgICAgICA8bjctcHJvZmlsZT4KICAgICAgICAgICAgICAgICAgICA8Y29uZGl0aW9uPgogICAgICAgICAgICAgICAgICAgICAgPG5hbWU+dGVzdF9pbXNpPC9uYW1lPgogICAgICAgICAgICAgICAgICAgICAgPHByaW9yaXR5PjEwPC9wcmlvcml0eT4KICAgICAgICAgICAgICAgICAgICAgIDxpbXNpPjI0MDgwMDAwMDAwMDUwMDwvaW1zaT4KICAgICAgICAgICAgICAgICAgICAgIDxwcm9maWxlPm43LTE8L3Byb2ZpbGU+CiAgICAgICAgICAgICAgICAgICAgPC9jb25kaXRpb24+CiAgICAgICAgICAgICAgICAgIDwvbjctcHJvZmlsZT4KICAgICAgICAgICAgICAgICAgPGxvY2FsLXBvbGljeS1jb250cm9sLXByb2ZpbGU+CiAgICAgICAgICAgICAgICAgICAgPGRlZmF1bHQ+bHBjX3Byb2ZpbGUwPC9kZWZhdWx0PgogICAgICAgICAgICAgICAgICA8L2xvY2FsLXBvbGljeS1jb250cm9sLXByb2ZpbGU+CiAgICAgICAgICAgICAgICAgIDxwb2xpY3ktY2hhcmdpbmctcnVsZS1zY29wZT4KICAgICAgICAgICAgICAgICAgICA8ZGVmYXVsdD5wY19ydWxlU2NvcGUxPC9kZWZhdWx0PgogICAgICAgICAgICAgICAgICA8L3BvbGljeS1jaGFyZ2luZy1ydWxlLXNjb3BlPgogICAgICAgICAgICAgICAgPC91c2VyLXByb2ZpbGUtc2VsZWN0aW9uPgogICAgICAgICAgICAgICAgPHBkcC1jb250ZXh0PgogICAgICAgICAgICAgICAgICA8Y3JlYXRpb24+dW5ibG9ja2VkPC9jcmVhdGlvbj4KICAgICAgICAgICAgICAgICAgPHBkcC10eXBlPmlwdjQtaXB2NjwvcGRwLXR5cGU+CiAgICAgICAgICAgICAgICAgIDxhZGRyZXNzLWFsbG9jYXRpb24+c2hhcmVkLWlwLXBvb2w8L2FkZHJlc3MtYWxsb2NhdGlvbj4KICAgICAgICAgICAgICAgIDwvcGRwLWNvbnRleHQ+CiAgICAgICAgICAgICAgPC9hcG4+CiAgICAgICAgICAgICAgPHVzZXItcGxhbmU+CiAgICAgICAgICAgICAgICA8bm9kZS1uYW1lPgogICAgICAgICAgICAgICAgICA8bmFtZT5ycC1wY2ctMTwvbmFtZT4KICAgICAgICAgICAgICAgICAgPHBmY3AtYWRkcmVzcz4xMC44MS44MS41NjwvcGZjcC1hZGRyZXNzPgogICAgICAgICAgICAgICAgICA8aXAtc2VsZWN0aW9uLWNvbmRpdGlvbj4KICAgICAgICAgICAgICAgICAgICA8bmFtZT5jb25kaXRpb24xPC9uYW1lPgogICAgICAgICAgICAgICAgICAgIDxkYXRhLW5ldHdvcms+aW50ZXJuZXQ8L2RhdGEtbmV0d29yaz4KICAgICAgICAgICAgICAgICAgICA8c2VsZWN0ZWQtc2hhcmVkLWlwdjQtcG9vbD5wb29sMTwvc2VsZWN0ZWQtc2hhcmVkLWlwdjQtcG9vbD4KICAgICAgICAgICAgICAgICAgICA8c2VsZWN0ZWQtc2hhcmVkLWlwdjYtcG9vbD5wb29sMTwvc2VsZWN0ZWQtc2hhcmVkLWlwdjYtcG9vbD4KICAgICAgICAgICAgICAgICAgPC9pcC1zZWxlY3Rpb24tY29uZGl0aW9uPgogICAgICAgICAgICAgICAgICA8czVzOC11PgogICAgICAgICAgICAgICAgICAgIDxuZXR3b3JrLWluc3RhbmNlPlM1dU45PC9uZXR3b3JrLWluc3RhbmNlPgogICAgICAgICAgICAgICAgICA8L3M1czgtdT4KICAgICAgICAgICAgICAgICAgPG4zPgogICAgICAgICAgICAgICAgICAgIDxuZXR3b3JrLWluc3RhbmNlPlMxdU4zPC9uZXR3b3JrLWluc3RhbmNlPgogICAgICAgICAgICAgICAgICA8L24zPgogICAgICAgICAgICAgICAgICA8c3gtdT4KICAgICAgICAgICAgICAgICAgICA8bmV0d29yay1pbnN0YW5jZT5TeE40PC9uZXR3b3JrLWluc3RhbmNlPgogICAgICAgICAgICAgICAgICA8L3N4LXU+CiAgICAgICAgICAgICAgICA8L25vZGUtbmFtZT4KICAgICAgICAgICAgICA8L3VzZXItcGxhbmU+CiAgICAgICAgICAgICAgPHVzZXItcGxhbmUtcG9vbD4KICAgICAgICAgICAgICAgIDxwb29sPgogICAgICAgICAgICAgICAgICA8bmFtZT51cC1wb29sMDwvbmFtZT4KICAgICAgICAgICAgICAgICAgPG5vZGUtbmFtZT4KICAgICAgICAgICAgICAgICAgICA8bmFtZT5ycC1wY2ctMTwvbmFtZT4KICAgICAgICAgICAgICAgICAgPC9ub2RlLW5hbWU+CiAgICAgICAgICAgICAgICA8L3Bvb2w+CiAgICAgICAgICAgICAgPC91c2VyLXBsYW5lLXBvb2w+CiAgICAgICAgICAgICAgPHVzZXItcGxhbmUtc2VsZWN0aW9uPgogICAgICAgICAgICAgICAgPGRlZmF1bHQtcG9vbD51cC1wb29sMDwvZGVmYXVsdC1wb29sPgogICAgICAgICAgICAgIDwvdXNlci1wbGFuZS1zZWxlY3Rpb24+CiAgICAgICAgICAgICAgPGludGVyZmFjZT4KICAgICAgICAgICAgICAgIDxzNXM4LWM+CiAgICAgICAgICAgICAgICAgIDxsb2dpY2FsLWludGVyZmFjZT5wZ3ctczVzOC1jLWlmPC9sb2dpY2FsLWludGVyZmFjZT4KICAgICAgICAgICAgICAgIDwvczVzOC1jPgogICAgICAgICAgICAgICAgPHN4PgogICAgICAgICAgICAgICAgICA8bG9naWNhbC1pbnRlcmZhY2U+c3gtaWY8L2xvZ2ljYWwtaW50ZXJmYWNlPgogICAgICAgICAgICAgICAgPC9zeD4KICAgICAgICAgICAgICA8L2ludGVyZmFjZT4KICAgICAgICAgICAgICA8Z2dzbi1wbG1uLWlkPjI0MDgwPC9nZ3NuLXBsbW4taWQ+CiAgICAgICAgICAgICAgPHBvbGljeS1jb250cm9sPgogICAgICAgICAgICAgICAgPG43LXByb2ZpbGU+CiAgICAgICAgICAgICAgICAgIDxuYW1lPm43LTE8L25hbWU+CiAgICAgICAgICAgICAgICAgIDxmZWF0dXJlLWFjdGl2YXRpb24+CiAgICAgICAgICAgICAgICAgICAgPG5ldGxvYy8+CiAgICAgICAgICAgICAgICAgIDwvZmVhdHVyZS1hY3RpdmF0aW9uPgogICAgICAgICAgICAgICAgPC9uNy1wcm9maWxlPgogICAgICAgICAgICAgICAgPHJ1bGUtc2NvcGU+CiAgICAgICAgICAgICAgICAgIDxuYW1lPnBvbGljeV9ydWxlU2NvcGUxPC9uYW1lPgogICAgICAgICAgICAgICAgICA8cGNjLXJ1bGU+CiAgICAgICAgICAgICAgICAgICAgPG5hbWU+YWNyLXVuY29uZGl0aW9uYWw8L25hbWU+CiAgICAgICAgICAgICAgICAgICAgPGFwcGxpY2F0aW9uPmFwcDEwMDwvYXBwbGljYXRpb24+CiAgICAgICAgICAgICAgICAgICAgPHJhdGluZy1ncm91cD4yNTU8L3JhdGluZy1ncm91cD4KICAgICAgICAgICAgICAgICAgICA8cHJlY2VkZW5jZT4yNTU8L3ByZWNlZGVuY2U+CiAgICAgICAgICAgICAgICAgIDwvcGNjLXJ1bGU+CiAgICAgICAgICAgICAgICA8L3J1bGUtc2NvcGU+CiAgICAgICAgICAgICAgICA8bG9jYWw+CiAgICAgICAgICAgICAgICAgIDxwcm9maWxlPgogICAgICAgICAgICAgICAgICAgIDxuYW1lPmxwY19wcm9maWxlMDwvbmFtZT4KICAgICAgICAgICAgICAgICAgICA8dW5jb25kaXRpb25hbD4KICAgICAgICAgICAgICAgICAgICAgIDxwY2MtcnVsZT5hY3ItdW5jb25kaXRpb25hbDwvcGNjLXJ1bGU+CiAgICAgICAgICAgICAgICAgICAgPC91bmNvbmRpdGlvbmFsPgogICAgICAgICAgICAgICAgICA8L3Byb2ZpbGU+CiAgICAgICAgICAgICAgICA8L2xvY2FsPgogICAgICAgICAgICAgIDwvcG9saWN5LWNvbnRyb2w+CiAgICAgICAgICAgICAgPGNoYXJnaW5nLWNvbnRyb2w+CiAgICAgICAgICAgICAgICA8cnVsZS1zY29wZT4KICAgICAgICAgICAgICAgICAgPG5hbWU+Y2hhcmdpbmdSdWxlXzE8L25hbWU+CiAgICAgICAgICAgICAgICA8L3J1bGUtc2NvcGU+CiAgICAgICAgICAgICAgPC9jaGFyZ2luZy1jb250cm9sPgogICAgICAgICAgICAgIDxwb2xpY3ktY2hhcmdpbmctcnVsZS1zY29wZT4KICAgICAgICAgICAgICAgIDxuYW1lPnBjX3J1bGVTY29wZTE8L25hbWU+CiAgICAgICAgICAgICAgICA8cG9saWN5LWNvbnRyb2w+cG9saWN5X3J1bGVTY29wZTE8L3BvbGljeS1jb250cm9sPgogICAgICAgICAgICAgICAgPGNoYXJnaW5nLWNvbnRyb2w+Y2hhcmdpbmdSdWxlXzE8L2NoYXJnaW5nLWNvbnRyb2w+CiAgICAgICAgICAgICAgPC9wb2xpY3ktY2hhcmdpbmctcnVsZS1zY29wZT4KICAgICAgICAgICAgICA8Y2hhcmdpbmc+CiAgICAgICAgICAgICAgICA8Y2hhcmFjdGVyaXN0aWNzPgogICAgICAgICAgICAgICAgICA8ZGVmYXVsdC1jb21wbGV0ZS1jYz4wMDAwPC9kZWZhdWx0LWNvbXBsZXRlLWNjPgogICAgICAgICAgICAgICAgICA8aWdub3JlLXByb2ZpbGUtZnJvbS1zZXJ2aW5nLW5vZGUvPgogICAgICAgICAgICAgICAgICA8cHJvZmlsZTA+CiAgICAgICAgICAgICAgICAgICAgPG5vLWNhbGwtZGV0YWlsLz4KICAgICAgICAgICAgICAgICAgPC9wcm9maWxlMD4KICAgICAgICAgICAgICAgIDwvY2hhcmFjdGVyaXN0aWNzPgogICAgICAgICAgICAgIDwvY2hhcmdpbmc+CiAgICAgICAgICAgICAgPGZlYXR1cmUtYWN0aXZhdGlvbj4KICAgICAgICAgICAgICAgIDxxb3MtYmFzZWQtb24tc2VydmljZS1kZXRlY3Rpb24vPgogICAgICAgICAgICAgICAgPGFwcGxpY2F0aW9uLWRldGVjdGlvbi1hbmQtY29udHJvbC8+CiAgICAgICAgICAgICAgICA8aW1zLWJhc2VkLXRlbGVwaG9ueS1tbXRlbC8+CiAgICAgICAgICAgICAgICA8dXNhZ2UtbW9uaXRvcmluZy8+CiAgICAgICAgICAgICAgPC9mZWF0dXJlLWFjdGl2YXRpb24+CiAgICAgICAgICAgICAgPHNuc3NhaT4KICAgICAgICAgICAgICAgIDxzbGljZS1zZXJ2aWNlLXR5cGU+MTwvc2xpY2Utc2VydmljZS10eXBlPgogICAgICAgICAgICAgICAgPHNsaWNlLWRpZmZlcmVudGlhdG9yPjAwMDAwMTwvc2xpY2UtZGlmZmVyZW50aWF0b3I+CiAgICAgICAgICAgICAgPC9zbnNzYWk+CiAgICAgICAgICAgICAgPGVwcy01Z3MtaXdrPgogICAgICAgICAgICAgICAgPHBndy1mcWRuPnRvcG9mZi5wZ3ctczVnbi5ycC1wY2MtMS5ub2RlLmVwYy5tbmMwODAubWNjMjQwLjNncHBuZXR3b3JrLm9yZzwvcGd3LWZxZG4+CiAgICAgICAgICAgICAgPC9lcHMtNWdzLWl3az4KICAgICAgICAgICAgICA8c2JpPgogICAgICAgICAgICAgICAgPGNvbm5lY3Rpb24tY2xpZW50LXByb2ZpbGU+CiAgICAgICAgICAgICAgICAgIDxuYW1lPmNsaWVudC1wcm9maWxlLTE8L25hbWU+CiAgICAgICAgICAgICAgICAgIDxuby10cmFuc3BvcnQtbGF5ZXItc2VjdXJpdHkvPgogICAgICAgICAgICAgICAgPC9jb25uZWN0aW9uLWNsaWVudC1wcm9maWxlPgogICAgICAgICAgICAgICAgPHVkbT4KICAgICAgICAgICAgICAgICAgPGxvZ2ljYWwtaW50ZXJmYWNlPnVkbS1pZjwvbG9naWNhbC1pbnRlcmZhY2U+CiAgICAgICAgICAgICAgICAgIDxjb25uZWN0aW9uLWNsaWVudC1wcm9maWxlPmNsaWVudC1wcm9maWxlLTE8L2Nvbm5lY3Rpb24tY2xpZW50LXByb2ZpbGU+CiAgICAgICAgICAgICAgICAgIDxub3RpZmljYXRpb24+CiAgICAgICAgICAgICAgICAgICAgPGxvZ2ljYWwtaW50ZXJmYWNlPnVkbS1ub3RpZi1pZjwvbG9naWNhbC1pbnRlcmZhY2U+CiAgICAgICAgICAgICAgICAgICAgPHBvcnQ+NTA1MDwvcG9ydD4KICAgICAgICAgICAgICAgICAgICA8c2VydmVyLXByb2ZpbGU+c2VydmVyLXByb2ZpbGUtMTwvc2VydmVyLXByb2ZpbGU+CiAgICAgICAgICAgICAgICAgIDwvbm90aWZpY2F0aW9uPgogICAgICAgICAgICAgICAgPC91ZG0+CiAgICAgICAgICAgICAgICA8YW1mPgogICAgICAgICAgICAgICAgICA8bG9naWNhbC1pbnRlcmZhY2U+YW1mLWlmPC9sb2dpY2FsLWludGVyZmFjZT4KICAgICAgICAgICAgICAgICAgPGNvbm5lY3Rpb24tY2xpZW50LXByb2ZpbGU+Y2xpZW50LXByb2ZpbGUtMTwvY29ubmVjdGlvbi1jbGllbnQtcHJvZmlsZT4KICAgICAgICAgICAgICAgICAgPG5vdGlmaWNhdGlvbj4KICAgICAgICAgICAgICAgICAgICA8bG9naWNhbC1pbnRlcmZhY2U+YW1mLW5vdGlmLWlmPC9sb2dpY2FsLWludGVyZmFjZT4KICAgICAgICAgICAgICAgICAgICA8cG9ydD40MDQwPC9wb3J0PgogICAgICAgICAgICAgICAgICAgIDxzZXJ2ZXItcHJvZmlsZT5zZXJ2ZXItcHJvZmlsZS0xPC9zZXJ2ZXItcHJvZmlsZT4KICAgICAgICAgICAgICAgICAgPC9ub3RpZmljYXRpb24+CiAgICAgICAgICAgICAgICA8L2FtZj4KICAgICAgICAgICAgICAgIDxwY2Y+CiAgICAgICAgICAgICAgICAgIDxsb2dpY2FsLWludGVyZmFjZT5wY2YtaWY8L2xvZ2ljYWwtaW50ZXJmYWNlPgogICAgICAgICAgICAgICAgICA8Y29ubmVjdGlvbi1jbGllbnQtcHJvZmlsZT5jbGllbnQtcHJvZmlsZS0xPC9jb25uZWN0aW9uLWNsaWVudC1wcm9maWxlPgogICAgICAgICAgICAgICAgICA8bm90aWZpY2F0aW9uPgogICAgICAgICAgICAgICAgICAgIDxsb2dpY2FsLWludGVyZmFjZT5wY2Ytbm90aWYtaWY8L2xvZ2ljYWwtaW50ZXJmYWNlPgogICAgICAgICAgICAgICAgICAgIDxwb3J0PjYwNjA8L3BvcnQ+CiAgICAgICAgICAgICAgICAgICAgPHNlcnZlci1wcm9maWxlPnNlcnZlci1wcm9maWxlLTE8L3NlcnZlci1wcm9maWxlPgogICAgICAgICAgICAgICAgICA8L25vdGlmaWNhdGlvbj4KICAgICAgICAgICAgICAgIDwvcGNmPgogICAgICAgICAgICAgICAgPG5yZj4KICAgICAgICAgICAgICAgICAgPGxvZ2ljYWwtaW50ZXJmYWNlPm5yZi1pZjwvbG9naWNhbC1pbnRlcmZhY2U+CiAgICAgICAgICAgICAgICAgIDxjb25uZWN0aW9uLWNsaWVudC1wcm9maWxlPmNsaWVudC1wcm9maWxlLTE8L2Nvbm5lY3Rpb24tY2xpZW50LXByb2ZpbGU+CiAgICAgICAgICAgICAgICAgIDxzZXJ2aWNlPgogICAgICAgICAgICAgICAgICAgIDxuYW1lPm5ucmYtbmZtPC9uYW1lPgogICAgICAgICAgICAgICAgICAgIDxuZnNlcnZpY2UtaW5zdGFuY2U+CiAgICAgICAgICAgICAgICAgICAgICA8bmFtZT5ubnJmLW5mbS1pbnMxPC9uYW1lPgogICAgICAgICAgICAgICAgICAgICAgPGlwLWVuZC1wb2ludD4KICAgICAgICAgICAgICAgICAgICAgICAgPG5hbWU+bm5yZi1uZm0taXB2NDwvbmFtZT4KICAgICAgICAgICAgICAgICAgICAgICAgPGlwdjQtYWRkcmVzcz4xMC44MS44MS42MDwvaXB2NC1hZGRyZXNzPgogICAgICAgICAgICAgICAgICAgICAgICA8cG9ydD44MDwvcG9ydD4KICAgICAgICAgICAgICAgICAgICAgIDwvaXAtZW5kLXBvaW50PgogICAgICAgICAgICAgICAgICAgICAgPHByaW9yaXR5PjE8L3ByaW9yaXR5PgogICAgICAgICAgICAgICAgICAgIDwvbmZzZXJ2aWNlLWluc3RhbmNlPgogICAgICAgICAgICAgICAgICA8L3NlcnZpY2U+CiAgICAgICAgICAgICAgICAgIDxzZXJ2aWNlPgogICAgICAgICAgICAgICAgICAgIDxuYW1lPm5ucmYtZGlzYzwvbmFtZT4KICAgICAgICAgICAgICAgICAgICA8bmZzZXJ2aWNlLWluc3RhbmNlPgogICAgICAgICAgICAgICAgICAgICAgPG5hbWU+bm5yZi1kaXNjLWluczE8L25hbWU+CiAgICAgICAgICAgICAgICAgICAgICA8aXAtZW5kLXBvaW50PgogICAgICAgICAgICAgICAgICAgICAgICA8bmFtZT5ubnJmLWRpc2MtaXB2NDwvbmFtZT4KICAgICAgICAgICAgICAgICAgICAgICAgPGlwdjQtYWRkcmVzcz4xMC44MS44MS42MDwvaXB2NC1hZGRyZXNzPgogICAgICAgICAgICAgICAgICAgICAgICA8cG9ydD44MDwvcG9ydD4KICAgICAgICAgICAgICAgICAgICAgIDwvaXAtZW5kLXBvaW50PgogICAgICAgICAgICAgICAgICAgICAgPHByaW9yaXR5PjE8L3ByaW9yaXR5PgogICAgICAgICAgICAgICAgICAgIDwvbmZzZXJ2aWNlLWluc3RhbmNlPgogICAgICAgICAgICAgICAgICA8L3NlcnZpY2U+CiAgICAgICAgICAgICAgICA8L25yZj4KICAgICAgICAgICAgICAgIDxzbWYtc2VydmljZXM+CiAgICAgICAgICAgICAgICAgIDxsb2dpY2FsLWludGVyZmFjZT5zbWYtc2VydmljZS1pZjwvbG9naWNhbC1pbnRlcmZhY2U+CiAgICAgICAgICAgICAgICAgIDxuZi1pbnN0YW5jZS1pZD5mZmM2ZmJlOS04ZGQ5LTRlMDctYTEwZi0zZDA1YmU3YjhhYmU8L25mLWluc3RhbmNlLWlkPgogICAgICAgICAgICAgICAgICA8c2VydmljZT4KICAgICAgICAgICAgICAgICAgICA8bmFtZT5uc21mLXBkdXNlc3Npb248L25hbWU+CiAgICAgICAgICAgICAgICAgICAgPGZxZG4+dG9wb24ucnAtcGNjLTEubm9kZS5lcGMubW5jMDgwLm1jYzI0MC4zZ3BwbmV0d29yay5vcmc8L2ZxZG4+CiAgICAgICAgICAgICAgICAgICAgPHBvcnQ+NzA3MDwvcG9ydD4KICAgICAgICAgICAgICAgICAgPC9zZXJ2aWNlPgogICAgICAgICAgICAgICAgICA8c2VydmVyLXByb2ZpbGU+c2VydmVyLXByb2ZpbGUtMTwvc2VydmVyLXByb2ZpbGU+CiAgICAgICAgICAgICAgICA8L3NtZi1zZXJ2aWNlcz4KICAgICAgICAgICAgICAgIDxjb25uZWN0aW9uLXNlcnZlci1wcm9maWxlPgogICAgICAgICAgICAgICAgICA8bmFtZT5zZXJ2ZXItcHJvZmlsZS0xPC9uYW1lPgogICAgICAgICAgICAgICAgICA8dHJhbnNwb3J0LWxheWVyLXNlY3VyaXR5PgogICAgICAgICAgICAgICAgICAgIDxuby10cmFuc3BvcnQtbGF5ZXItc2VjdXJpdHkvPgogICAgICAgICAgICAgICAgICA8L3RyYW5zcG9ydC1sYXllci1zZWN1cml0eT4KICAgICAgICAgICAgICAgIDwvY29ubmVjdGlvbi1zZXJ2ZXItcHJvZmlsZT4KICAgICAgICAgICAgICA8L3NiaT4KICAgICAgICAgICAgPC9wZ3c+CiAgICAgICAgICAgIDxub2RlPgogICAgICAgICAgICAgIDxub2RlLXR5cGU+Z3ctYzwvbm9kZS10eXBlPgogICAgICAgICAgICAgIDxub2RlLW5hbWU+cnAtcGNjLTE8L25vZGUtbmFtZT4KICAgICAgICAgICAgICA8dnBuLWd3PgogICAgICAgICAgICAgICAgPGFkZHJlc3M+MTAuODEuODEuMTY8L2FkZHJlc3M+CiAgICAgICAgICAgICAgPC92cG4tZ3c+CiAgICAgICAgICAgICAgPGZlYXR1cmUtYWN0aXZhdGlvbj4KICAgICAgICAgICAgICAgIDxwYWNrZXQtaW5zcGVjdGlvbi8+CiAgICAgICAgICAgICAgICA8dWUtdHJhY2UvPgogICAgICAgICAgICAgICAgPGV2ZW50LWJhc2VkLW1vbml0b3JpbmctY3RybC1wbGFuZS8+CiAgICAgICAgICAgICAgICA8bG9jYXRpb24tYmFzZWQtaXAtYWxsb2NhdGlvbi8+CiAgICAgICAgICAgICAgICA8aW50ZWdyYXRlZC10cmFmZmljLWNhcHR1cmUvPgogICAgICAgICAgICAgICAgPHNtZi01Z2MvPgogICAgICAgICAgICAgIDwvZmVhdHVyZS1hY3RpdmF0aW9uPgogICAgICAgICAgICAgIDxsb2dpY2FsLWludGVyZmFjZT4KICAgICAgICAgICAgICAgIDxuYW1lPnBndy1zNXM4LWMtaWY8L25hbWU+CiAgICAgICAgICAgICAgICA8cm91dGluZy1pbnN0YW5jZT5zaWc8L3JvdXRpbmctaW5zdGFuY2U+CiAgICAgICAgICAgICAgICA8YWRkcmVzcz4xMC44MS44MS40PC9hZGRyZXNzPgogICAgICAgICAgICAgICAgPHZwbi1ndz50cnVlPC92cG4tZ3c+CiAgICAgICAgICAgICAgPC9sb2dpY2FsLWludGVyZmFjZT4KICAgICAgICAgICAgICA8bG9naWNhbC1pbnRlcmZhY2U+CiAgICAgICAgICAgICAgICA8bmFtZT5zNHMxMS1jLWlmPC9uYW1lPgogICAgICAgICAgICAgICAgPHJvdXRpbmctaW5zdGFuY2U+c2lnPC9yb3V0aW5nLWluc3RhbmNlPgogICAgICAgICAgICAgICAgPGFkZHJlc3M+MTAuODEuODEuMTA8L2FkZHJlc3M+CiAgICAgICAgICAgICAgICA8dnBuLWd3PnRydWU8L3Zwbi1ndz4KICAgICAgICAgICAgICA8L2xvZ2ljYWwtaW50ZXJmYWNlPgogICAgICAgICAgICAgIDxsb2dpY2FsLWludGVyZmFjZT4KICAgICAgICAgICAgICAgIDxuYW1lPnNndy1zNXM4LWMtaWY8L25hbWU+CiAgICAgICAgICAgICAgICA8cm91dGluZy1pbnN0YW5jZT5zaWc8L3JvdXRpbmctaW5zdGFuY2U+CiAgICAgICAgICAgICAgICA8YWRkcmVzcz4xMC44MS44MS4xMTwvYWRkcmVzcz4KICAgICAgICAgICAgICAgIDx2cG4tZ3c+dHJ1ZTwvdnBuLWd3PgogICAgICAgICAgICAgIDwvbG9naWNhbC1pbnRlcmZhY2U+CiAgICAgICAgICAgICAgPGxvZ2ljYWwtaW50ZXJmYWNlPgogICAgICAgICAgICAgICAgPG5hbWU+c3gtYS1pZjwvbmFtZT4KICAgICAgICAgICAgICAgIDxhZGRyZXNzPjEwLjgxLjgxLjEyPC9hZGRyZXNzPgogICAgICAgICAgICAgICAgPHJvdXRpbmctaW5zdGFuY2U+c2lnPC9yb3V0aW5nLWluc3RhbmNlPgogICAgICAgICAgICAgICAgPHZwbi1ndz50cnVlPC92cG4tZ3c+CiAgICAgICAgICAgICAgPC9sb2dpY2FsLWludGVyZmFjZT4KICAgICAgICAgICAgICA8bG9naWNhbC1pbnRlcmZhY2U+CiAgICAgICAgICAgICAgICA8bmFtZT5zeC1pZjwvbmFtZT4KICAgICAgICAgICAgICAgIDxhZGRyZXNzPjEwLjgxLjgxLjk8L2FkZHJlc3M+CiAgICAgICAgICAgICAgICA8cm91dGluZy1pbnN0YW5jZT5zaWc8L3JvdXRpbmctaW5zdGFuY2U+CiAgICAgICAgICAgICAgICA8dnBuLWd3PnRydWU8L3Zwbi1ndz4KICAgICAgICAgICAgICA8L2xvZ2ljYWwtaW50ZXJmYWNlPgogICAgICAgICAgICAgIDxsb2dpY2FsLWludGVyZmFjZT4KICAgICAgICAgICAgICAgIDxuYW1lPmFtZi1pZjwvbmFtZT4KICAgICAgICAgICAgICAgIDxyb3V0aW5nLWluc3RhbmNlPmRlZmF1bHQ8L3JvdXRpbmctaW5zdGFuY2U+CiAgICAgICAgICAgICAgICA8YWRkcmVzcz4xMC44MS44MS42PC9hZGRyZXNzPgogICAgICAgICAgICAgIDwvbG9naWNhbC1pbnRlcmZhY2U+CiAgICAgICAgICAgICAgPGxvZ2ljYWwtaW50ZXJmYWNlPgogICAgICAgICAgICAgICAgPG5hbWU+YW1mLW5vdGlmLWlmPC9uYW1lPgogICAgICAgICAgICAgICAgPHJvdXRpbmctaW5zdGFuY2U+ZGVmYXVsdDwvcm91dGluZy1pbnN0YW5jZT4KICAgICAgICAgICAgICAgIDxhZGRyZXNzPjEwLjgxLjgxLjY8L2FkZHJlc3M+CiAgICAgICAgICAgICAgPC9sb2dpY2FsLWludGVyZmFjZT4KICAgICAgICAgICAgICA8bG9naWNhbC1pbnRlcmZhY2U+CiAgICAgICAgICAgICAgICA8bmFtZT5ucmYtaWY8L25hbWU+CiAgICAgICAgICAgICAgICA8cm91dGluZy1pbnN0YW5jZT5kZWZhdWx0PC9yb3V0aW5nLWluc3RhbmNlPgogICAgICAgICAgICAgICAgPGFkZHJlc3M+MTAuODEuODEuNTwvYWRkcmVzcz4KICAgICAgICAgICAgICA8L2xvZ2ljYWwtaW50ZXJmYWNlPgogICAgICAgICAgICAgIDxsb2dpY2FsLWludGVyZmFjZT4KICAgICAgICAgICAgICAgIDxuYW1lPnBjZi1pZjwvbmFtZT4KICAgICAgICAgICAgICAgIDxyb3V0aW5nLWluc3RhbmNlPmRlZmF1bHQ8L3JvdXRpbmctaW5zdGFuY2U+CiAgICAgICAgICAgICAgICA8YWRkcmVzcz4xMC44MS44MS41PC9hZGRyZXNzPgogICAgICAgICAgICAgIDwvbG9naWNhbC1pbnRlcmZhY2U+CiAgICAgICAgICAgICAgPGxvZ2ljYWwtaW50ZXJmYWNlPgogICAgICAgICAgICAgICAgPG5hbWU+cGNmLW5vdGlmLWlmPC9uYW1lPgogICAgICAgICAgICAgICAgPHJvdXRpbmctaW5zdGFuY2U+ZGVmYXVsdDwvcm91dGluZy1pbnN0YW5jZT4KICAgICAgICAgICAgICAgIDxhZGRyZXNzPjEwLjgxLjgxLjg8L2FkZHJlc3M+CiAgICAgICAgICAgICAgPC9sb2dpY2FsLWludGVyZmFjZT4KICAgICAgICAgICAgICA8bG9naWNhbC1pbnRlcmZhY2U+CiAgICAgICAgICAgICAgICA8bmFtZT5zbWYtc2VydmljZS1pZjwvbmFtZT4KICAgICAgICAgICAgICAgIDxyb3V0aW5nLWluc3RhbmNlPmRlZmF1bHQ8L3JvdXRpbmctaW5zdGFuY2U+CiAgICAgICAgICAgICAgICA8YWRkcmVzcz4xMC44MS44MS41PC9hZGRyZXNzPgogICAgICAgICAgICAgIDwvbG9naWNhbC1pbnRlcmZhY2U+CiAgICAgICAgICAgICAgPGxvZ2ljYWwtaW50ZXJmYWNlPgogICAgICAgICAgICAgICAgPG5hbWU+dWRtLWlmPC9uYW1lPgogICAgICAgICAgICAgICAgPHJvdXRpbmctaW5zdGFuY2U+ZGVmYXVsdDwvcm91dGluZy1pbnN0YW5jZT4KICAgICAgICAgICAgICAgIDxhZGRyZXNzPjEwLjgxLjgxLjc8L2FkZHJlc3M+CiAgICAgICAgICAgICAgPC9sb2dpY2FsLWludGVyZmFjZT4KICAgICAgICAgICAgICA8bG9naWNhbC1pbnRlcmZhY2U+CiAgICAgICAgICAgICAgICA8bmFtZT51ZG0tbm90aWYtaWY8L25hbWU+CiAgICAgICAgICAgICAgICA8cm91dGluZy1pbnN0YW5jZT5kZWZhdWx0PC9yb3V0aW5nLWluc3RhbmNlPgogICAgICAgICAgICAgICAgPGFkZHJlc3M+MTAuODEuODEuNzwvYWRkcmVzcz4KICAgICAgICAgICAgICA8L2xvZ2ljYWwtaW50ZXJmYWNlPgogICAgICAgICAgICAgIDxpbnRlcm5hbC1kZWJ1Zz4KICAgICAgICAgICAgICA8L2ludGVybmFsLWRlYnVnPgogICAgICAgICAgICA8L25vZGU+CiAgICAgICAgICAgIDxyb3V0aW5nLWluc3RhbmNlcz4KICAgICAgICAgICAgICA8cm91dGluZy1pbnN0YW5jZT4KICAgICAgICAgICAgICAgIDxuYW1lPmRlZmF1bHQ8L25hbWU+CiAgICAgICAgICAgICAgPC9yb3V0aW5nLWluc3RhbmNlPgogICAgICAgICAgICAgIDxyb3V0aW5nLWluc3RhbmNlPgogICAgICAgICAgICAgICAgPG5hbWU+c2lnPC9uYW1lPgogICAgICAgICAgICAgICAgPHZsYW4taWQ+MjAxNTwvdmxhbi1pZD4KICAgICAgICAgICAgICA8L3JvdXRpbmctaW5zdGFuY2U+CiAgICAgICAgICAgIDwvcm91dGluZy1pbnN0YW5jZXM+CiAgICAgICAgICA8L2VwZz4KICAgICAgICAgIDxuYWNtIHhtbG5zPSJ1cm46aWV0ZjpwYXJhbXM6eG1sOm5zOnlhbmc6aWV0Zi1uZXRjb25mLWFjbSI+CiAgICAgICAgICAgIDxncm91cHM+CiAgICAgICAgICAgICAgPGdyb3VwPgogICAgICAgICAgICAgICAgPG5hbWU+ZXJpY3Nzb24tc3VwcG9ydDwvbmFtZT4KICAgICAgICAgICAgICAgIDx1c2VyLW5hbWU+ZXJ2PC91c2VyLW5hbWU+CiAgICAgICAgICAgICAgPC9ncm91cD4KICAgICAgICAgICAgICA8Z3JvdXA+CiAgICAgICAgICAgICAgICA8bmFtZT5lcGctbGF3ZnVsLWludGVyY2VwdC1hZG1pbjwvbmFtZT4KICAgICAgICAgICAgICAgIDx1c2VyLW5hbWU+ZXJ2PC91c2VyLW5hbWU+CiAgICAgICAgICAgICAgPC9ncm91cD4KICAgICAgICAgICAgICA8Z3JvdXA+CiAgICAgICAgICAgICAgICA8bmFtZT5zeXN0ZW0tYWRtaW48L25hbWU+CiAgICAgICAgICAgICAgICA8dXNlci1uYW1lPmVydjwvdXNlci1uYW1lPgogICAgICAgICAgICAgIDwvZ3JvdXA+CiAgICAgICAgICAgICAgPGdyb3VwPgogICAgICAgICAgICAgICAgPG5hbWU+c3lzdGVtLXNlY3VyaXR5LWFkbWluPC9uYW1lPgogICAgICAgICAgICAgICAgPHVzZXItbmFtZT5lcnY8L3VzZXItbmFtZT4KICAgICAgICAgICAgICA8L2dyb3VwPgogICAgICAgICAgICA8L2dyb3Vwcz4KICAgICAgICAgIDwvbmFjbT4KICAgICAgICAgIDxhYWEgeG1sbnM9Imh0dHA6Ly90YWlsLWYuY29tL25zL2FhYS8xLjEiPgogICAgICAgICAgICA8YXV0aGVudGljYXRpb24+CiAgICAgICAgICAgICAgPHVzZXJzPgogICAgICAgICAgICAgICAgPHVzZXI+CiAgICAgICAgICAgICAgICAgIDxuYW1lPmVydjwvbmFtZT4KICAgICAgICAgICAgICAgICAgPHVpZD45MDAwPC91aWQ+CiAgICAgICAgICAgICAgICAgIDxnaWQ+MTAwPC9naWQ+CiAgICAgICAgICAgICAgICAgIDxwYXNzd29yZD4kMCRnZ3NuPC9wYXNzd29yZD4KICAgICAgICAgICAgICAgICAgPHNzaF9rZXlkaXI+L3Zhci9jb25mZC9ob21lcy9lcnYvLnNzaDwvc3NoX2tleWRpcj4KICAgICAgICAgICAgICAgICAgPGhvbWVkaXI+L3Zhci9jb25mZC9ob21lcy9lcnY8L2hvbWVkaXI+CiAgICAgICAgICAgICAgICA8L3VzZXI+CiAgICAgICAgICAgICAgPC91c2Vycz4KICAgICAgICAgICAgPC9hdXRoZW50aWNhdGlvbj4KICAgICAgICAgIDwvYWFhPgogICAgICAgIDwvY29uZmlnPg==
+          required: false
+          type: string
+      eric-pc-sm.eric-pc-sm-controller.controller.testing.ingress.enabled:
+          default: false
+          required: false
+          type: boolean
+      eric-pc-sm.eric-pc-sm-controller.controller.testing.loadBalancerIP:
+          default: 10.81.80.132
+          required: false
+          type: string
+      eric-pc-sm.eric-pc-sm-gtp-forwarder.forwarder.ingress.enabled:
+          default: false
+          required: false
+          type: boolean
+      eric-pc-sm.eric-pc-sm-notification-forwarder.notifForwarder.ingress.enabled:
+          default: false
+          required: false
+          type: boolean
+      eric-pc-sm.eric-pc-sm-notification-forwarder.notifForwarder.loadBalancerIP.namf-notification:
+          default: 10.81.81.6
+          required: false
+          type: string
+      eric-pc-sm.eric-pc-sm-notification-forwarder.notifForwarder.loadBalancerIP.npcf-notification:
+          default: 10.81.81.8
+          required: false
+          type: string
+      eric-pc-sm.eric-pc-sm-notification-forwarder.notifForwarder.loadBalancerIP.nudm-notification:
+          default: 10.81.81.7
+          required: false
+          type: string
+      eric-pc-sm.eric-pc-sm-nsmf-forwarder.nsmfForwarder.ingress.enabled:
+          default: false
+          required: false
+          type: boolean
+      eric-pc-sm.eric-pc-sm-nsmf-forwarder.nsmfForwarder.loadBalancerIP.nsmf:
+          default: 10.81.81.5
+          required: false
+          type: string
+      eric-pc-sm.global.eric-pc-sm-pgw.enabled:
+          default: true
+          required: false
+          type: boolean
+      eric-pc-sm.global.eric-pc-sm-sgw.enabled:
+          default: true
+          required: false
+          type: boolean
+      eric-pc-sm.global.eric-pc-sm-smf.enabled:
+          default: true
+          required: false
+          type: boolean
+      eric-pc-sm-epc.eric-pc-sm-controller.controller.resources.limits.cpu:
+          default: 0.25
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-controller.controller.resources.limits.memory:
+          default: 0.5G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-controller.controller.resources.requests.cpu:
+          default: 0.25
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-controller.controller.resources.requests.memory:
+          default: 0.5G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-diameter.diameter.resources.limits.cpu:
+          default: 0.25
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-diameter.diameter.resources.limits.memory:
+          default: 0.5G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-diameter.diameter.resources.requests.cpu:
+          default: 0.25
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-diameter.diameter.resources.requests.memory:
+          default: 0.5G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-gtp-forwarder.forwarder.resources.limits.cpu:
+          default: 0.25
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-gtp-forwarder.forwarder.resources.limits.memory:
+          default: 0.5G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-gtp-forwarder.forwarder.resources.requests.cpu:
+          default: 0.25
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-gtp-forwarder.forwarder.resources.requests.memory:
+          default: 0.5G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-ip-allocator.ipAllocator.resources.limits.cpu:
+          default: 0.25
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-ip-allocator.ipAllocator.resources.limits.memory:
+          default: 0.5G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-ip-allocator.ipAllocator.resources.requests.cpu:
+          default: 0.25
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-ip-allocator.ipAllocator.resources.requests.memory:
+          default: 0.5G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-notification-forwarder.notifForwarder.resources.limits.cpu:
+          default: 0.25
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-notification-forwarder.notifForwarder.resources.limits.memory:
+          default: 0.5G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-notification-forwarder.notifForwarder.resources.requests.cpu:
+          default: 0.25
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-notification-forwarder.notifForwarder.resources.requests.memory:
+          default: 0.5G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-nsmf-forwarder.nsmfForwarder.resources.limits.cpu:
+          default: 0.25
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-nsmf-forwarder.nsmfForwarder.resources.limits.memory:
+          default: 0.5G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-nsmf-forwarder.nsmfForwarder.resources.requests.cpu:
+          default: 0.25
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-nsmf-forwarder.nsmfForwarder.resources.requests.memory:
+          default: 0.5G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-pgw-session.pgw.resources.limits.cpu:
+          default: 0.5
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-pgw-session.pgw.resources.limits.memory:
+          default: 2G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-pgw-session.pgw.resources.requests.cpu:
+          default: 0.5
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-pgw-session.pgw.resources.requests.memory:
+          default: 2G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-sgw-session.sgw.resources.limits.cpu:
+          default: 0.5
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-sgw-session.sgw.resources.limits.memory:
+          default: 1G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-sgw-session.sgw.resources.requests.cpu:
+          default: 0.5
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-sgw-session.sgw.resources.requests.memory:
+          default: 1G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-smf-pgw-session.smf.resources.limits.cpu:
+          default: 0.5
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-smf-pgw-session.smf.resources.limits.memory:
+          default: 2G
+          required: false
+          type: string
+      eric-pc-sm-epc.eric-pc-sm-smf-pgw-session.smf.resources.requests.cpu:
+          default: 0.5
+          required: false
+          type: integer
+      eric-pc-sm-epc.eric-pc-sm-smf-pgw-session.smf.resources.requests.memory:
+          default: 2G
+          required: false
+          type: string
+      eric-pc-storage.persistentVolumeClaim.storageClassName:
+          default: erikube-nfs
+          required: false
+          type: string
+      eric-pc-users-init.passwords.useUnsecureDefaults:
+          default: true
+          required: false
+          type: boolean
+      eric-pc-vpn-gw.eric-pc-vpn-gw.interfaces.0.ipv4:
+          default: 10.81.81.16
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.interfaces.0.name:
+          default: internal-tunnel-sig
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.interfaces.0.type:
+          default: vpn-gateway
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.interfaces.1.ipv4:
+          default: 10.81.80.134
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.interfaces.1.name:
+          default: internal-tunnel-main
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.interfaces.1.type:
+          default: vpn-gateway
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.0.gateway.ipv4:
+          default: 21.21.0.254
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.0.interfaces.0:
+          default: internal-tunnel-main
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.0.link.ipv4:
+          default: 21.21.0.2/24
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.0.name:
+          default: main
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.0.vlan:
+          default: 2014
+          required: false
+          type: integer
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.1.gateway.ipv4:
+          default: 21.21.1.254
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.1.interfaces.0:
+          default: internal-tunnel-sig
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.1.link.ipv4:
+          default: 21.21.1.2/24
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.1.name:
+          default: sig
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.1.vlan:
+          default: 2015
+          required: false
+          type: integer
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.2.gateway.ipv4:
+          default: 21.21.2.254
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.2.link.ipv4:
+          default: 21.21.2.2/24
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.2.name:
+          default: ran
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.2.vlan:
+          default: 2016
+          required: false
+          type: integer
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.3.gateway.ipv4:
+          default: 21.21.3.254
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.3.link.ipv4:
+          default: 21.21.3.2/24
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.3.name:
+          default: media
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.3.vlan:
+          default: 2017
+          required: false
+          type: integer
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.4.gateway.ipv4:
+          default: 21.21.4.254
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.4.link.ipv4:
+          default: 21.21.4.2/24
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.4.name:
+          default: iac
+          required: false
+          type: string
+      eric-pc-vpn-gw.eric-pc-vpn-gw.networkInstances.4.vlan:
+          default: 2018
+          required: false
+          type: integer
+      eric-pc-vpn-gw.eric-pc-vpn-gw.resources.dataPlane.limits.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-pc-vpn-gw.eric-pc-vpn-gw.resources.dataPlane.limits.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-pc-vpn-gw.eric-pc-vpn-gw.resources.dataPlane.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-pc-vpn-gw.eric-pc-vpn-gw.resources.dataPlane.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-pc-vpn-gw.eric-pc-vpn-gw.resources.router.limits.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-pc-vpn-gw.eric-pc-vpn-gw.resources.router.limits.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-pc-vpn-gw.eric-pc-vpn-gw.resources.router.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-pc-vpn-gw.eric-pc-vpn-gw.resources.router.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-pc-vpn-gw.global.serviceNames.pc.rs.controller:
+          default: ''
+          required: false
+          type: integer
+      eric-pc-vpn-gw.macvlan.common.master:
+          default: eth2
+          required: false
+          type: string
+      eric-pm-bulk-reporter.resources.alarmreporter.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-pm-bulk-reporter.resources.alarmreporter.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-pm-bulk-reporter.resources.bulkreporter.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-pm-bulk-reporter.resources.bulkreporter.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-pm-bulk-reporter.resources.pmsftp.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-pm-bulk-reporter.resources.pmsftp.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-pm-server.resources.configmapReload.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-pm-server.resources.configmapReload.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-pm-server.resources.server.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-pm-server.resources.server.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-sec-access-mgmt.resources.iam.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-sec-access-mgmt.resources.iam.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-sec-key-management.resources.unsealer.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-sec-key-management.resources.unsealer.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-sec-key-management.resources.vault.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-sec-key-management.resources.vault.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-sec-ldap-server.resources.ldap.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-sec-ldap-server.resources.ldap.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-sec-sip-tls.resources.sip.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-sec-sip-tls.resources.sip.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-tm-external-connectivity-frontend.images.controller.resources.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-tm-external-connectivity-frontend.images.controller.resources.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      eric-tm-external-connectivity-frontend.images.speaker.resources.requests.cpu:
+          default: 0
+          required: false
+          type: integer
+      eric-tm-external-connectivity-frontend.images.speaker.resources.requests.memory:
+          default: 0
+          required: false
+          type: integer
+      global.registry.pullSecret:
+          default: regcred
+          required: false
+          type: string
+      global.registry.url:
+          default: k8s-registry.eccd.local
+          required: false
+          type: string
+      tags.epg:
+          default: false
+          required: false
+          type: boolean
+      tags.eric-pc-mm:
+          default: true
+          required: false
+          type: boolean
+      tags.mme:
+          default: false
+          required: false
+          type: boolean
+      tags.smf:
+          default: true
+          required: false
+          type: boolean
+      tags.vpn-gw:
+          default: true
+          required: false
+          type: boolean
+      tags.cm:
+        default: false
+        required: false
+        type: boolean
+      tags.ddc:
+        default: false
+        required: false
+        type: boolean
+      tags.fm:
+        default: false
+        required: false
+        type: boolean
+      tags.pm-bulk-reporter:
+        default: false
+        required: false
+        type: boolean
+      tags.pm-server:
+        default: false
+        required: false
+        type: boolean
+      tags.sip-tls:
+        default: false
+        required: false
+        type: boolean
+      tags.um:
+        default: false
+        required: false
+        type: boolean
+
+
+node_types:
+  Ericsson.5gc.drop35.pic.etsir1.pcc:
+    derived_from: tosca.nodes.nfv.VNF
+    properties:
+      descriptor_id:
+        type: string
+        default: etsir1-5gc-pcc-r7-picdrop35-it3
+      descriptor_version:
+        type: string
+        default: etsir1-5gc-pcc-r7-picdrop35-it3
+      provider:
+        type: string
+        default: Ericsson
+      product_name:
+        type: string
+        default: PCC
+      software_version:
+        type: string
+        default: 'CXP9037447_1.R29B'
+      # TODO: VNFM identifier to be defined
+      vnfm_info:
+        type: list
+        entry_schema:
+          type: string
+        default: [ '3881:E-VNFM' ]
+      flavour_id:
+        type: string
+        default: default
+      flavour_description:
+        type: string
+        default: ''
+    interfaces:
+      Vnflcm:
+        type: tosca.interfaces.nfv.Vnflcm
+        instantiate:
+          inputs:
+            additional_parameters:
+              type: ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters
+              required: false
+        terminate:
+    artifacts:
+      helm_package:
+        description: Helm package associated with this descriptor
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/eric-pc-controller-1.28.1-0-PIC-1.0.tgz
+      software_images:
+        description: Location of the software images being used in this package
+        type: tosca.artifacts.nfv.SwImage
+        file: Files/images/docker.tar
+topology_template:
+  node_templates:
+    pcc:
+      type: Ericsson.5gc.drop35.pic.etsir1.pcc

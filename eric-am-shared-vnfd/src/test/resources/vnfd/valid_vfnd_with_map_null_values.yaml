@@ -1,0 +1,283 @@
+#
+# COPYRIGHT Ericsson 2024
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+tosca_definitions_version: tosca_simple_yaml_1_2
+
+description: VNF Descriptor for Map and List MRs
+# INFO:
+# - This is a work-in-progress example VNFD for containerized VNFs in small stack scenario.
+# - Based on ETSI GS NFV-SOL 001 V2.5.1
+
+imports:
+   - etsi_nfv_sol001_vnfd_2_5_1_types.yaml
+   # https://forge.etsi.org/rep/nfv/SOL001/blob/1f730e150c4d44237cdad1ef683e40871ba9d2c1/etsi_nfv_sol001_vnfd_2_5_1_types.yaml
+
+metadata:
+   template_name: vnfd for map types support
+
+data_types:
+   ericsson.datatypes.test.ProductTypeInfo:
+      derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+      description: test product type
+      properties:
+         product_name:
+            description: test product name
+            type: string
+         product_tags:
+            description: test product tags
+            type: list
+            entry_schema:
+               type: string
+            required: true
+            default: ["test tag 1", "test tag 2"]
+   ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters:
+      derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+      properties:
+         tags.all:
+            type: boolean
+            description: tags
+            required: true
+            default: false
+         day0.configuration.secretname:
+            type: string
+            description: I am secret name
+            required: true
+            default: evnf-secret
+         day0.configuration.param1.key:
+            type: string
+            description: I am login
+            required: true
+            default: login
+         day0.configuration.param1.value:
+            type: string
+            description: I am login value
+            required: true
+            default: testroot
+         myMap.int:
+            type: map
+            entry_schema:
+               type: int
+            description: map of ints with default values required
+            required: true
+            default: {"key1" : 3, "key2" : 2, "key3" : 1}
+         myMap.float:
+            type: map
+            entry_schema:
+               type: float
+            description: map of floats without default values not required
+            required: false
+         myMap.boolean:
+            type: map
+            entry_schema:
+               type: boolean
+            description: map of booleans with default values not required
+            required: false
+            default: {"key1" : false, "key2" : true}
+         myMap.null:
+            type: map
+            entry_schema:
+               type: 'null'
+            description: map of nulls with default values not required
+            required: false
+            default: {"key1" : null, "key2" : null}
+         myMap.string:
+            type: map
+            entry_schema:
+               type: string
+            description: map of strings with default values required
+            required: true
+            default: {"key1" : "test string 1", "key2" : "test string 2"}
+         myMap.timestamp:
+            type: map
+            entry_schema:
+               type: timestamp
+            description: map of timestamps without default values required
+            required: true
+         myMap.list.of.string:
+            type: map
+            entry_schema:
+               type: list
+               entry_schema:
+                  type: string
+            description: map of lists of strings with default values required
+            required: true
+            default: {"key1" : ["test string 1", "test string 2"], "key2" : ["test string 3", "test string 4"]}
+         myMap.map.of.string:
+            type: map
+            entry_schema:
+               type: map
+               entry_schema:
+                     type: string
+            description: map of maps of strings with default values required
+            required: true
+            default: {"key1" : {"key11" : "test str 11", "key12" : "test str 12"}, "key2" : {"key21" : "test str 21", "key22" : "test str 22"}}
+         myMap.user.defined:
+            type: map
+            entry_schema:
+               entry_schema: ProductTypeInfo
+            description: map of maps of strings without default values required
+            required: true
+   ericsson.datatypes.nfv.ChangePackageVnfOperationAdditionalParameters:
+      derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+      properties:
+         tags.all:
+            type: boolean
+            description: tags
+            required: true
+            default: false
+         day0.configuration.secretname:
+            type: string
+            description: I am secret name
+            required: true
+            default: evnf-secret
+         day0.configuration.param1.key:
+            type: string
+            description: I am login
+            required: true
+            default: login
+         day0.configuration.param1.value:
+            type: string
+            description: I am login value
+            required: true
+            default: testroot
+         myMap.int:
+            type: map
+            entry_schema:
+               type: int
+            description: map of ints with default values required
+            required: true
+            default: {"key1" : 3, "key2" : 2, "key3" : 1}
+         myMap.float:
+            type: map
+            entry_schema:
+               type: float
+            description: map of floats without default values not required
+            required: false
+         myMap.boolean:
+            type: map
+            entry_schema:
+               type: boolean
+            description: map of booleans with default values not required
+            required: false
+            default: {"key1" : false, "key2" : true}
+         myMap.null:
+            type: map
+            entry_schema:
+               type: 'null'
+            description: map of nulls with default values not required
+            required: false
+            default: {"key1" : null, "key2" : null}
+         myMap.string:
+            type: map
+            entry_schema:
+               type: string
+            description: map of strings with default values required
+            required: true
+            default: {"key1" : "test string 1", "key2" : "test string 2"}
+         myMap.timestamp:
+            type: map
+            entry_schema:
+               type: timestamp
+            description: map of timestamps without default values required
+            required: true
+         myMap.list.of.string:
+            type: map
+            entry_schema:
+               type: list
+               entry_schema:
+                  type: string
+            description: map of lists of strings with default values required
+            required: true
+            default: {"key1" : ["test string 1", "test string 2"], "key2" : ["test string 3", "test string 4"]}
+         myMap.map.of.string:
+            type: map
+            entry_schema:
+               type: map
+               entry_schema:
+                  type: string
+            description: map of maps of strings with default values required
+            required: true
+            default: {"key1" : {"key11" : "test str 11", "key12" : "test str 12"}, "key2" : {"key21" : "test str 21", "key22" : "test str 22"}}
+         myMap.user.defined:
+            type: map
+            entry_schema:
+               entry_schema: ProductTypeInfo
+            description: map of maps of strings without default values required
+            required: true
+node_types:
+   Ericsson.SGSN-MME.1_2_CXS101289_R81E08.cxp9025898_4r81e08:
+      derived_from: tosca.nodes.nfv.VNF
+      properties:
+         descriptor_id: # instead of vnfd_id
+            type: string # GUID
+            constraints: [valid_values: [4eca7b35-32d8-4cab-9fee-138f1c3b9caen]]
+            default: 4eca7b35-32d8-4cab-9fee-138f1c3b9caen
+         descriptor_version:
+            type: string
+            constraints: [valid_values: [cxp9025898_4r81e08]]
+            default: cxp9025898_4r81e08
+         provider:
+            type: string
+            constraints: [valid_values: [Ericsson]]
+            default: Ericsson
+         product_name:
+            type: string
+            constraints: [valid_values: [BUSYBOX-MAP-TEST-APP]]
+            default: BUSYBOX-MAP-TEST-APP
+         software_version:
+            type: string
+            constraints: [valid_values: ["3.1.0+1"]]
+            default: "3.1.0+1"
+         # TODO: VNFM identifier to be defined
+         # Identifies VNFM(s) compatible with the VNF
+         vnfm_info:
+            type: list
+            entry_schema:
+               type: string
+               constraints: [valid_values: ["3881:E-VNFM"]]
+            default: ["3881:E-VNFM"]
+         #configurable_properties: # Not used
+         #modifiable_attributes: # Not used
+         flavour_id:
+            type: string
+            constraints: [valid_values: [default]]
+            default: default
+         flavour_description:
+            type: string
+            default: ""
+      interfaces:
+         Vnflcm:
+            type: tosca.interfaces.nfv.Vnflcm
+            instantiate: # Invoked upon receipt of an Instantiate VNF request
+               inputs:
+                  additional_parameters:
+                     type: ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters
+                     required: false
+            terminate:
+            change_package: # Invoked upon receipt of an Change VNF request
+               inputs:
+                  additional_parameters:
+                     type: ericsson.datatypes.nfv.ChangePackageVnfOperationAdditionalParameters
+                     required: false
+      artifacts:
+         helm_package:
+            description: Helm package associated with this descriptor
+            type: tosca.artifacts.File
+            file: Definitions/OtherTemplates/busybox-example-3.1.0+2.tgz
+         software_images:
+            description: Location of the software images being used in this package
+            type: tosca.artifacts.nfv.SwImage
+            file: Files/images/docker.tar

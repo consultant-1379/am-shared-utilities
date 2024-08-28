@@ -1,0 +1,44 @@
+{
+  "serviceModelID": "37866813-a0cb-4ad4-9716-a5b4fa19f940",
+  "typeDefinitions": {
+    "data_types": [
+      {
+        "name": "tosca.datatypes.xml",
+        "derived_from": "string",
+        "description": "The xml type is a TOSCA data Type used to define a string that containst data in the Extensible Markup Language (XML) format."
+      },
+      {
+        "name": "tosca.datatypes.Root",
+        "description": "This is the default (root) TOSCA Root Type definition that all complex TOSCA Data Types derive from."
+      },
+      {
+        "name": "tosca.datatypes.nfv.L3ProtocolData",
+        "derived_from": "tosca.datatypes.Root",
+        "description": "describes L3 protocol data for a given virtual link used in a specific VNF deployment flavour.",
+        "properties": [
+          {
+            "name": "gateway_ip",
+            "required": false,
+            "type": "string",
+            "description": "Specifies the gateway IP address for this L3 protocol."
+          },
+          {
+            "name": "ip_version",
+            "required": true,
+            "type": "string",
+            "description": "Specifies IP version of this L3 protocol",
+            "constraints": [
+              {
+                "operator": "valid_values",
+                "value": [
+                  "ipv4",
+                  "ipv6"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

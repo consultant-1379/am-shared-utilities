@@ -1,0 +1,471 @@
+#
+# COPYRIGHT Ericsson 2024
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+tosca_definitions_version: "tosca_simple_yaml_1_2"
+
+description: "VNF Descriptor for Ericsson Mediation NFS Client Provisioner and Dynamic PVC creation"
+
+imports:
+  - "etsi_nfv_sol001_vnfd_2_5_1_types.yaml"
+  - "etsi_nfv_sol001_vnfd_type_for_rollback_support.yaml"
+
+node_types:
+  Ericsson.Mediation-NFS-Client-Provisioner-Dynamic-PVC.22.6.0-271.CXP9041443:
+    derived_from: "tosca.nodes.nfv.VNF"
+    interfaces:
+      Vnflcm:
+        change_package:
+          inputs:
+            additional_parameters:
+              type: "ericsson.datatypes.nfv.ChangePackageVnfOperationAdditionalParameters"
+              required: false
+        terminate:
+          inputs:
+            additional_parameters:
+              type: "ericsson.datatypes.nfv.TerminateVnfOperationAdditionalParameters"
+              required: false
+        type: "tosca.interfaces.nfv.Vnflcm"
+        instantiate:
+          inputs:
+            additional_parameters:
+              type: "ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters"
+              required: false
+      EricssonChangeCurrentVnfPackage:
+        type: ericsson.interfaces.nfv.EricssonChangeCurrentVnfPackage
+    properties:
+      descriptor_id:
+        type: "string"
+        constraints:
+          - valid_values:
+              - "fmyjk70z-6sas-7td6-h0rc-u9njyuplqbz5n0ht"
+        default: "fmyjk70z-6sas-7td6-h0rc-u9njyuplqbz5n0ht"
+      provider:
+        type: "string"
+        constraints:
+          - valid_values:
+              - "Ericsson"
+        default: "Ericsson"
+      descriptor_version:
+        type: "string"
+        constraints:
+          - valid_values:
+              - "22.6.0-271"
+        default: "22.6.0-271"
+      vnfm_info:
+        type: "list"
+        entry_schema:
+          type: "string"
+          constraints:
+            - valid_values:
+                - "3881:E-VNFM"
+        default:
+          - "3881:E-VNFM"
+      flavour_id:
+        type: "string"
+        constraints:
+          - valid_values:
+              - "default"
+        default: "default"
+      software_version:
+        type: "string"
+        constraints:
+          - valid_values:
+              - "CXP9041443_R23F"
+        default: "CXP9041443_R23F"
+      flavour_description:
+        type: "string"
+        default: ""
+      product_name:
+        type: "string"
+        default: "Mediation.NFSClientProvisioner, DynamicPVC"
+    artifacts:
+      helm_package:
+        type: "tosca.artifacts.File"
+        description: "Helm package associated with this descriptor"
+        file: "Definitions/OtherTemplates/eric-bss-em-storage-22.6.0-271.tgz"
+      software_images:
+        type: "tosca.artifacts.nfv.SwImage"
+        description: "Location of the software images being used in this package"
+        file: "Files/images/docker.tar"
+data_types:
+  ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters:
+    derived_from: "tosca.datatypes.nfv.VnfOperationAdditionalParameters"
+    properties:
+      skipVerification:
+        description: "Skipping the verification of the application deployment"
+        default: false
+        type: "boolean"
+        required: true
+      namespace:
+        description: "Namespace to which the resource will be deployed in. If provided, this Namespace value will get precedence"
+        default: ""
+        type: "string"
+        required: false
+      global.timezone:
+        type: string
+        description: The timezone for applications. The value must be compliant with Linux timezone format. default value is UTC.
+        required: false
+        default: "UTC"
+        metadata:
+          chart_param: global.timezone
+      eric-bss-em-nfs-client-provisioner.enabled:
+        type: "boolean"
+        description: Deploy NFS Client Provisioner.
+        required: true
+        default: true
+        metadata:
+          chart_param: eric-bss-em-nfs-client-provisioner.enabled
+      eric-bss-em-nfs-client-provisioner.nfs.server:
+        type: string
+        description: NFS Server IP Address (IPv4 only).
+        required: false
+        metadata:
+          chart_param: eric-bss-em-nfs-client-provisioner.nfs.server
+      eric-bss-em-nfs-client-provisioner.nfs.path:
+        type: string
+        description: Exported NFS Share absolute path.
+        required: false
+        metadata:
+          chart_param: eric-bss-em-nfs-client-provisioner.nfs.path
+      eric-bss-em-nfs-client-provisioner.nfsver:
+        type: float
+        description: Value of NFS Version to be use for mounting NFS Share.
+        required: false
+        default: 3
+        constraints: [ valid_values: [ 3, 4, 4.1 ] ]
+        metadata:
+          chart_param: eric-bss-em-nfs-client-provisioner.nfsver
+      eric-bss-em-nfs-client-provisioner.storageClass.defaultClass:
+        type: boolean
+        description: Set StorageClass as the default StorageClass.
+        required: false
+        default: false
+        metadata:
+          chart_param: eric-bss-em-nfs-client-provisioner.storageClass.defaultClass
+      eric-bss-em-nfs-client-provisioner.storageClass.name:
+        type: string
+        description: Set a StorageClass name. Name must start and end with an lowercase alphanumeric character.
+        required: false
+        metadata:
+          chart_param: eric-bss-em-nfs-client-provisioner.storageClass.name
+      eric-bss-em-dynamic.enabled:
+        type: "boolean"
+        description: Create Dynamic PVC.
+        required: true
+        default: false
+        metadata:
+          chart_param: eric-bss-em-dynamic.enabled
+      eric-bss-em-dynamic.size:
+        type: string
+        description: Size of the Persistent Volume (PV) and Persistent Volume Claim (PVC) in integer format with units as Ki(kibibyte), Mi(mibibyte), Gi(gibibyte).
+        required: false
+        metadata:
+          chart_param: eric-bss-em-dynamic.size
+      eric-bss-em-dynamic.storageclassname:
+        type: string
+        description: Name of the storageclass to be use for creating PV & PVC
+        required: false
+        metadata:
+          chart_param: eric-bss-em-dynamic.storageclassname
+      eric-bss-em-dynamic.accessMode:
+        type: string
+        description: Provide access mode. For NFS, supported access mode are "ReadWriteOnce" and "ReadWriteMany"(recommended). For Block storage, access mode must be "ReadWriteOnce" only
+        required: false
+        default: ReadWriteOnce
+        constraints: [ valid_values: [ ReadWriteMany, ReadWriteOnce ] ]
+        metadata:
+          chart_param: eric-bss-em-dynamic.accessMode
+      cleanUpResources:
+        type: boolean
+        description: Remove the resources on the cluster that are associated with the application, including the Persistent Volume Claims (PVCs) and Persistent Volumes
+        required: true
+        default: false
+      values.yaml:
+        type: string
+        required: false
+        description: This property can contain the contents of a values.yaml file in json format
+  ericsson.datatypes.nfv.ChangePackageVnfOperationAdditionalParameters:
+    derived_from: "tosca.datatypes.nfv.VnfOperationAdditionalParameters"
+    properties:
+      skipVerification:
+        description: "Skipping the verification of the application deployment"
+        default: false
+        type: "boolean"
+        required: false
+      eric-bss-em-nfs-client-provisioner.enabled:
+        type: "boolean"
+        description: Deploy NFS Client Provisioner.
+        required: false
+        metadata:
+          chart_param: eric-bss-em-nfs-client-provisioner.enabled
+      eric-bss-em-nfs-client-provisioner.nfs.server:
+        type: string
+        description: NFS Server IP Address (IPv4 only).
+        required: false
+        metadata:
+          chart_param: eric-bss-em-nfs-client-provisioner.nfs.server
+      eric-bss-em-nfs-client-provisioner.nfs.path:
+        type: string
+        description: Exported NFS Share absolute path.
+        required: false
+        metadata:
+          chart_param: eric-bss-em-nfs-client-provisioner.nfs.path
+      eric-bss-em-nfs-client-provisioner.nfsver:
+        type: float
+        description: Value of NFS Version to be use for mounting NFS Share.
+        required: false
+        constraints: [ valid_values: [ 3, 4, 4.1 ] ]
+        metadata:
+          chart_param: eric-bss-em-nfs-client-provisioner.nfsver
+      eric-bss-em-nfs-client-provisioner.storageClass.defaultClass:
+        type: boolean
+        description: Set StorageClass as the default StorageClass.
+        required: false
+        metadata:
+          chart_param: eric-bss-em-nfs-client-provisioner.storageClass.defaultClass
+      eric-bss-em-nfs-client-provisioner.storageClass.name:
+        type: string
+        description: Set a StorageClass name. Name must start and end with an lowercase alphanumeric character.
+        required: false
+        metadata:
+          chart_param: eric-bss-em-nfs-client-provisioner.storageClass.name
+      eric-bss-em-dynamic.enabled:
+        type: "boolean"
+        description: Create Dynamic PVC.
+        required: false
+        metadata:
+          chart_param: eric-bss-em-dynamic.enabled
+      eric-bss-em-dynamic.size:
+        type: string
+        description: Size of the Persistent Volume (PV) and Persistent Volume Claim (PVC) in integer format with units as Ki(kibibyte), Mi(mibibyte), Gi(gibibyte).
+        required: false
+        metadata:
+          chart_param: eric-bss-em-dynamic.size
+      eric-bss-em-dynamic.storageclassname:
+        type: string
+        description: Name of the storageclass to be use for creating PV & PVC
+        required: false
+        metadata:
+          chart_param: eric-bss-em-dynamic.storageclassname
+      eric-bss-em-dynamic.accessMode:
+        type: string
+        description: Provide access mode. For NFS, supported access mode are "ReadWriteOnce" and "ReadWriteMany"(recommended). For Block storage, access mode must be "ReadWriteOnce" only
+        required: false
+        constraints: [ valid_values: [ ReadWriteMany, ReadWriteOnce ] ]
+        metadata:
+          chart_param: eric-bss-em-dynamic.accessMode
+      isAutoRollbackAllowed:
+        type: "boolean"
+        description: Enable or Disable autorollback option.
+        required: false
+        default: true
+      values.yaml:
+        type: string
+        required: false
+        description: This property can contain the contents of a values.yaml file in json format
+  ericsson.datatypes.nfv.TerminateVnfOperationAdditionalParameters:
+    derived_from: "tosca.datatypes.nfv.VnfOperationAdditionalParameters"
+    properties:
+      skipVerification:
+        description: "Skipping the verification of the application deployment"
+        default: false
+        type: "boolean"
+        required: true
+  ericsson.datatypes.nfv.rollbackToICP2102:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      tags.all:
+        type: boolean
+        description: tags
+        default: false
+        required: false
+  ericsson.datatypes.nfv.rollbackToICP2103:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      tags.all:
+        type: boolean
+        description: tags
+        default: false
+        required: false
+  ericsson.datatypes.nfv.rollbackToICP2104:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      tags.all:
+        type: boolean
+        description: tags
+        default: false
+        required: false
+  ericsson.datatypes.nfv.rollbackToICP2105:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      tags.all:
+        type: boolean
+        description: tags
+        default: false
+        required: false
+  ericsson.datatypes.nfv.rollbackToEM214:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      tags.all:
+        type: boolean
+        description: tags
+        default: false
+        required: false
+  ericsson.datatypes.nfv.rollbackToEM215:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      tags.all:
+        type: boolean
+        description: tags
+        default: false
+        required: false
+  ericsson.datatypes.nfv.rollbackToEM216:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      tags.all:
+        type: boolean
+        description: tags
+        default: false
+        required: false
+interface_types:
+  ericsson.interfaces.nfv.EricssonChangeCurrentVnfPackage:
+    derived_from: tosca.interfaces.nfv.ChangeCurrentVnfPackage
+    inputs:
+      rollback_pattern:
+        type: list
+        description: tags
+        entry_schema:
+          type: map
+    operations:
+      rollback_to_ICP2102:
+        description: rollback-operation-to-ICP2102-storage-CXP9041443_R8S
+        inputs:
+          additional_parameters:
+            type: ericsson.datatypes.nfv.rollbackToICP2102
+            required: false
+      rollback_to_ICP2103:
+        description: rollback-operation-to-ICP2103-storage-CXP9041443_R10K
+        inputs:
+          additional_parameters:
+            type: ericsson.datatypes.nfv.rollbackToICP2103
+            required: false
+      rollback_to_ICP2104:
+        description: rollback-operation-to-ICP2104-storage-CXP9041443_R12Z
+        inputs:
+          additional_parameters:
+            type: ericsson.datatypes.nfv.rollbackToICP2104
+            required: false
+      rollback_to_ICP2105:
+        description: rollback-operation-to-ICP2105-storage-CXP9041443_R13V
+        inputs:
+          additional_parameters:
+            type: ericsson.datatypes.nfv.rollbackToICP2105
+            required: false
+      rollback_to_EM21_4:
+        description: rollback-operation-to-EM21-4-storage-CXP9041443_R15L
+        inputs:
+          additional_parameters:
+            type: ericsson.datatypes.nfv.rollbackToEM214
+            required: false
+      rollback_to_EM21_5:
+        description: rollback-operation-to-EM21-5-storage-CXP9041443_R17K
+        inputs:
+          additional_parameters:
+            type: ericsson.datatypes.nfv.rollbackToEM215
+            required: false
+      rollback_to_EM21_6:
+        description: rollback-operation-to-EM21-6-storage-CXP9041443_R19T
+        inputs:
+          additional_parameters:
+            type: ericsson.datatypes.nfv.rollbackToEM216
+            required: false
+topology_template:
+  policies:
+    - rollback_to_ICP2102:
+        type: tosca.policies.nfv.VnfPackageChange
+        properties:
+          selector:
+            source_descriptor_id: fmyjk70z-6sas-7td6-h0rc-u9njyuplqbz5n0ht
+            destination_descriptor_id: xanmwn2h-svih-4nbp-hlp8-p86tti8txhee1g6s
+            source_flavour_id: default
+          modification_qualifier: down
+          additional_modification_description: ..
+          destination_flavour_id: default
+    - rollback_to_ICP2103:
+        type: tosca.policies.nfv.VnfPackageChange
+        properties:
+          selector:
+            source_descriptor_id: fmyjk70z-6sas-7td6-h0rc-u9njyuplqbz5n0ht
+            destination_descriptor_id: vgiis05h-52s9-e1xr-x6sj-8b7vfdr0wrmnilkg
+            source_flavour_id: default
+          modification_qualifier: down
+          additional_modification_description: ..
+          destination_flavour_id: default
+    - rollback_to_ICP2104:
+        type: tosca.policies.nfv.VnfPackageChange
+        properties:
+          selector:
+            source_descriptor_id: fmyjk70z-6sas-7td6-h0rc-u9njyuplqbz5n0ht
+            destination_descriptor_id: 6f29gs8z-ienf-bovh-q8kb-gfzdd2yr1lbhelyk
+            source_flavour_id: default
+          modification_qualifier: down
+          additional_modification_description: ..
+          destination_flavour_id: default
+    - rollback_to_ICP2105:
+        type: tosca.policies.nfv.VnfPackageChange
+        properties:
+          selector:
+            source_descriptor_id: fmyjk70z-6sas-7td6-h0rc-u9njyuplqbz5n0ht
+            destination_descriptor_id: 9tyrac13-63zg-lxl4-7qub-lxfgt6lswisns4uz
+            source_flavour_id: default
+          modification_qualifier: down
+          additional_modification_description: ..
+          destination_flavour_id: default
+    - rollback_to_EM21_4:
+        type: tosca.policies.nfv.VnfPackageChange
+        properties:
+          selector:
+            source_descriptor_id: fmyjk70z-6sas-7td6-h0rc-u9njyuplqbz5n0ht
+            destination_descriptor_id: z8wwwf6b-knxl-p5pt-a71j-wutwmwfw3v5s4czc
+            source_flavour_id: default
+          modification_qualifier: down
+          additional_modification_description: ..
+          destination_flavour_id: default
+    - rollback_to_EM21_5:
+        type: tosca.policies.nfv.VnfPackageChange
+        properties:
+          selector:
+            source_descriptor_id: fmyjk70z-6sas-7td6-h0rc-u9njyuplqbz5n0ht
+            destination_descriptor_id: t858vy4b-xnhq-smkb-hbaf-8v0b3z83vpzdq42i
+            source_flavour_id: default
+          modification_qualifier: down
+          additional_modification_description: ..
+          destination_flavour_id: default
+    - rollback_to_EM21_6:
+        type: tosca.policies.nfv.VnfPackageChange
+        properties:
+          selector:
+            source_descriptor_id: fmyjk70z-6sas-7td6-h0rc-u9njyuplqbz5n0ht
+            destination_descriptor_id: 02fa65kn-ynfw-x28g-cuft-htiyo5vdoucyvjx8
+            source_flavour_id: default
+          modification_qualifier: down
+          additional_modification_description: ..
+          destination_flavour_id: default
+  node_templates:
+    Ericsson.Mediation-NFS-Client-Provisioner-Dynamic-PVC:
+      type: Ericsson.Mediation-NFS-Client-Provisioner-Dynamic-PVC.22.6.0-271.CXP9041443
+      properties: {}
+      interfaces:

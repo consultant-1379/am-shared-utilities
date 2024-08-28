@@ -1,0 +1,248 @@
+#
+# COPYRIGHT Ericsson 2024
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+tosca_definitions_version: tosca_simple_yaml_1_2
+
+description: VNF Descriptor for Ericsson SGSN-MME
+
+# INFO:
+# - This is a work-in-progress example VNFD for containerized VNFs in small stack scenario.
+# - Based on ETSI GS NFV-SOL 001 V2.5.1
+
+
+imports:
+  - etsi_nfv_sol001_vnfd_2_5_1_types.yaml
+
+data_types:
+  ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      clusterIp:
+        type: string
+        description: sample description for clusterIp
+        required: true
+        metadata:
+          chart_param: server.service.clusterIP
+        constraints:
+          - pattern: '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+'
+      #For this param, no chart_param is defined, so the name of the paramater is also considered , name of the hel input parameter
+      global.internalServiceEndpoint.port:
+        type: integer
+        description: sample description for internal_service_port
+        required: false
+        default: 25161
+        constraints: [ valid_values: [ 161, 25161 ] ]
+
+node_types:
+  Ericsson.SGSN-MME.1_20_CXS101289_R81E08.cxp9025898_4r81e08:
+    derived_from: tosca.nodes.nfv.VNF
+    properties:
+      descriptor_id:
+        type: string
+        constraints: [ valid_values: [ d3def1ce-4cf4-477c-aab3-21cb04e6a379 ] ]
+        default: d3def1ce-4cf4-477c-aab3-21cb04e6a379
+      descriptor_version:
+        type: string
+        constraints: [ valid_values: [ cxp9025898_4r81e08 ] ]
+        default: cxp9025898_4r81e08
+      provider:
+        type: string
+        constraints: [ valid_values: [ Ericsson ] ]
+        default: Ericsson
+      product_name:
+        type: string
+        constraints: [ valid_values: [ SGSN-MME ] ]
+        default: SGSN-MME
+      software_version:
+        type: string
+        constraints: [ valid_values: [ '1.20 (CXS101289_R81E08)' ] ]
+        default: '1.20 (CXS101289_R81E08)'
+      vnfm_info:
+        type: list
+        entry_schema:
+          type: string
+          constraints: [ valid_values: [ '3881:E-VNFM' ] ]
+        default: [ '3881:E-VNFM' ]
+      #configurable_properties: # Not used
+      #modifiable_attributes: # Not used
+      flavour_id:
+        type: string
+        constraints: [ valid_values: [ default ] ]
+        default: default
+      flavour_description:
+        type: string
+        default: ''
+    interfaces:
+      Vnflcm:
+        type: tosca.interfaces.nfv.Vnflcm
+        instantiate:
+          inputs:
+            helm_packages: [ get_artifact: [ SELF, helm_package1 ], get_artifact: [ SELF, helm_package2 ], get_artifact: [ SELF, helm_package3 ],
+                             get_artifact: [ SELF, crd_package1 ] ]
+            additional_parameters:
+              type: ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters
+              required: false
+        scale: {}
+    artifacts:
+      helm_package1:
+        description: Helm package associated with this descriptor
+        type: tosca.artifacts.File
+        file: /path/to/helm/char1
+      helm_package2:
+        description: Helm package associated with this descriptor
+        type: tosca.artifacts.File
+        file: /path/to/helm/chart2
+      helm_package3:
+        description: Helm package associated with this descriptor
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/spider-app-2.208.2.tgz
+      crd_package1:
+        description: Helm CRD package associated with this descriptor
+        type: tosca.artifacts.File
+        file: /path/to/helm/chart3
+      software_images:
+        description: Location of the software images being used in this package
+        type: tosca.artifacts.nfv.SwImage
+        file: Files/images/docker.tar
+        properties:
+          name: Docker
+          version: 1.0.0
+          container_format: docker
+          checksum:
+            algorithm: sha-512
+            hash: C2259250EAE4E9D4CDCA5BC2829D40BB2D48A89870E37D21D9364F41BB0A85081757CAAD988D5C7D6D2DC62AFE30A505DFE7827FAA52BDA2CCF5E34C3CDD8301
+          size: 99 B
+          disk_format: raw
+          min_disk: 100 B
+
+topology_template:
+  inputs:
+    modifiable_attributes:
+      type: ericsson.datatypes.nfv.VnfInfoModifiableAttributes
+  node_templates:
+    spider_app:
+      type: tosca.nodes.nfv.Mciop
+      requirements:
+        - associatedVdu: Spider_VDU
+      artifacts:
+        helm_package1:
+          description: Helm package associated with this descriptor
+          type: tosca.artifacts.nfv.HelmChart
+          file: Definitions/OtherTemplates/spider-app-2.208.2.tgz
+    test-mciop2:
+      type: tosca.nodes.nfv.Mciop
+      requirements:
+        - associatedVdu: Spider_VDU2
+      artifacts:
+        helm_package2:
+          description: Helm package associated with this descriptor
+          type: tosca.artifacts.nfv.HelmChart
+          file: /path/to/helm/char1
+    test-duplicate:
+      type: tosca.nodes.nfv.Mciop
+      requirements:
+        - associatedVdu: Spider_VDU2
+      artifacts:
+        helm_package3:
+          description: Helm package associated with this descriptor
+          type: tosca.artifacts.nfv.HelmChart
+          file: /path/to/helm/chart2
+    Spider_VDU:
+      type: tosca.nodes.nfv.Vdu.OsContainerDeployableUnit
+      properties:
+        name: Spider App VDU
+        description: Model of the Spider App VDU
+        vdu_profile:
+          min_number_of_instances: 1
+          max_number_of_instances: 4
+      requirements:
+        - container: Spider_Container1
+        - virtual_storage: SpiderStorage
+    Spider_VDU2:
+      type: tosca.nodes.nfv.Vdu.OsContainerDeployableUnit
+      properties:
+        name: Spider App VDU2
+        description: Model of the Spider App VDU
+        vdu_profile:
+          min_number_of_instances: 1
+          max_number_of_instances: 4
+      requirements:
+        - container: Spider_Container2
+        - virtual_storage: SpiderStorage2
+
+    Spider_Container1:
+      type: tosca.nodes.nfv.Vdu.OsContainer
+      properties:
+        name: Spider Container2
+        description: Spider Container
+        requested_cpu_resources: 1000 # In Milli-Cpus, ie 1 CPU
+        cpu_resource_limit: 2500 # In Milli-Cpus, ie 2.5 CPU
+        requested_memory_resources: 1 GiB
+        memory_resource_limit: 10 GiB
+      artifacts:
+        sw_image:
+          type: tosca.artifacts.nfv.SwImage
+          file: Files/images/dummy-image1.tar
+          properties:
+            name: dummy-image
+            version: 1.0.0
+            container_format: docker
+            checksum:
+              algorithm: sha-256
+              hash: C2259250EAE4E9D4CDCA5BC2829D40BB2D48A89870E37D21D9364F41BB0A85081757CAAD988D5C7D6D2DC62AFE30A505DFE7827FAA52BDA2CCF5E34C3CDD8309
+            size: 99 B
+            disk_format: raw
+            min_disk: 100 B
+    Spider_Container2:
+      type: tosca.nodes.nfv.Vdu.OsContainer
+      properties:
+        name: Spider Container2
+        description: Spider Container
+        requested_cpu_resources: 1000 # In Milli-Cpus, ie 1 CPU
+        cpu_resource_limit: 2500 # In Milli-Cpus, ie 2.5 CPU
+        requested_memory_resources: 1 GiB
+        memory_resource_limit: 10 GiB
+      artifacts:
+        sw_image:
+          type: tosca.artifacts.nfv.SwImage
+          file: Files/images/dummy-image2.tar
+          properties:
+            name: dummy-image
+            version: 1.0.0
+            container_format: docker
+            checksum:
+              algorithm: sha-256
+              hash: C2259250EAE4E9D4CDCA5BC2829D40BB2D48A89870E37D21D9364F41BB0A85081757CAAD988D5C7D6D2DC62AFE30A505DFE7827FAA52BDA2CCF5E34C3CDD8309
+            size: 99 B
+            disk_format: raw
+            min_disk: 100 B
+
+    SpiderStorage:
+      type: tosca.nodes.nfv.Vdu.VirtualBlockStorage
+      properties:
+        virtual_block_storage_data:
+          size_of_storage: 100 GiB
+          rdma_enabled: false
+        per_vnfc_instance: true
+    SpiderStorage2:
+      type: tosca.nodes.nfv.Vdu.VirtualBlockStorage
+      properties:
+        virtual_block_storage_data:
+          size_of_storage: 2 GiB
+          rdma_enabled: false
+        per_vnfc_instance: true
+
+

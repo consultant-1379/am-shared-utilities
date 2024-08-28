@@ -1,0 +1,333 @@
+#
+# COPYRIGHT Ericsson 2024
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+description: VNF Descriptor for Ericsson SGSN-MME
+
+imports:
+  - etsi_nfv_sol001_vnfd_3_3_1_types.yaml
+  - etsi_nfv_sol001_vnfd_deployable_modules_support.yaml
+
+data_types:
+  file:
+    derived_from: string
+
+  ericsson.datatypes.nfv.VnfInfoModifiableAttributes:
+    derived_from: tosca.datatypes.nfv.VnfInfoModifiableAttributes
+    properties:
+      extensions:
+        type: ericsson.datatypes.nfv.VnfInfoModifiableAttributesExtensions
+
+  ericsson.datatypes.nfv.VnfInfoModifiableAttributesExtensions:
+    derived_from: tosca.datatypes.nfv.VnfInfoModifiableAttributesExtensions
+    properties:
+      vnfControlledScaling:
+        type: map # key: aspectId
+        description: Represents for each aspect the controlled scaling method, either Manual or CISM
+        required: false
+        entry_schema:
+          type: string
+          constraints:
+            - valid_values: [ "ManualControlled", "CISMControlled" ]
+        default: { Aspect1: "ManualControlled", Aspect2: "ManualControlled", Aspect4: "ManualControlled" }
+      deployableModules:
+        type: map
+        description: Represents optional deployable_module section for enabling and disabling charts
+        required: false
+        entry_schema:
+          type: string
+          constraints:
+            - valid_values: [ "enabled", "disabled" ]
+        default: {
+          deployable_mdl_cnf1_crd1: "enabled",
+          deployable_mdl_cnf1: "disabled",
+          deployable_mdl_cnf2: "disabled",
+          deployable_mdl_crd1: "disabled",
+          deployable_mdl_crd2: "disabled",
+          deployable_mdl_crd3: "disabled",
+          deployable_mdl_crd1_crd2: "disabled",
+          deployable_mdl_crd1_crd2_crd3: "disabled",
+          deployable_mdl_cnf2_crd2_crd3: "disabled",
+          deployable_mdl_cnf1_crd_duplicated_artifacts: "disabled" }
+
+node_types:
+  Ericsson_SAMPLE-VNF_1_25_CXS101289_R81E08_cxp9025898_4r81e08:
+    derived_from: tosca.nodes.nfv.VNF
+    properties:
+      descriptor_id:
+        type: string
+        constraints: [ valid_values: [ multi-chart-569d-xyz3-5g15f7h500 ] ]
+        default: multi-chart-569d-xyz3-5g15f7h500
+      descriptor_version:
+        type: string
+        constraints: [ valid_values: [ 1.0.0 ] ]
+        default: 1.0.0
+      provider:
+        type: string
+        constraints: [ valid_values: [ Ericsson ] ]
+        default: Ericsson
+      product_name:
+        type: string
+        constraints: [ valid_values: [ spider-app-multi-b-tosca-dm ] ]
+        default: spider-app-multi-b-tosca-dm
+      software_version:
+        type: string
+        constraints: [ valid_values: [ '1.0.0s' ] ]
+        default: '1.0.0s'
+      vnfm_info:
+        type: list
+        entry_schema:
+          type: string
+          constraints: [ valid_values: [ '3881:E-VNFM' ] ]
+        default: [ '3881:E-VNFM' ]
+      flavour_id:
+        type: string
+        constraints: [ valid_values: [ default ] ]
+        default: default
+      flavour_description:
+        type: string
+        default: ''
+    interfaces:
+      Vnflcm:
+        type: tosca.interfaces.nfv.Vnflcm
+        operations:
+          instantiate:
+            inputs:
+              helm_packages:
+                type: list
+                entry_schema:
+                  type: string
+                required: true
+                description: list of all helm charts
+              additional_parameters:
+                type: ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters
+                required: false
+          terminate: { }
+          scale: { }
+          change_current_package:
+            inputs:
+              helm_packages:
+                type: list
+                entry_schema:
+                  type: string
+                required: true
+                description: list of all helm charts
+              additional_parameters:
+                type: ericsson.datatypes.nfv.ChangePackageVnfOperationAdditionalParameters
+                required: false
+
+    artifacts:
+      crd_package1:
+        description: sip-tls-crd-chart package
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/eric-sec-sip-tls-crd-4.2.0+32.tgz
+      helm_package1:
+        description: test scale package
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/test-scale-chart-2.1.0.tgz
+      crd_package2:
+        description: cert-m crd package
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/eric-sec-certm-crd-3.16.0+48.tgz
+      helm_package2:
+        description: helm package associated with spider-app
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/spider-app-2.1.1.tgz
+      crd_package3:
+        description: upgrade crd package
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/scale-crd-1.0.1.tgz
+      software_images:
+        description: Location of the software images being used in this package
+        type: tosca.artifacts.nfv.SwImage
+        file: Files/images/docker.tar
+        properties:
+          checksum:
+            algorithm: sha-512
+            hash: C2259250EAE4E9D4CDCA5BC2829D40BB2D48A89870E37D21D9364F41BB0A85081757CAAD988D5C7D6D2DC62AFE30A505DFE7827FAA52BDA2CCF5E34C3CDD8303
+          container_format: docker
+          disk_format: raw
+          min_disk: 100 B
+          name: Docker
+          size: 99 B
+          version: 1.0.0
+      scaling_mapping:
+        description: Scaling Mapping file associated with this descriptor
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/scaling_mapping.yaml
+
+topology_template:
+  inputs:
+    modifiable_attributes:
+      type: ericsson.datatypes.nfv.VnfInfoModifiableAttributes
+
+  node_templates:
+    SAMPLE-VNF:
+      type: Ericsson_SAMPLE-VNF_1_25_CXS101289_R81E08_cxp9025898_4r81e08
+      properties: { }
+      interfaces:
+        Vnflcm:
+          operations:
+            instantiate:
+              inputs:
+                helm_packages: [ get_artifact: [ SELF, crd_package1 ], get_artifact: [ SELF, helm_package1 ], get_artifact: [ SELF, crd_package2 ], get_artifact: [ SELF, helm_package2 ],get_artifact: [ SELF, crd_package3 ] ]
+            terminate: { }
+            scale: { }
+            change_current_package:
+              inputs:
+                helm_packages: [ get_artifact: [ SELF, crd_package1 ], get_artifact: [ SELF, helm_package1 ], get_artifact: [ SELF, crd_package2 ], get_artifact: [ SELF, helm_package2 ],get_artifact: [ SELF, crd_package3 ] ]
+
+    eric-pm-bulk-reporter:
+      type: tosca.nodes.nfv.Vdu.Compute
+      properties:
+        name: eric-pm-bulk-reporter
+        description: example
+        vdu_profile:
+          min_number_of_instances: 0
+          max_number_of_instances: 0
+
+    test-cnf:
+      type: tosca.nodes.nfv.Vdu.Compute
+      properties:
+        name: test-cnf
+        description: example
+        vdu_profile:
+          min_number_of_instances: 0
+          max_number_of_instances: 0
+
+    test-cnf-vnfc1:
+      type: tosca.nodes.nfv.Vdu.Compute
+      properties:
+        name: test-cnf-vnfc1
+        description: example
+        vdu_profile:
+          min_number_of_instances: 1
+          max_number_of_instances: 10
+
+    test-cnf-vnfc2:
+      type: tosca.nodes.nfv.Vdu.Compute
+      properties:
+        name: test-cnf-vnfc3
+        description: example
+        vdu_profile:
+          min_number_of_instances: 0
+          max_number_of_instances: 0
+
+    test-cnf-vnfc3:
+      type: tosca.nodes.nfv.Vdu.Compute
+      properties:
+        name: test-cnf-vnfc3
+        description: example
+        vdu_profile:
+          min_number_of_instances: 0
+          max_number_of_instances: 0
+
+    test-cnf-vnfc4:
+      type: tosca.nodes.nfv.Vdu.Compute
+      properties:
+        name: test-cnf-vnfc4
+        description: example
+        vdu_profile:
+          min_number_of_instances: 0
+          max_number_of_instances: 0
+
+    deployable_mdl_cnf1_crd1:
+      type: tosca.nodes.nfv.DeployableModule
+      properties:
+        name: deployable module crd1 & helm1
+        description: deployable module crd1 & helm1
+        associatedArtifacts:
+          - crd_package1
+          - helm_package1
+
+    deployable_mdl_cnf1_crd_duplicated_artifacts:
+      type: tosca.nodes.nfv.DeployableModule
+      properties:
+        name: deployable module with duplicated artifacts
+        description: deployable module with duplicated artifacts
+        associatedArtifacts:
+          - crd_package1
+          - helm_package1
+
+    deployable_mdl_cnf1:
+      type: tosca.nodes.nfv.DeployableModule
+      properties:
+        name: deployable module cnf1
+        description: Helm1
+        associatedArtifacts:
+          - helm_package1
+
+    deployable_mdl_cnf2:
+      type: tosca.nodes.nfv.DeployableModule
+      properties:
+        name: deployable module cnf2
+        description: Helm2
+        associatedArtifacts:
+          - helm_package2
+
+    deployable_mdl_crd1:
+      type: tosca.nodes.nfv.DeployableModule
+      properties:
+        name: deployable module crd1
+        description: Crd1
+        associatedArtifacts:
+          - crd_package1
+
+    deployable_mdl_crd2:
+      type: tosca.nodes.nfv.DeployableModule
+      properties:
+        name: deployable module crd2
+        description: Crd2
+        associatedArtifacts:
+          - crd_package2
+
+    deployable_mdl_crd3:
+      type: tosca.nodes.nfv.DeployableModule
+      properties:
+        name: deployable module crd3
+        description: Crd3
+        associatedArtifacts:
+          - crd_package3
+
+    deployable_mdl_crd1_crd2:
+      type: tosca.nodes.nfv.DeployableModule
+      properties:
+        name: deployable module crd1&2
+        description: Crd1 & Crd2
+        associatedArtifacts:
+          - crd_package1
+          - crd_package2
+
+    deployable_mdl_crd1_crd2_crd3:
+      type: tosca.nodes.nfv.DeployableModule
+      properties:
+        name: deployable module crd1&2&3
+        description: Crd1 & Crd2 & Crd3
+        associatedArtifacts:
+          - crd_package1
+          - crd_package2
+          - crd_package3
+
+    deployable_mdl_cnf2_crd2_crd3:
+      type: tosca.nodes.nfv.DeployableModule
+      properties:
+        name: deployable module cnf2 & crd2&3
+        description: Cnf2 & Crd2 & Crd3
+        associatedArtifacts:
+          - helm_package2
+          - crd_package2
+          - crd_package3

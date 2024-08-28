@@ -1,0 +1,40 @@
+{
+  "ericsson.interfaces.nfv.EricssonChangeCurrentVnfPackage": {
+    "derivedFrom": "tosca.interfaces.nfv.ChangeCurrentVnfPackage",
+    "operation": {
+      "rollback-operation-from-multi-b-to-any": {
+        "input": {
+          "additionalParams": {
+            "dataTypeName": "ericsson.datatypes.nfv.rollbackFromPackageBToPackageAny",
+            "derivedFrom": "tosca.datatypes.nfv.VnfOperationAdditionalParameters",
+            "properties": {
+              "tags.all": {
+                "defaultValue": "false",
+                "description": "tags",
+                "type": "boolean",
+                "required": false
+              }
+            }
+          }
+        },
+        "description": "operation for change from b to any"
+      },
+      "rollback-operation-from-multi-b-to-multi-a": {
+        "input": {
+          "additionalParams": {
+            "dataTypeName": "ericsson.datatypes.nfv.VnfChangeToVersion1AdditionalParameters",
+            "derivedFrom": "tosca.datatypes.nfv.VnfOperationAdditionalParameters",
+            "properties": {
+              "data_conversion_identifier": {
+                "defaultValue": "rollback-operation-from-multi-b-to-multi-a",
+                "type": "string",
+                "required": false
+              }
+            }
+          }
+        },
+        "description": "operation for change from b to a"
+      }
+    }
+  }
+}

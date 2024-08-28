@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>eric-am-shared-utilities</artifactId>
+        <groupId>com.ericsson.orchestration.mgmt</groupId>
+        <version>0.197.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>eric-am-shared-utilities-coverage</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.ericsson.orchestration.mgmt</groupId>
+            <artifactId>eric-am-shared-spring-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ericsson.orchestration.mgmt</groupId>
+            <artifactId>eric-am-shared-filters</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ericsson.orchestration.mgmt</groupId>
+            <artifactId>eric-am-shared-http-utilities</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ericsson.orchestration.mgmt</groupId>
+            <artifactId>eric-am-shared-java-utilities</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ericsson.orchestration.mgmt</groupId>
+            <artifactId>eric-am-shared-vnfd</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ericsson.orchestration.mgmt</groupId>
+            <artifactId>eric-am-shared-distributed-lock-manager</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>report-aggregate</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report-aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

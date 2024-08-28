@@ -1,0 +1,36 @@
+tosca_definitions_version: tosca_simple_yaml_1_2
+
+description: VNF Descriptor for Ericsson SGSN-MME
+
+# INFO:
+# - This is a work-in-progress example VNFD for containerized VNFs in small stack scenario.
+# - Based on ETSI GS NFV-SOL 001 V2.5.1
+
+
+imports:
+  - etsi_nfv_sol001_vnfd_2_5_1_types.yaml
+  - node_type_vnfd.yaml
+
+topology_template:
+  substitution_mappings:
+    node_type: Ericsson.SAMPLE-VNF.1_25_CXS101289_R81E08.cxp9025898_4r81e08
+    properties:
+      flavour_id: sample-flavour-2
+  node_templates:
+    SAMPLE-VNF:
+      type: Ericsson.SAMPLE-VNF.1_25_CXS101289_R81E08.cxp9025898_4r81e08
+      properties:
+        flavour_description: flavour will install vnfc1 and vnfc2
+      interfaces:
+        Vnflcm:
+          instantiate:
+            inputs:
+              helm_values:
+                helm_package1.tags.vnfc1: 'true'
+                helm_package1.tags.vnfc2: 'true'
+                helm_package1.tags.vnfc3: 'false'
+                helm_package1.tags.vnfc4: 'false'
+              helm_packages_priority: [1, 2, 3, 4, 5 ]
+              helm_packages: [get_artifact: [SELF, helm_package1], get_artifact: [SELF, helm_package2], get_artifact: [SELF, helm_package3],
+              get_artifact: [SELF, helm_package4], get_artifact: [SELF, helm_package5]]
+          terminate: {}

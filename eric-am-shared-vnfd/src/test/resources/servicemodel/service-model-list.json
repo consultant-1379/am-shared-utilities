@@ -1,0 +1,3226 @@
+[
+  {
+    "id": "1594a376-6f67-4d13-8d28-58e070289560",
+    "creTime": "2021-09-07 18:36:38.351191",
+    "name": "test1",
+    "version": "1.0.0",
+    "description": "VNF Descriptor for Ericsson SGSN-MME",
+    "mainSTfile": "smaple-vnf-descriptor.yaml",
+    "dsl_version": "tosca_simple_yaml_1_2",
+    "topology": {
+      "inputs": [
+        {
+          "name": "modifiable_attributes",
+          "value": null,
+          "required": true,
+          "type": "ericsson.datatypes.nfv.VnfInfoModifiableAttributes"
+        }
+      ],
+      "node_templates": [
+        {
+          "name": "SAMPLE-VNF",
+          "description": null,
+          "nodetype": "Ericsson.SAMPLE-VNF.1_25_CXS101289_R81E08.cxp9025898_4r81e08",
+          "parent_type": "tosca.nodes.nfv.VNF",
+          "nodeproperties": [
+            {
+              "name": "descriptor_id",
+              "value": "def1ce-4cf4-477c-aab3-2b04e6a382",
+              "required": true,
+              "raw_value": "def1ce-4cf4-477c-aab3-2b04e6a382",
+              "type": "string",
+              "description": "Globally unique identifier of the VNFD",
+              "constraints": [
+                {
+                  "operator": "valid_values",
+                  "value": [
+                    "def1ce-4cf4-477c-aab3-2b04e6a382"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "flavour_description",
+              "value": "",
+              "required": true,
+              "raw_value": "",
+              "type": "string",
+              "description": "Human readable description of the DF"
+            },
+            {
+              "name": "provider",
+              "value": "Ericsson",
+              "required": true,
+              "raw_value": "Ericsson",
+              "type": "string",
+              "description": "Provider of the VNF and of the VNFD",
+              "constraints": [
+                {
+                  "operator": "valid_values",
+                  "value": [
+                    "Ericsson"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "software_version",
+              "value": "1.25 (CXS101289_R81E08)",
+              "required": true,
+              "raw_value": "1.25 (CXS101289_R81E08)",
+              "type": "string",
+              "description": "Software version of the VNF",
+              "constraints": [
+                {
+                  "operator": "valid_values",
+                  "value": [
+                    "1.25 (CXS101289_R81E08)"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "product_info_name",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "string",
+              "description": "Human readable name for the VNF Product"
+            },
+            {
+              "name": "modifiable_attributes",
+              "value": null,
+              "required": true,
+              "raw_value": {
+                "get_input": "modifiable_attributes"
+              },
+              "type": "tosca.datatypes.nfv.VnfInfoModifiableAttributes"
+            },
+            {
+              "name": "localization_languages",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Information about localization languages of the VNF"
+            },
+            {
+              "name": "flavour_id",
+              "value": "default",
+              "required": true,
+              "raw_value": "default",
+              "type": "string",
+              "description": "Identifier of the Deployment Flavour within the VNFD",
+              "constraints": [
+                {
+                  "operator": "valid_values",
+                  "value": [
+                    "default"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "descriptor_version",
+              "value": "cxp9025898_4r81e08",
+              "required": true,
+              "raw_value": "cxp9025898_4r81e08",
+              "type": "string",
+              "description": "Identifies the version of the VNFD",
+              "constraints": [
+                {
+                  "operator": "valid_values",
+                  "value": [
+                    "cxp9025898_4r81e08"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "product_info_description",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "string",
+              "description": "Human readable description of the VNF Product"
+            },
+            {
+              "name": "monitoring_parameters",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes monitoring parameters applicable to the VNF."
+            },
+            {
+              "name": "default_localization_language",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "string",
+              "description": "Default localization language that is instantiated if no information about selected localization language is available"
+            },
+            {
+              "name": "lcm_operations_configuration",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "tosca.datatypes.nfv.VnfLcmOperationsConfiguration",
+              "description": "Describes the configuration parameters for the VNF LCM operations"
+            },
+            {
+              "name": "vnfm_info",
+              "value": [
+                "3881:E-VNFM"
+              ],
+              "required": true,
+              "raw_value": [
+                "3881:E-VNFM"
+              ],
+              "type": "list",
+              "description": "Identifies VNFM(s) compatible with the VNF"
+            },
+            {
+              "name": "product_name",
+              "value": "SAMPLE-VNF",
+              "required": true,
+              "raw_value": "SAMPLE-VNF",
+              "type": "string",
+              "description": "Human readable name for the VNF Product",
+              "constraints": [
+                {
+                  "operator": "valid_values",
+                  "value": [
+                    "SAMPLE-VNF"
+                  ]
+                }
+              ]
+            }
+          ],
+          "nodeattributes": [
+            {
+              "name": "state",
+              "value": "initial",
+              "raw_value": "initial",
+              "type": "string",
+              "description": "The state of the node instance."
+            },
+            {
+              "name": "tosca_name",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "This attribute reflects the name of the Node Template as defined in the TOSCA service template. This name is not unique to the realized instance model of corresponding deployed application as each template in the model can result in one or more instances (e.g., scaled) when orchestrated to a provider environment."
+            },
+            {
+              "name": "tosca_id",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "A unique identifier of the realized instance of a Node Template that derives from any TOSCA normative type."
+            }
+          ],
+          "artifacts": [
+            {
+              "name": "helm_package2",
+              "type": "tosca.artifacts.File",
+              "file": "Definitions/OtherTemplates/dummy-chart-1-0.1.0.tgz"
+            },
+            {
+              "name": "helm_package1",
+              "type": "tosca.artifacts.File",
+              "file": "Definitions/OtherTemplates/test-scale-chart-0.1.0.tgz"
+            },
+            {
+              "name": "software_images",
+              "type": "tosca.artifacts.nfv.SwImage",
+              "file": "Files/images/docker.tar"
+            }
+          ],
+          "capabilities": [
+            {
+              "name": "feature",
+              "capabilitytype": "tosca.capabilities.Node",
+              "capabilityproperties": []
+            }
+          ],
+          "requirement": [],
+          "interfaces": [
+            {
+              "name": "Vnflcm",
+              "inputs": [],
+              "operations": [
+                {
+                  "name": "heal_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "terminate",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "change_flavour",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "change_external_connectivity_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "scale_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "scale_to_level_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "scale",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "modify_information_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "terminate_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "instantiate_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "scale_to_level_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "change_external_connectivity",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "change_external_connectivity_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "change_flavour_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "operate_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "heal",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "change_flavour_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "instantiate_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "terminate_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "heal_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "modify_information",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "modify_information_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "operate_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "instantiate",
+                  "inputs": [
+                    {
+                      "name": "helm_packages",
+                      "value": [
+                        "Definitions/OtherTemplates/test-scale-chart-0.1.0.tgz",
+                        "Definitions/OtherTemplates/dummy-chart-1-0.1.0.tgz"
+                      ],
+                      "required": true,
+                      "raw_value": [
+                        "Definitions/OtherTemplates/test-scale-chart-0.1.0.tgz",
+                        "Definitions/OtherTemplates/dummy-chart-1-0.1.0.tgz"
+                      ],
+                      "type": "list",
+                      "description": "list of all helm charts"
+                    },
+                    {
+                      "name": "additional_parameters",
+                      "value": null,
+                      "required": false,
+                      "raw_value": null,
+                      "type": "ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters"
+                    }
+                  ],
+                  "implementation": null
+                },
+                {
+                  "name": "scale_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "scale_to_level",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "operate",
+                  "inputs": [],
+                  "implementation": null
+                }
+              ]
+            },
+            {
+              "name": "Standard",
+              "inputs": [],
+              "operations": [
+                {
+                  "name": "start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "create",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "stop",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "configure",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "delete",
+                  "inputs": [],
+                  "implementation": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "test-cnf-with-hpa-deployment-in-hpa",
+          "description": null,
+          "nodetype": "tosca.nodes.nfv.Vdu.Compute",
+          "parent_type": "tosca.nodes.Root",
+          "nodeproperties": [
+            {
+              "name": "name",
+              "value": "test-cnf-with-hpa-deployment-in-hpa",
+              "required": true,
+              "raw_value": "test-cnf-with-hpa-deployment-in-hpa",
+              "type": "string",
+              "description": "Human readable name of the VDU"
+            },
+            {
+              "name": "sw_image_data",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "tosca.datatypes.nfv.SwImageData",
+              "description": "Defines information related to a SwImage artifact used by this Vdu.Compute node"
+            },
+            {
+              "name": "boot_order",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "References a node template name from which a valid boot device is created"
+            },
+            {
+              "name": "nfvi_constraints",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes constraints on the NFVI for the VNFC instance(s) created from this VDU"
+            },
+            {
+              "name": "boot_data",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "string",
+              "description": "Contains a string or a URL to a file contained in the VNF package used to customize a virtualised compute resource at boot time. The bootData may contain variable parts that are replaced by deployment specific values before being sent to the VIM."
+            },
+            {
+              "name": "monitoring_parameters",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes monitoring parameters applicable to a VNFC instantiated from this VDU"
+            },
+            {
+              "name": "vdu_profile",
+              "value": {
+                "max_number_of_instances": 27,
+                "min_number_of_instances": 1
+              },
+              "required": true,
+              "raw_value": {
+                "max_number_of_instances": 27,
+                "min_number_of_instances": 1
+              },
+              "type": "tosca.datatypes.nfv.VduProfile",
+              "description": "Defines additional instantiation data for the VDU.Compute node"
+            },
+            {
+              "name": "description",
+              "value": "example",
+              "required": true,
+              "raw_value": "example",
+              "type": "string",
+              "description": "Human readable description of the VDU"
+            }
+          ],
+          "nodeattributes": [
+            {
+              "name": "state",
+              "value": "initial",
+              "raw_value": "initial",
+              "type": "string",
+              "description": "The state of the node instance."
+            },
+            {
+              "name": "tosca_name",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "This attribute reflects the name of the Node Template as defined in the TOSCA service template. This name is not unique to the realized instance model of corresponding deployed application as each template in the model can result in one or more instances (e.g., scaled) when orchestrated to a provider environment."
+            },
+            {
+              "name": "tosca_id",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "A unique identifier of the realized instance of a Node Template that derives from any TOSCA normative type."
+            }
+          ],
+          "artifacts": [],
+          "capabilities": [
+            {
+              "name": "virtual_compute",
+              "capabilitytype": "tosca.capabilities.nfv.VirtualCompute",
+              "capabilityproperties": [
+                {
+                  "name": "compute_requirements",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map"
+                },
+                {
+                  "name": "virtual_cpu",
+                  "value": null,
+                  "required": true,
+                  "raw_value": null,
+                  "type": "tosca.datatypes.nfv.VirtualCpu",
+                  "description": "Describes virtual CPU(s) of the virtualized compute"
+                },
+                {
+                  "name": "logical_node",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map",
+                  "description": "Describes the Logical Node requirements"
+                },
+                {
+                  "name": "virtual_local_storage",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "list",
+                  "description": "A list of virtual system disks created and destroyed as part of the VM lifecycle"
+                },
+                {
+                  "name": "requested_additional_capabilities",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map",
+                  "description": "Describes additional capability for a particular VDU"
+                },
+                {
+                  "name": "virtual_memory",
+                  "value": null,
+                  "required": true,
+                  "raw_value": null,
+                  "type": "tosca.datatypes.nfv.VirtualMemory",
+                  "description": "Describes virtual memory of the virtualized compute"
+                }
+              ]
+            },
+            {
+              "name": "virtual_binding",
+              "capabilitytype": "tosca.capabilities.nfv.VirtualBindable",
+              "capabilityproperties": []
+            },
+            {
+              "name": "feature",
+              "capabilitytype": "tosca.capabilities.Node",
+              "capabilityproperties": []
+            }
+          ],
+          "requirement": [],
+          "interfaces": [
+            {
+              "name": "Standard",
+              "inputs": [],
+              "operations": [
+                {
+                  "name": "start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "create",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "stop",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "configure",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "delete",
+                  "inputs": [],
+                  "implementation": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "test-cnf",
+          "description": null,
+          "nodetype": "tosca.nodes.nfv.Vdu.Compute",
+          "parent_type": "tosca.nodes.Root",
+          "nodeproperties": [
+            {
+              "name": "name",
+              "value": "test-cnf-vnfc2",
+              "required": true,
+              "raw_value": "test-cnf-vnfc2",
+              "type": "string",
+              "description": "Human readable name of the VDU"
+            },
+            {
+              "name": "sw_image_data",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "tosca.datatypes.nfv.SwImageData",
+              "description": "Defines information related to a SwImage artifact used by this Vdu.Compute node"
+            },
+            {
+              "name": "boot_order",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "References a node template name from which a valid boot device is created"
+            },
+            {
+              "name": "nfvi_constraints",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes constraints on the NFVI for the VNFC instance(s) created from this VDU"
+            },
+            {
+              "name": "boot_data",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "string",
+              "description": "Contains a string or a URL to a file contained in the VNF package used to customize a virtualised compute resource at boot time. The bootData may contain variable parts that are replaced by deployment specific values before being sent to the VIM."
+            },
+            {
+              "name": "monitoring_parameters",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes monitoring parameters applicable to a VNFC instantiated from this VDU"
+            },
+            {
+              "name": "vdu_profile",
+              "value": {
+                "max_number_of_instances": 25,
+                "min_number_of_instances": 1
+              },
+              "required": true,
+              "raw_value": {
+                "max_number_of_instances": 25,
+                "min_number_of_instances": 1
+              },
+              "type": "tosca.datatypes.nfv.VduProfile",
+              "description": "Defines additional instantiation data for the VDU.Compute node"
+            },
+            {
+              "name": "description",
+              "value": "example",
+              "required": true,
+              "raw_value": "example",
+              "type": "string",
+              "description": "Human readable description of the VDU"
+            }
+          ],
+          "nodeattributes": [
+            {
+              "name": "state",
+              "value": "initial",
+              "raw_value": "initial",
+              "type": "string",
+              "description": "The state of the node instance."
+            },
+            {
+              "name": "tosca_name",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "This attribute reflects the name of the Node Template as defined in the TOSCA service template. This name is not unique to the realized instance model of corresponding deployed application as each template in the model can result in one or more instances (e.g., scaled) when orchestrated to a provider environment."
+            },
+            {
+              "name": "tosca_id",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "A unique identifier of the realized instance of a Node Template that derives from any TOSCA normative type."
+            }
+          ],
+          "artifacts": [],
+          "capabilities": [
+            {
+              "name": "virtual_compute",
+              "capabilitytype": "tosca.capabilities.nfv.VirtualCompute",
+              "capabilityproperties": [
+                {
+                  "name": "compute_requirements",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map"
+                },
+                {
+                  "name": "virtual_cpu",
+                  "value": null,
+                  "required": true,
+                  "raw_value": null,
+                  "type": "tosca.datatypes.nfv.VirtualCpu",
+                  "description": "Describes virtual CPU(s) of the virtualized compute"
+                },
+                {
+                  "name": "logical_node",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map",
+                  "description": "Describes the Logical Node requirements"
+                },
+                {
+                  "name": "virtual_local_storage",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "list",
+                  "description": "A list of virtual system disks created and destroyed as part of the VM lifecycle"
+                },
+                {
+                  "name": "requested_additional_capabilities",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map",
+                  "description": "Describes additional capability for a particular VDU"
+                },
+                {
+                  "name": "virtual_memory",
+                  "value": null,
+                  "required": true,
+                  "raw_value": null,
+                  "type": "tosca.datatypes.nfv.VirtualMemory",
+                  "description": "Describes virtual memory of the virtualized compute"
+                }
+              ]
+            },
+            {
+              "name": "virtual_binding",
+              "capabilitytype": "tosca.capabilities.nfv.VirtualBindable",
+              "capabilityproperties": []
+            },
+            {
+              "name": "feature",
+              "capabilitytype": "tosca.capabilities.Node",
+              "capabilityproperties": []
+            }
+          ],
+          "requirement": [],
+          "interfaces": [
+            {
+              "name": "Standard",
+              "inputs": [],
+              "operations": [
+                {
+                  "name": "start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "create",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "stop",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "configure",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "delete",
+                  "inputs": [],
+                  "implementation": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "test-cnf-deployment-in-hpa",
+          "description": null,
+          "nodetype": "tosca.nodes.nfv.Vdu.Compute",
+          "parent_type": "tosca.nodes.Root",
+          "nodeproperties": [
+            {
+              "name": "name",
+              "value": "test-cnf-deployment-in-hpa",
+              "required": true,
+              "raw_value": "test-cnf-deployment-in-hpa",
+              "type": "string",
+              "description": "Human readable name of the VDU"
+            },
+            {
+              "name": "sw_image_data",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "tosca.datatypes.nfv.SwImageData",
+              "description": "Defines information related to a SwImage artifact used by this Vdu.Compute node"
+            },
+            {
+              "name": "boot_order",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "References a node template name from which a valid boot device is created"
+            },
+            {
+              "name": "nfvi_constraints",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes constraints on the NFVI for the VNFC instance(s) created from this VDU"
+            },
+            {
+              "name": "boot_data",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "string",
+              "description": "Contains a string or a URL to a file contained in the VNF package used to customize a virtualised compute resource at boot time. The bootData may contain variable parts that are replaced by deployment specific values before being sent to the VIM."
+            },
+            {
+              "name": "monitoring_parameters",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes monitoring parameters applicable to a VNFC instantiated from this VDU"
+            },
+            {
+              "name": "vdu_profile",
+              "value": {
+                "max_number_of_instances": 41,
+                "min_number_of_instances": 1
+              },
+              "required": true,
+              "raw_value": {
+                "max_number_of_instances": 41,
+                "min_number_of_instances": 1
+              },
+              "type": "tosca.datatypes.nfv.VduProfile",
+              "description": "Defines additional instantiation data for the VDU.Compute node"
+            },
+            {
+              "name": "description",
+              "value": "example",
+              "required": true,
+              "raw_value": "example",
+              "type": "string",
+              "description": "Human readable description of the VDU"
+            }
+          ],
+          "nodeattributes": [
+            {
+              "name": "state",
+              "value": "initial",
+              "raw_value": "initial",
+              "type": "string",
+              "description": "The state of the node instance."
+            },
+            {
+              "name": "tosca_name",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "This attribute reflects the name of the Node Template as defined in the TOSCA service template. This name is not unique to the realized instance model of corresponding deployed application as each template in the model can result in one or more instances (e.g., scaled) when orchestrated to a provider environment."
+            },
+            {
+              "name": "tosca_id",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "A unique identifier of the realized instance of a Node Template that derives from any TOSCA normative type."
+            }
+          ],
+          "artifacts": [],
+          "capabilities": [
+            {
+              "name": "virtual_compute",
+              "capabilitytype": "tosca.capabilities.nfv.VirtualCompute",
+              "capabilityproperties": [
+                {
+                  "name": "compute_requirements",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map"
+                },
+                {
+                  "name": "virtual_cpu",
+                  "value": null,
+                  "required": true,
+                  "raw_value": null,
+                  "type": "tosca.datatypes.nfv.VirtualCpu",
+                  "description": "Describes virtual CPU(s) of the virtualized compute"
+                },
+                {
+                  "name": "logical_node",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map",
+                  "description": "Describes the Logical Node requirements"
+                },
+                {
+                  "name": "virtual_local_storage",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "list",
+                  "description": "A list of virtual system disks created and destroyed as part of the VM lifecycle"
+                },
+                {
+                  "name": "requested_additional_capabilities",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map",
+                  "description": "Describes additional capability for a particular VDU"
+                },
+                {
+                  "name": "virtual_memory",
+                  "value": null,
+                  "required": true,
+                  "raw_value": null,
+                  "type": "tosca.datatypes.nfv.VirtualMemory",
+                  "description": "Describes virtual memory of the virtualized compute"
+                }
+              ]
+            },
+            {
+              "name": "virtual_binding",
+              "capabilitytype": "tosca.capabilities.nfv.VirtualBindable",
+              "capabilityproperties": []
+            },
+            {
+              "name": "feature",
+              "capabilitytype": "tosca.capabilities.Node",
+              "capabilityproperties": []
+            }
+          ],
+          "requirement": [],
+          "interfaces": [
+            {
+              "name": "Standard",
+              "inputs": [],
+              "operations": [
+                {
+                  "name": "start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "create",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "stop",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "configure",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "delete",
+                  "inputs": [],
+                  "implementation": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "dummy-chart",
+          "description": null,
+          "nodetype": "tosca.nodes.nfv.Vdu.Compute",
+          "parent_type": "tosca.nodes.Root",
+          "nodeproperties": [
+            {
+              "name": "name",
+              "value": "dummy-chart",
+              "required": true,
+              "raw_value": "dummy-chart",
+              "type": "string",
+              "description": "Human readable name of the VDU"
+            },
+            {
+              "name": "sw_image_data",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "tosca.datatypes.nfv.SwImageData",
+              "description": "Defines information related to a SwImage artifact used by this Vdu.Compute node"
+            },
+            {
+              "name": "boot_order",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "References a node template name from which a valid boot device is created"
+            },
+            {
+              "name": "nfvi_constraints",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes constraints on the NFVI for the VNFC instance(s) created from this VDU"
+            },
+            {
+              "name": "boot_data",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "string",
+              "description": "Contains a string or a URL to a file contained in the VNF package used to customize a virtualised compute resource at boot time. The bootData may contain variable parts that are replaced by deployment specific values before being sent to the VIM."
+            },
+            {
+              "name": "monitoring_parameters",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes monitoring parameters applicable to a VNFC instantiated from this VDU"
+            },
+            {
+              "name": "vdu_profile",
+              "value": {
+                "max_number_of_instances": 22,
+                "min_number_of_instances": 2
+              },
+              "required": true,
+              "raw_value": {
+                "max_number_of_instances": 22,
+                "min_number_of_instances": 2
+              },
+              "type": "tosca.datatypes.nfv.VduProfile",
+              "description": "Defines additional instantiation data for the VDU.Compute node"
+            },
+            {
+              "name": "description",
+              "value": "example",
+              "required": true,
+              "raw_value": "example",
+              "type": "string",
+              "description": "Human readable description of the VDU"
+            }
+          ],
+          "nodeattributes": [
+            {
+              "name": "state",
+              "value": "initial",
+              "raw_value": "initial",
+              "type": "string",
+              "description": "The state of the node instance."
+            },
+            {
+              "name": "tosca_name",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "This attribute reflects the name of the Node Template as defined in the TOSCA service template. This name is not unique to the realized instance model of corresponding deployed application as each template in the model can result in one or more instances (e.g., scaled) when orchestrated to a provider environment."
+            },
+            {
+              "name": "tosca_id",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "A unique identifier of the realized instance of a Node Template that derives from any TOSCA normative type."
+            }
+          ],
+          "artifacts": [],
+          "capabilities": [
+            {
+              "name": "virtual_compute",
+              "capabilitytype": "tosca.capabilities.nfv.VirtualCompute",
+              "capabilityproperties": [
+                {
+                  "name": "compute_requirements",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map"
+                },
+                {
+                  "name": "virtual_cpu",
+                  "value": null,
+                  "required": true,
+                  "raw_value": null,
+                  "type": "tosca.datatypes.nfv.VirtualCpu",
+                  "description": "Describes virtual CPU(s) of the virtualized compute"
+                },
+                {
+                  "name": "logical_node",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map",
+                  "description": "Describes the Logical Node requirements"
+                },
+                {
+                  "name": "virtual_local_storage",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "list",
+                  "description": "A list of virtual system disks created and destroyed as part of the VM lifecycle"
+                },
+                {
+                  "name": "requested_additional_capabilities",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map",
+                  "description": "Describes additional capability for a particular VDU"
+                },
+                {
+                  "name": "virtual_memory",
+                  "value": null,
+                  "required": true,
+                  "raw_value": null,
+                  "type": "tosca.datatypes.nfv.VirtualMemory",
+                  "description": "Describes virtual memory of the virtualized compute"
+                }
+              ]
+            },
+            {
+              "name": "virtual_binding",
+              "capabilitytype": "tosca.capabilities.nfv.VirtualBindable",
+              "capabilityproperties": []
+            },
+            {
+              "name": "feature",
+              "capabilitytype": "tosca.capabilities.Node",
+              "capabilityproperties": []
+            }
+          ],
+          "requirement": [],
+          "interfaces": [
+            {
+              "name": "Standard",
+              "inputs": [],
+              "operations": [
+                {
+                  "name": "start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "create",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "stop",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "configure",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "delete",
+                  "inputs": [],
+                  "implementation": null
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "policies": [
+        {
+          "name": "Aspect4_dummy-chart",
+          "type": "tosca.policies.nfv.VduScalingAspectDeltas",
+          "properties": [
+            {
+              "name": "deltas",
+              "value": {
+                "delta_1": {
+                  "number_of_instances": 2
+                }
+              },
+              "required": true,
+              "raw_value": {
+                "delta_1": {
+                  "number_of_instances": 2
+                }
+              },
+              "type": "map",
+              "description": "Describes the Vdu.Compute scaling deltas to be applied for every scaling steps of a particular aspect."
+            },
+            {
+              "name": "aspect",
+              "value": "Aspect4",
+              "required": true,
+              "raw_value": "Aspect4",
+              "type": "string",
+              "description": "Represents the scaling aspect to which this policy applies"
+            }
+          ],
+          "targets": {
+            "node_templates": [
+              "dummy-chart"
+            ],
+            "group_templates": []
+          }
+        },
+        {
+          "name": "VduInitialDelta_dummy-chart",
+          "type": "tosca.policies.nfv.VduInitialDelta",
+          "properties": [
+            {
+              "name": "initial_delta",
+              "value": {
+                "number_of_instances": 2
+              },
+              "required": true,
+              "raw_value": {
+                "number_of_instances": 2
+              },
+              "type": "tosca.datatypes.nfv.VduLevel",
+              "description": "Represents the initial minimum size of the VNF."
+            }
+          ],
+          "targets": {
+            "node_templates": [
+              "dummy-chart"
+            ],
+            "group_templates": []
+          }
+        },
+        {
+          "name": "VduInitialDelta_test-cnf",
+          "type": "tosca.policies.nfv.VduInitialDelta",
+          "properties": [
+            {
+              "name": "initial_delta",
+              "value": {
+                "number_of_instances": 1
+              },
+              "required": true,
+              "raw_value": {
+                "number_of_instances": 1
+              },
+              "type": "tosca.datatypes.nfv.VduLevel",
+              "description": "Represents the initial minimum size of the VNF."
+            }
+          ],
+          "targets": {
+            "node_templates": [
+              "test-cnf"
+            ],
+            "group_templates": []
+          }
+        },
+        {
+          "name": "VduInitialDelta_test-cnf-deployment-in-hpa",
+          "type": "tosca.policies.nfv.VduInitialDelta",
+          "properties": [
+            {
+              "name": "initial_delta",
+              "value": {
+                "number_of_instances": 1
+              },
+              "required": true,
+              "raw_value": {
+                "number_of_instances": 1
+              },
+              "type": "tosca.datatypes.nfv.VduLevel",
+              "description": "Represents the initial minimum size of the VNF."
+            }
+          ],
+          "targets": {
+            "node_templates": [
+              "test-cnf-deployment-in-hpa"
+            ],
+            "group_templates": []
+          }
+        },
+        {
+          "name": "Aspect3_ScalingAspectDeltas3",
+          "type": "tosca.policies.nfv.VduScalingAspectDeltas",
+          "properties": [
+            {
+              "name": "deltas",
+              "value": {
+                "delta_1": {
+                  "number_of_instances": 2
+                }
+              },
+              "required": true,
+              "raw_value": {
+                "delta_1": {
+                  "number_of_instances": 2
+                }
+              },
+              "type": "map",
+              "description": "Describes the Vdu.Compute scaling deltas to be applied for every scaling steps of a particular aspect."
+            },
+            {
+              "name": "aspect",
+              "value": "Aspect3",
+              "required": true,
+              "raw_value": "Aspect3",
+              "type": "string",
+              "description": "Represents the scaling aspect to which this policy applies"
+            }
+          ],
+          "targets": {
+            "node_templates": [
+              "test-cnf"
+            ],
+            "group_templates": []
+          }
+        },
+        {
+          "name": "Aspect2_ScalingAspectDeltas1",
+          "type": "tosca.policies.nfv.VduScalingAspectDeltas",
+          "properties": [
+            {
+              "name": "deltas",
+              "value": {
+                "delta_4": {
+                  "number_of_instances": 3
+                },
+                "delta_1": {
+                  "number_of_instances": 4
+                },
+                "delta_2": {
+                  "number_of_instances": 1
+                },
+                "delta_3": {
+                  "number_of_instances": 9
+                }
+              },
+              "required": true,
+              "raw_value": {
+                "delta_4": {
+                  "number_of_instances": 3
+                },
+                "delta_1": {
+                  "number_of_instances": 4
+                },
+                "delta_2": {
+                  "number_of_instances": 1
+                },
+                "delta_3": {
+                  "number_of_instances": 9
+                }
+              },
+              "type": "map",
+              "description": "Describes the Vdu.Compute scaling deltas to be applied for every scaling steps of a particular aspect."
+            },
+            {
+              "name": "aspect",
+              "value": "Aspect2",
+              "required": true,
+              "raw_value": "Aspect2",
+              "type": "string",
+              "description": "Represents the scaling aspect to which this policy applies"
+            }
+          ],
+          "targets": {
+            "node_templates": [
+              "test-cnf-with-hpa-deployment-in-hpa"
+            ],
+            "group_templates": []
+          }
+        },
+        {
+          "name": "Aspect1_ScalingAspectDeltas2",
+          "type": "tosca.policies.nfv.VduScalingAspectDeltas",
+          "properties": [
+            {
+              "name": "deltas",
+              "value": {
+                "delta_1": {
+                  "number_of_instances": 4
+                }
+              },
+              "required": true,
+              "raw_value": {
+                "delta_1": {
+                  "number_of_instances": 4
+                }
+              },
+              "type": "map",
+              "description": "Describes the Vdu.Compute scaling deltas to be applied for every scaling steps of a particular aspect."
+            },
+            {
+              "name": "aspect",
+              "value": "Aspect1",
+              "required": true,
+              "raw_value": "Aspect1",
+              "type": "string",
+              "description": "Represents the scaling aspect to which this policy applies"
+            }
+          ],
+          "targets": {
+            "node_templates": [
+              "test-cnf-deployment-in-hpa"
+            ],
+            "group_templates": []
+          }
+        },
+        {
+          "name": "ScalingAspects1",
+          "type": "tosca.policies.nfv.ScalingAspects",
+          "properties": [
+            {
+              "name": "aspects",
+              "value": {
+                "Aspect3": {
+                  "max_scale_level": 12,
+                  "description": "Scale level 0-12 maps to 1-25 for test-cnf VNFC instances\n",
+                  "name": "Aspect3 name",
+                  "step_deltas": [
+                    "delta_1"
+                  ]
+                },
+                "Aspect2": {
+                  "max_scale_level": 7,
+                  "description": "Scale level 0 maps to 1 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 1 maps to 5 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 2 maps to 6 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 3 maps to 15 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 4 maps to 18 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 5 maps to 21 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 6 maps to 24 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 7 maps to 27 instance of test-cnf-with-hpa-deployment-in-hpa VNFC\n",
+                  "name": "Aspect2 name",
+                  "step_deltas": [
+                    "delta_1",
+                    "delta_2",
+                    "delta_3",
+                    "delta_4"
+                  ]
+                },
+                "Aspect1": {
+                  "max_scale_level": 10,
+                  "description": "Scale level 0-10 maps to 1-41 for test-cnf-deployment-in-hpa VNFC instances\n",
+                  "name": "Aspect1 name",
+                  "step_deltas": [
+                    "delta_1"
+                  ]
+                }
+              },
+              "required": true,
+              "raw_value": {
+                "Aspect3": {
+                  "max_scale_level": 12,
+                  "description": "Scale level 0-12 maps to 1-25 for test-cnf VNFC instances\n",
+                  "name": "Aspect3 name",
+                  "step_deltas": [
+                    "delta_1"
+                  ]
+                },
+                "Aspect2": {
+                  "max_scale_level": 7,
+                  "description": "Scale level 0 maps to 1 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 1 maps to 5 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 2 maps to 6 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 3 maps to 15 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 4 maps to 18 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 5 maps to 21 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 6 maps to 24 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 7 maps to 27 instance of test-cnf-with-hpa-deployment-in-hpa VNFC\n",
+                  "name": "Aspect2 name",
+                  "step_deltas": [
+                    "delta_1",
+                    "delta_2",
+                    "delta_3",
+                    "delta_4"
+                  ]
+                },
+                "Aspect1": {
+                  "max_scale_level": 10,
+                  "description": "Scale level 0-10 maps to 1-41 for test-cnf-deployment-in-hpa VNFC instances\n",
+                  "name": "Aspect1 name",
+                  "step_deltas": [
+                    "delta_1"
+                  ]
+                }
+              },
+              "type": "map",
+              "description": "Describe maximum scale level for total number of scaling steps that can be applied to a particular aspect"
+            }
+          ]
+        },
+        {
+          "name": "ScalingAspects2",
+          "type": "tosca.policies.nfv.ScalingAspects",
+          "properties": [
+            {
+              "name": "aspects",
+              "value": {
+                "Aspect4": {
+                  "max_scale_level": 10,
+                  "description": "Scale level 0-10 maps to 2-22 for dummy-chart VNFC instances\n",
+                  "name": "Aspect4 name",
+                  "step_deltas": [
+                    "delta_1"
+                  ]
+                }
+              },
+              "required": true,
+              "raw_value": {
+                "Aspect4": {
+                  "max_scale_level": 10,
+                  "description": "Scale level 0-10 maps to 2-22 for dummy-chart VNFC instances\n",
+                  "name": "Aspect4 name",
+                  "step_deltas": [
+                    "delta_1"
+                  ]
+                }
+              },
+              "type": "map",
+              "description": "Describe maximum scale level for total number of scaling steps that can be applied to a particular aspect"
+            }
+          ]
+        },
+        {
+          "name": "VduInitialDelta_test-cnf-with-hpa-deployment-in-hpa",
+          "type": "tosca.policies.nfv.VduInitialDelta",
+          "properties": [
+            {
+              "name": "initial_delta",
+              "value": {
+                "number_of_instances": 1
+              },
+              "required": true,
+              "raw_value": {
+                "number_of_instances": 1
+              },
+              "type": "tosca.datatypes.nfv.VduLevel",
+              "description": "Represents the initial minimum size of the VNF."
+            }
+          ],
+          "targets": {
+            "node_templates": [
+              "test-cnf-with-hpa-deployment-in-hpa"
+            ],
+            "group_templates": []
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "1594a376-6f67-4d13-8d28-58e070289656",
+    "creTime": "2021-09-07 18:36:38.351191",
+    "name": "test1",
+    "version": "1.0.0",
+    "description": "VNF Descriptor for Ericsson SGSN-MME",
+    "mainSTfile": "smaple-vnf-descriptor.yaml",
+    "dsl_version": "tosca_simple_yaml_1_2",
+    "topology": {
+      "inputs": [
+        {
+          "name": "modifiable_attributes",
+          "value": null,
+          "required": true,
+          "type": "ericsson.datatypes.nfv.VnfInfoModifiableAttributes"
+        }
+      ],
+      "node_templates": [
+        {
+          "name": "SAMPLE-VNF",
+          "description": null,
+          "nodetype": "Ericsson.SAMPLE-VNF.1_25_CXS101289_R81E08.cxp9025898_4r81e08",
+          "parent_type": "tosca.nodes.nfv.VNF",
+          "nodeproperties": [
+            {
+              "name": "descriptor_id",
+              "value": "def1ce-4cf4-477c-aab3-2b04e6f556",
+              "required": true,
+              "raw_value": "def1ce-4cf4-477c-aab3-2b04e6f556",
+              "type": "string",
+              "description": "Globally unique identifier of the VNFD",
+              "constraints": [
+                {
+                  "operator": "valid_values",
+                  "value": [
+                    "def1ce-4cf4-477c-aab3-2b04e6a382"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "flavour_description",
+              "value": "",
+              "required": true,
+              "raw_value": "",
+              "type": "string",
+              "description": "Human readable description of the DF"
+            },
+            {
+              "name": "provider",
+              "value": "Ericsson",
+              "required": true,
+              "raw_value": "Ericsson",
+              "type": "string",
+              "description": "Provider of the VNF and of the VNFD",
+              "constraints": [
+                {
+                  "operator": "valid_values",
+                  "value": [
+                    "Ericsson"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "software_version",
+              "value": "1.25 (CXS101289_R81E08)",
+              "required": true,
+              "raw_value": "1.25 (CXS101289_R81E08)",
+              "type": "string",
+              "description": "Software version of the VNF",
+              "constraints": [
+                {
+                  "operator": "valid_values",
+                  "value": [
+                    "1.25 (CXS101289_R81E08)"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "product_info_name",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "string",
+              "description": "Human readable name for the VNF Product"
+            },
+            {
+              "name": "modifiable_attributes",
+              "value": null,
+              "required": true,
+              "raw_value": {
+                "get_input": "modifiable_attributes"
+              },
+              "type": "tosca.datatypes.nfv.VnfInfoModifiableAttributes"
+            },
+            {
+              "name": "localization_languages",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Information about localization languages of the VNF"
+            },
+            {
+              "name": "flavour_id",
+              "value": "default",
+              "required": true,
+              "raw_value": "default",
+              "type": "string",
+              "description": "Identifier of the Deployment Flavour within the VNFD",
+              "constraints": [
+                {
+                  "operator": "valid_values",
+                  "value": [
+                    "default"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "descriptor_version",
+              "value": "cxp9025898_4r81e08",
+              "required": true,
+              "raw_value": "cxp9025898_4r81e08",
+              "type": "string",
+              "description": "Identifies the version of the VNFD",
+              "constraints": [
+                {
+                  "operator": "valid_values",
+                  "value": [
+                    "cxp9025898_4r81e08"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "product_info_description",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "string",
+              "description": "Human readable description of the VNF Product"
+            },
+            {
+              "name": "monitoring_parameters",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes monitoring parameters applicable to the VNF."
+            },
+            {
+              "name": "default_localization_language",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "string",
+              "description": "Default localization language that is instantiated if no information about selected localization language is available"
+            },
+            {
+              "name": "lcm_operations_configuration",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "tosca.datatypes.nfv.VnfLcmOperationsConfiguration",
+              "description": "Describes the configuration parameters for the VNF LCM operations"
+            },
+            {
+              "name": "vnfm_info",
+              "value": [
+                "3881:E-VNFM"
+              ],
+              "required": true,
+              "raw_value": [
+                "3881:E-VNFM"
+              ],
+              "type": "list",
+              "description": "Identifies VNFM(s) compatible with the VNF"
+            },
+            {
+              "name": "product_name",
+              "value": "SAMPLE-VNF",
+              "required": true,
+              "raw_value": "SAMPLE-VNF",
+              "type": "string",
+              "description": "Human readable name for the VNF Product",
+              "constraints": [
+                {
+                  "operator": "valid_values",
+                  "value": [
+                    "SAMPLE-VNF"
+                  ]
+                }
+              ]
+            }
+          ],
+          "nodeattributes": [
+            {
+              "name": "state",
+              "value": "initial",
+              "raw_value": "initial",
+              "type": "string",
+              "description": "The state of the node instance."
+            },
+            {
+              "name": "tosca_name",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "This attribute reflects the name of the Node Template as defined in the TOSCA service template. This name is not unique to the realized instance model of corresponding deployed application as each template in the model can result in one or more instances (e.g., scaled) when orchestrated to a provider environment."
+            },
+            {
+              "name": "tosca_id",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "A unique identifier of the realized instance of a Node Template that derives from any TOSCA normative type."
+            }
+          ],
+          "artifacts": [
+            {
+              "name": "helm_package2",
+              "type": "tosca.artifacts.File",
+              "file": "Definitions/OtherTemplates/dummy-chart-1-0.1.0.tgz"
+            },
+            {
+              "name": "helm_package1",
+              "type": "tosca.artifacts.File",
+              "file": "Definitions/OtherTemplates/test-scale-chart-0.1.0.tgz"
+            },
+            {
+              "name": "software_images",
+              "type": "tosca.artifacts.nfv.SwImage",
+              "file": "Files/images/docker.tar"
+            }
+          ],
+          "capabilities": [
+            {
+              "name": "feature",
+              "capabilitytype": "tosca.capabilities.Node",
+              "capabilityproperties": []
+            }
+          ],
+          "requirement": [],
+          "interfaces": [
+            {
+              "name": "Vnflcm",
+              "inputs": [],
+              "operations": [
+                {
+                  "name": "heal_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "terminate",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "change_flavour",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "change_external_connectivity_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "scale_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "scale_to_level_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "scale",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "modify_information_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "terminate_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "instantiate_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "scale_to_level_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "change_external_connectivity",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "change_external_connectivity_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "change_flavour_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "operate_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "heal",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "change_flavour_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "instantiate_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "terminate_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "heal_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "modify_information",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "modify_information_start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "operate_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "instantiate",
+                  "inputs": [
+                    {
+                      "name": "helm_packages",
+                      "value": [
+                        "Definitions/OtherTemplates/test-scale-chart-0.1.0.tgz",
+                        "Definitions/OtherTemplates/dummy-chart-1-0.1.0.tgz"
+                      ],
+                      "required": true,
+                      "raw_value": [
+                        "Definitions/OtherTemplates/test-scale-chart-0.1.0.tgz",
+                        "Definitions/OtherTemplates/dummy-chart-1-0.1.0.tgz"
+                      ],
+                      "type": "list",
+                      "description": "list of all helm charts"
+                    },
+                    {
+                      "name": "additional_parameters",
+                      "value": null,
+                      "required": false,
+                      "raw_value": null,
+                      "type": "ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters"
+                    }
+                  ],
+                  "implementation": null
+                },
+                {
+                  "name": "scale_end",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "scale_to_level",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "operate",
+                  "inputs": [],
+                  "implementation": null
+                }
+              ]
+            },
+            {
+              "name": "Standard",
+              "inputs": [],
+              "operations": [
+                {
+                  "name": "start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "create",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "stop",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "configure",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "delete",
+                  "inputs": [],
+                  "implementation": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "test-cnf-with-hpa-deployment-in-hpa",
+          "description": null,
+          "nodetype": "tosca.nodes.nfv.Vdu.Compute",
+          "parent_type": "tosca.nodes.Root",
+          "nodeproperties": [
+            {
+              "name": "name",
+              "value": "test-cnf-with-hpa-deployment-in-hpa",
+              "required": true,
+              "raw_value": "test-cnf-with-hpa-deployment-in-hpa",
+              "type": "string",
+              "description": "Human readable name of the VDU"
+            },
+            {
+              "name": "sw_image_data",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "tosca.datatypes.nfv.SwImageData",
+              "description": "Defines information related to a SwImage artifact used by this Vdu.Compute node"
+            },
+            {
+              "name": "boot_order",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "References a node template name from which a valid boot device is created"
+            },
+            {
+              "name": "nfvi_constraints",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes constraints on the NFVI for the VNFC instance(s) created from this VDU"
+            },
+            {
+              "name": "boot_data",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "string",
+              "description": "Contains a string or a URL to a file contained in the VNF package used to customize a virtualised compute resource at boot time. The bootData may contain variable parts that are replaced by deployment specific values before being sent to the VIM."
+            },
+            {
+              "name": "monitoring_parameters",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes monitoring parameters applicable to a VNFC instantiated from this VDU"
+            },
+            {
+              "name": "vdu_profile",
+              "value": {
+                "max_number_of_instances": 27,
+                "min_number_of_instances": 1
+              },
+              "required": true,
+              "raw_value": {
+                "max_number_of_instances": 27,
+                "min_number_of_instances": 1
+              },
+              "type": "tosca.datatypes.nfv.VduProfile",
+              "description": "Defines additional instantiation data for the VDU.Compute node"
+            },
+            {
+              "name": "description",
+              "value": "example",
+              "required": true,
+              "raw_value": "example",
+              "type": "string",
+              "description": "Human readable description of the VDU"
+            }
+          ],
+          "nodeattributes": [
+            {
+              "name": "state",
+              "value": "initial",
+              "raw_value": "initial",
+              "type": "string",
+              "description": "The state of the node instance."
+            },
+            {
+              "name": "tosca_name",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "This attribute reflects the name of the Node Template as defined in the TOSCA service template. This name is not unique to the realized instance model of corresponding deployed application as each template in the model can result in one or more instances (e.g., scaled) when orchestrated to a provider environment."
+            },
+            {
+              "name": "tosca_id",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "A unique identifier of the realized instance of a Node Template that derives from any TOSCA normative type."
+            }
+          ],
+          "artifacts": [],
+          "capabilities": [
+            {
+              "name": "virtual_compute",
+              "capabilitytype": "tosca.capabilities.nfv.VirtualCompute",
+              "capabilityproperties": [
+                {
+                  "name": "compute_requirements",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map"
+                },
+                {
+                  "name": "virtual_cpu",
+                  "value": null,
+                  "required": true,
+                  "raw_value": null,
+                  "type": "tosca.datatypes.nfv.VirtualCpu",
+                  "description": "Describes virtual CPU(s) of the virtualized compute"
+                },
+                {
+                  "name": "logical_node",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map",
+                  "description": "Describes the Logical Node requirements"
+                },
+                {
+                  "name": "virtual_local_storage",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "list",
+                  "description": "A list of virtual system disks created and destroyed as part of the VM lifecycle"
+                },
+                {
+                  "name": "requested_additional_capabilities",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map",
+                  "description": "Describes additional capability for a particular VDU"
+                },
+                {
+                  "name": "virtual_memory",
+                  "value": null,
+                  "required": true,
+                  "raw_value": null,
+                  "type": "tosca.datatypes.nfv.VirtualMemory",
+                  "description": "Describes virtual memory of the virtualized compute"
+                }
+              ]
+            },
+            {
+              "name": "virtual_binding",
+              "capabilitytype": "tosca.capabilities.nfv.VirtualBindable",
+              "capabilityproperties": []
+            },
+            {
+              "name": "feature",
+              "capabilitytype": "tosca.capabilities.Node",
+              "capabilityproperties": []
+            }
+          ],
+          "requirement": [],
+          "interfaces": [
+            {
+              "name": "Standard",
+              "inputs": [],
+              "operations": [
+                {
+                  "name": "start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "create",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "stop",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "configure",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "delete",
+                  "inputs": [],
+                  "implementation": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "test-cnf",
+          "description": null,
+          "nodetype": "tosca.nodes.nfv.Vdu.Compute",
+          "parent_type": "tosca.nodes.Root",
+          "nodeproperties": [
+            {
+              "name": "name",
+              "value": "test-cnf-vnfc2",
+              "required": true,
+              "raw_value": "test-cnf-vnfc2",
+              "type": "string",
+              "description": "Human readable name of the VDU"
+            },
+            {
+              "name": "sw_image_data",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "tosca.datatypes.nfv.SwImageData",
+              "description": "Defines information related to a SwImage artifact used by this Vdu.Compute node"
+            },
+            {
+              "name": "boot_order",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "References a node template name from which a valid boot device is created"
+            },
+            {
+              "name": "nfvi_constraints",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes constraints on the NFVI for the VNFC instance(s) created from this VDU"
+            },
+            {
+              "name": "boot_data",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "string",
+              "description": "Contains a string or a URL to a file contained in the VNF package used to customize a virtualised compute resource at boot time. The bootData may contain variable parts that are replaced by deployment specific values before being sent to the VIM."
+            },
+            {
+              "name": "monitoring_parameters",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes monitoring parameters applicable to a VNFC instantiated from this VDU"
+            },
+            {
+              "name": "vdu_profile",
+              "value": {
+                "max_number_of_instances": 25,
+                "min_number_of_instances": 1
+              },
+              "required": true,
+              "raw_value": {
+                "max_number_of_instances": 25,
+                "min_number_of_instances": 1
+              },
+              "type": "tosca.datatypes.nfv.VduProfile",
+              "description": "Defines additional instantiation data for the VDU.Compute node"
+            },
+            {
+              "name": "description",
+              "value": "example",
+              "required": true,
+              "raw_value": "example",
+              "type": "string",
+              "description": "Human readable description of the VDU"
+            }
+          ],
+          "nodeattributes": [
+            {
+              "name": "state",
+              "value": "initial",
+              "raw_value": "initial",
+              "type": "string",
+              "description": "The state of the node instance."
+            },
+            {
+              "name": "tosca_name",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "This attribute reflects the name of the Node Template as defined in the TOSCA service template. This name is not unique to the realized instance model of corresponding deployed application as each template in the model can result in one or more instances (e.g., scaled) when orchestrated to a provider environment."
+            },
+            {
+              "name": "tosca_id",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "A unique identifier of the realized instance of a Node Template that derives from any TOSCA normative type."
+            }
+          ],
+          "artifacts": [],
+          "capabilities": [
+            {
+              "name": "virtual_compute",
+              "capabilitytype": "tosca.capabilities.nfv.VirtualCompute",
+              "capabilityproperties": [
+                {
+                  "name": "compute_requirements",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map"
+                },
+                {
+                  "name": "virtual_cpu",
+                  "value": null,
+                  "required": true,
+                  "raw_value": null,
+                  "type": "tosca.datatypes.nfv.VirtualCpu",
+                  "description": "Describes virtual CPU(s) of the virtualized compute"
+                },
+                {
+                  "name": "logical_node",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map",
+                  "description": "Describes the Logical Node requirements"
+                },
+                {
+                  "name": "virtual_local_storage",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "list",
+                  "description": "A list of virtual system disks created and destroyed as part of the VM lifecycle"
+                },
+                {
+                  "name": "requested_additional_capabilities",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map",
+                  "description": "Describes additional capability for a particular VDU"
+                },
+                {
+                  "name": "virtual_memory",
+                  "value": null,
+                  "required": true,
+                  "raw_value": null,
+                  "type": "tosca.datatypes.nfv.VirtualMemory",
+                  "description": "Describes virtual memory of the virtualized compute"
+                }
+              ]
+            },
+            {
+              "name": "virtual_binding",
+              "capabilitytype": "tosca.capabilities.nfv.VirtualBindable",
+              "capabilityproperties": []
+            },
+            {
+              "name": "feature",
+              "capabilitytype": "tosca.capabilities.Node",
+              "capabilityproperties": []
+            }
+          ],
+          "requirement": [],
+          "interfaces": [
+            {
+              "name": "Standard",
+              "inputs": [],
+              "operations": [
+                {
+                  "name": "start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "create",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "stop",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "configure",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "delete",
+                  "inputs": [],
+                  "implementation": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "test-cnf-deployment-in-hpa",
+          "description": null,
+          "nodetype": "tosca.nodes.nfv.Vdu.Compute",
+          "parent_type": "tosca.nodes.Root",
+          "nodeproperties": [
+            {
+              "name": "name",
+              "value": "test-cnf-deployment-in-hpa",
+              "required": true,
+              "raw_value": "test-cnf-deployment-in-hpa",
+              "type": "string",
+              "description": "Human readable name of the VDU"
+            },
+            {
+              "name": "sw_image_data",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "tosca.datatypes.nfv.SwImageData",
+              "description": "Defines information related to a SwImage artifact used by this Vdu.Compute node"
+            },
+            {
+              "name": "boot_order",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "References a node template name from which a valid boot device is created"
+            },
+            {
+              "name": "nfvi_constraints",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes constraints on the NFVI for the VNFC instance(s) created from this VDU"
+            },
+            {
+              "name": "boot_data",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "string",
+              "description": "Contains a string or a URL to a file contained in the VNF package used to customize a virtualised compute resource at boot time. The bootData may contain variable parts that are replaced by deployment specific values before being sent to the VIM."
+            },
+            {
+              "name": "monitoring_parameters",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes monitoring parameters applicable to a VNFC instantiated from this VDU"
+            },
+            {
+              "name": "vdu_profile",
+              "value": {
+                "max_number_of_instances": 41,
+                "min_number_of_instances": 1
+              },
+              "required": true,
+              "raw_value": {
+                "max_number_of_instances": 41,
+                "min_number_of_instances": 1
+              },
+              "type": "tosca.datatypes.nfv.VduProfile",
+              "description": "Defines additional instantiation data for the VDU.Compute node"
+            },
+            {
+              "name": "description",
+              "value": "example",
+              "required": true,
+              "raw_value": "example",
+              "type": "string",
+              "description": "Human readable description of the VDU"
+            }
+          ],
+          "nodeattributes": [
+            {
+              "name": "state",
+              "value": "initial",
+              "raw_value": "initial",
+              "type": "string",
+              "description": "The state of the node instance."
+            },
+            {
+              "name": "tosca_name",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "This attribute reflects the name of the Node Template as defined in the TOSCA service template. This name is not unique to the realized instance model of corresponding deployed application as each template in the model can result in one or more instances (e.g., scaled) when orchestrated to a provider environment."
+            },
+            {
+              "name": "tosca_id",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "A unique identifier of the realized instance of a Node Template that derives from any TOSCA normative type."
+            }
+          ],
+          "artifacts": [],
+          "capabilities": [
+            {
+              "name": "virtual_compute",
+              "capabilitytype": "tosca.capabilities.nfv.VirtualCompute",
+              "capabilityproperties": [
+                {
+                  "name": "compute_requirements",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map"
+                },
+                {
+                  "name": "virtual_cpu",
+                  "value": null,
+                  "required": true,
+                  "raw_value": null,
+                  "type": "tosca.datatypes.nfv.VirtualCpu",
+                  "description": "Describes virtual CPU(s) of the virtualized compute"
+                },
+                {
+                  "name": "logical_node",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map",
+                  "description": "Describes the Logical Node requirements"
+                },
+                {
+                  "name": "virtual_local_storage",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "list",
+                  "description": "A list of virtual system disks created and destroyed as part of the VM lifecycle"
+                },
+                {
+                  "name": "requested_additional_capabilities",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map",
+                  "description": "Describes additional capability for a particular VDU"
+                },
+                {
+                  "name": "virtual_memory",
+                  "value": null,
+                  "required": true,
+                  "raw_value": null,
+                  "type": "tosca.datatypes.nfv.VirtualMemory",
+                  "description": "Describes virtual memory of the virtualized compute"
+                }
+              ]
+            },
+            {
+              "name": "virtual_binding",
+              "capabilitytype": "tosca.capabilities.nfv.VirtualBindable",
+              "capabilityproperties": []
+            },
+            {
+              "name": "feature",
+              "capabilitytype": "tosca.capabilities.Node",
+              "capabilityproperties": []
+            }
+          ],
+          "requirement": [],
+          "interfaces": [
+            {
+              "name": "Standard",
+              "inputs": [],
+              "operations": [
+                {
+                  "name": "start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "create",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "stop",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "configure",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "delete",
+                  "inputs": [],
+                  "implementation": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "dummy-chart",
+          "description": null,
+          "nodetype": "tosca.nodes.nfv.Vdu.Compute",
+          "parent_type": "tosca.nodes.Root",
+          "nodeproperties": [
+            {
+              "name": "name",
+              "value": "dummy-chart",
+              "required": true,
+              "raw_value": "dummy-chart",
+              "type": "string",
+              "description": "Human readable name of the VDU"
+            },
+            {
+              "name": "sw_image_data",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "tosca.datatypes.nfv.SwImageData",
+              "description": "Defines information related to a SwImage artifact used by this Vdu.Compute node"
+            },
+            {
+              "name": "boot_order",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "References a node template name from which a valid boot device is created"
+            },
+            {
+              "name": "nfvi_constraints",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes constraints on the NFVI for the VNFC instance(s) created from this VDU"
+            },
+            {
+              "name": "boot_data",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "string",
+              "description": "Contains a string or a URL to a file contained in the VNF package used to customize a virtualised compute resource at boot time. The bootData may contain variable parts that are replaced by deployment specific values before being sent to the VIM."
+            },
+            {
+              "name": "monitoring_parameters",
+              "value": null,
+              "required": false,
+              "raw_value": null,
+              "type": "list",
+              "description": "Describes monitoring parameters applicable to a VNFC instantiated from this VDU"
+            },
+            {
+              "name": "vdu_profile",
+              "value": {
+                "max_number_of_instances": 22,
+                "min_number_of_instances": 2
+              },
+              "required": true,
+              "raw_value": {
+                "max_number_of_instances": 22,
+                "min_number_of_instances": 2
+              },
+              "type": "tosca.datatypes.nfv.VduProfile",
+              "description": "Defines additional instantiation data for the VDU.Compute node"
+            },
+            {
+              "name": "description",
+              "value": "example",
+              "required": true,
+              "raw_value": "example",
+              "type": "string",
+              "description": "Human readable description of the VDU"
+            }
+          ],
+          "nodeattributes": [
+            {
+              "name": "state",
+              "value": "initial",
+              "raw_value": "initial",
+              "type": "string",
+              "description": "The state of the node instance."
+            },
+            {
+              "name": "tosca_name",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "This attribute reflects the name of the Node Template as defined in the TOSCA service template. This name is not unique to the realized instance model of corresponding deployed application as each template in the model can result in one or more instances (e.g., scaled) when orchestrated to a provider environment."
+            },
+            {
+              "name": "tosca_id",
+              "value": null,
+              "raw_value": null,
+              "type": "string",
+              "description": "A unique identifier of the realized instance of a Node Template that derives from any TOSCA normative type."
+            }
+          ],
+          "artifacts": [],
+          "capabilities": [
+            {
+              "name": "virtual_compute",
+              "capabilitytype": "tosca.capabilities.nfv.VirtualCompute",
+              "capabilityproperties": [
+                {
+                  "name": "compute_requirements",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map"
+                },
+                {
+                  "name": "virtual_cpu",
+                  "value": null,
+                  "required": true,
+                  "raw_value": null,
+                  "type": "tosca.datatypes.nfv.VirtualCpu",
+                  "description": "Describes virtual CPU(s) of the virtualized compute"
+                },
+                {
+                  "name": "logical_node",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map",
+                  "description": "Describes the Logical Node requirements"
+                },
+                {
+                  "name": "virtual_local_storage",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "list",
+                  "description": "A list of virtual system disks created and destroyed as part of the VM lifecycle"
+                },
+                {
+                  "name": "requested_additional_capabilities",
+                  "value": null,
+                  "required": false,
+                  "raw_value": null,
+                  "type": "map",
+                  "description": "Describes additional capability for a particular VDU"
+                },
+                {
+                  "name": "virtual_memory",
+                  "value": null,
+                  "required": true,
+                  "raw_value": null,
+                  "type": "tosca.datatypes.nfv.VirtualMemory",
+                  "description": "Describes virtual memory of the virtualized compute"
+                }
+              ]
+            },
+            {
+              "name": "virtual_binding",
+              "capabilitytype": "tosca.capabilities.nfv.VirtualBindable",
+              "capabilityproperties": []
+            },
+            {
+              "name": "feature",
+              "capabilitytype": "tosca.capabilities.Node",
+              "capabilityproperties": []
+            }
+          ],
+          "requirement": [],
+          "interfaces": [
+            {
+              "name": "Standard",
+              "inputs": [],
+              "operations": [
+                {
+                  "name": "start",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "create",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "stop",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "configure",
+                  "inputs": [],
+                  "implementation": null
+                },
+                {
+                  "name": "delete",
+                  "inputs": [],
+                  "implementation": null
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "policies": [
+        {
+          "name": "Aspect4_dummy-chart",
+          "type": "tosca.policies.nfv.VduScalingAspectDeltas",
+          "properties": [
+            {
+              "name": "deltas",
+              "value": {
+                "delta_1": {
+                  "number_of_instances": 2
+                }
+              },
+              "required": true,
+              "raw_value": {
+                "delta_1": {
+                  "number_of_instances": 2
+                }
+              },
+              "type": "map",
+              "description": "Describes the Vdu.Compute scaling deltas to be applied for every scaling steps of a particular aspect."
+            },
+            {
+              "name": "aspect",
+              "value": "Aspect4",
+              "required": true,
+              "raw_value": "Aspect4",
+              "type": "string",
+              "description": "Represents the scaling aspect to which this policy applies"
+            }
+          ],
+          "targets": {
+            "node_templates": [
+              "dummy-chart"
+            ],
+            "group_templates": []
+          }
+        },
+        {
+          "name": "VduInitialDelta_dummy-chart",
+          "type": "tosca.policies.nfv.VduInitialDelta",
+          "properties": [
+            {
+              "name": "initial_delta",
+              "value": {
+                "number_of_instances": 2
+              },
+              "required": true,
+              "raw_value": {
+                "number_of_instances": 2
+              },
+              "type": "tosca.datatypes.nfv.VduLevel",
+              "description": "Represents the initial minimum size of the VNF."
+            }
+          ],
+          "targets": {
+            "node_templates": [
+              "dummy-chart"
+            ],
+            "group_templates": []
+          }
+        },
+        {
+          "name": "VduInitialDelta_test-cnf",
+          "type": "tosca.policies.nfv.VduInitialDelta",
+          "properties": [
+            {
+              "name": "initial_delta",
+              "value": {
+                "number_of_instances": 1
+              },
+              "required": true,
+              "raw_value": {
+                "number_of_instances": 1
+              },
+              "type": "tosca.datatypes.nfv.VduLevel",
+              "description": "Represents the initial minimum size of the VNF."
+            }
+          ],
+          "targets": {
+            "node_templates": [
+              "test-cnf"
+            ],
+            "group_templates": []
+          }
+        },
+        {
+          "name": "VduInitialDelta_test-cnf-deployment-in-hpa",
+          "type": "tosca.policies.nfv.VduInitialDelta",
+          "properties": [
+            {
+              "name": "initial_delta",
+              "value": {
+                "number_of_instances": 1
+              },
+              "required": true,
+              "raw_value": {
+                "number_of_instances": 1
+              },
+              "type": "tosca.datatypes.nfv.VduLevel",
+              "description": "Represents the initial minimum size of the VNF."
+            }
+          ],
+          "targets": {
+            "node_templates": [
+              "test-cnf-deployment-in-hpa"
+            ],
+            "group_templates": []
+          }
+        },
+        {
+          "name": "Aspect3_ScalingAspectDeltas3",
+          "type": "tosca.policies.nfv.VduScalingAspectDeltas",
+          "properties": [
+            {
+              "name": "deltas",
+              "value": {
+                "delta_1": {
+                  "number_of_instances": 2
+                }
+              },
+              "required": true,
+              "raw_value": {
+                "delta_1": {
+                  "number_of_instances": 2
+                }
+              },
+              "type": "map",
+              "description": "Describes the Vdu.Compute scaling deltas to be applied for every scaling steps of a particular aspect."
+            },
+            {
+              "name": "aspect",
+              "value": "Aspect3",
+              "required": true,
+              "raw_value": "Aspect3",
+              "type": "string",
+              "description": "Represents the scaling aspect to which this policy applies"
+            }
+          ],
+          "targets": {
+            "node_templates": [
+              "test-cnf"
+            ],
+            "group_templates": []
+          }
+        },
+        {
+          "name": "Aspect2_ScalingAspectDeltas1",
+          "type": "tosca.policies.nfv.VduScalingAspectDeltas",
+          "properties": [
+            {
+              "name": "deltas",
+              "value": {
+                "delta_4": {
+                  "number_of_instances": 3
+                },
+                "delta_1": {
+                  "number_of_instances": 4
+                },
+                "delta_2": {
+                  "number_of_instances": 1
+                },
+                "delta_3": {
+                  "number_of_instances": 9
+                }
+              },
+              "required": true,
+              "raw_value": {
+                "delta_4": {
+                  "number_of_instances": 3
+                },
+                "delta_1": {
+                  "number_of_instances": 4
+                },
+                "delta_2": {
+                  "number_of_instances": 1
+                },
+                "delta_3": {
+                  "number_of_instances": 9
+                }
+              },
+              "type": "map",
+              "description": "Describes the Vdu.Compute scaling deltas to be applied for every scaling steps of a particular aspect."
+            },
+            {
+              "name": "aspect",
+              "value": "Aspect2",
+              "required": true,
+              "raw_value": "Aspect2",
+              "type": "string",
+              "description": "Represents the scaling aspect to which this policy applies"
+            }
+          ],
+          "targets": {
+            "node_templates": [
+              "test-cnf-with-hpa-deployment-in-hpa"
+            ],
+            "group_templates": []
+          }
+        },
+        {
+          "name": "Aspect1_ScalingAspectDeltas2",
+          "type": "tosca.policies.nfv.VduScalingAspectDeltas",
+          "properties": [
+            {
+              "name": "deltas",
+              "value": {
+                "delta_1": {
+                  "number_of_instances": 4
+                }
+              },
+              "required": true,
+              "raw_value": {
+                "delta_1": {
+                  "number_of_instances": 4
+                }
+              },
+              "type": "map",
+              "description": "Describes the Vdu.Compute scaling deltas to be applied for every scaling steps of a particular aspect."
+            },
+            {
+              "name": "aspect",
+              "value": "Aspect1",
+              "required": true,
+              "raw_value": "Aspect1",
+              "type": "string",
+              "description": "Represents the scaling aspect to which this policy applies"
+            }
+          ],
+          "targets": {
+            "node_templates": [
+              "test-cnf-deployment-in-hpa"
+            ],
+            "group_templates": []
+          }
+        },
+        {
+          "name": "ScalingAspects1",
+          "type": "tosca.policies.nfv.ScalingAspects",
+          "properties": [
+            {
+              "name": "aspects",
+              "value": {
+                "Aspect3": {
+                  "max_scale_level": 12,
+                  "description": "Scale level 0-12 maps to 1-25 for test-cnf VNFC instances\n",
+                  "name": "Aspect3 name",
+                  "step_deltas": [
+                    "delta_1"
+                  ]
+                },
+                "Aspect2": {
+                  "max_scale_level": 7,
+                  "description": "Scale level 0 maps to 1 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 1 maps to 5 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 2 maps to 6 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 3 maps to 15 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 4 maps to 18 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 5 maps to 21 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 6 maps to 24 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 7 maps to 27 instance of test-cnf-with-hpa-deployment-in-hpa VNFC\n",
+                  "name": "Aspect2 name",
+                  "step_deltas": [
+                    "delta_1",
+                    "delta_2",
+                    "delta_3",
+                    "delta_4"
+                  ]
+                },
+                "Aspect1": {
+                  "max_scale_level": 10,
+                  "description": "Scale level 0-10 maps to 1-41 for test-cnf-deployment-in-hpa VNFC instances\n",
+                  "name": "Aspect1 name",
+                  "step_deltas": [
+                    "delta_1"
+                  ]
+                }
+              },
+              "required": true,
+              "raw_value": {
+                "Aspect3": {
+                  "max_scale_level": 12,
+                  "description": "Scale level 0-12 maps to 1-25 for test-cnf VNFC instances\n",
+                  "name": "Aspect3 name",
+                  "step_deltas": [
+                    "delta_1"
+                  ]
+                },
+                "Aspect2": {
+                  "max_scale_level": 7,
+                  "description": "Scale level 0 maps to 1 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 1 maps to 5 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 2 maps to 6 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 3 maps to 15 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 4 maps to 18 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 5 maps to 21 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 6 maps to 24 instance of test-cnf-with-hpa-deployment-in-hpa VNFC Scale level 7 maps to 27 instance of test-cnf-with-hpa-deployment-in-hpa VNFC\n",
+                  "name": "Aspect2 name",
+                  "step_deltas": [
+                    "delta_1",
+                    "delta_2",
+                    "delta_3",
+                    "delta_4"
+                  ]
+                },
+                "Aspect1": {
+                  "max_scale_level": 10,
+                  "description": "Scale level 0-10 maps to 1-41 for test-cnf-deployment-in-hpa VNFC instances\n",
+                  "name": "Aspect1 name",
+                  "step_deltas": [
+                    "delta_1"
+                  ]
+                }
+              },
+              "type": "map",
+              "description": "Describe maximum scale level for total number of scaling steps that can be applied to a particular aspect"
+            }
+          ]
+        },
+        {
+          "name": "ScalingAspects2",
+          "type": "tosca.policies.nfv.ScalingAspects",
+          "properties": [
+            {
+              "name": "aspects",
+              "value": {
+                "Aspect4": {
+                  "max_scale_level": 10,
+                  "description": "Scale level 0-10 maps to 2-22 for dummy-chart VNFC instances\n",
+                  "name": "Aspect4 name",
+                  "step_deltas": [
+                    "delta_1"
+                  ]
+                }
+              },
+              "required": true,
+              "raw_value": {
+                "Aspect4": {
+                  "max_scale_level": 10,
+                  "description": "Scale level 0-10 maps to 2-22 for dummy-chart VNFC instances\n",
+                  "name": "Aspect4 name",
+                  "step_deltas": [
+                    "delta_1"
+                  ]
+                }
+              },
+              "type": "map",
+              "description": "Describe maximum scale level for total number of scaling steps that can be applied to a particular aspect"
+            }
+          ]
+        },
+        {
+          "name": "VduInitialDelta_test-cnf-with-hpa-deployment-in-hpa",
+          "type": "tosca.policies.nfv.VduInitialDelta",
+          "properties": [
+            {
+              "name": "initial_delta",
+              "value": {
+                "number_of_instances": 1
+              },
+              "required": true,
+              "raw_value": {
+                "number_of_instances": 1
+              },
+              "type": "tosca.datatypes.nfv.VduLevel",
+              "description": "Represents the initial minimum size of the VNF."
+            }
+          ],
+          "targets": {
+            "node_templates": [
+              "test-cnf-with-hpa-deployment-in-hpa"
+            ],
+            "group_templates": []
+          }
+        }
+      ]
+    }
+  }
+]

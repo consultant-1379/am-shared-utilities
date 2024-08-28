@@ -1,0 +1,7 @@
+{
+  "tags.all": {
+    "type": "boolean",
+    "description": "tags",
+    "default": false
+  }
+}

@@ -1,0 +1,36 @@
+#
+# COPYRIGHT Ericsson 2024
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+Spider_VDU:
+  Scaling-Parameter-Name: "Test_Scale_Chart_VDU.replicaCount"
+  Mciop-Name: "spider_app"
+  Storage:
+    SpiderStorage: eric-pc-sm.storage1_1
+  Spider_Container1:
+    Requested_CPU_Resources: requested.cpu.resources1
+    CPU_Resource_Limit: cpu.resource.limit1
+    Requested_Memory_Resources: requested.memory.resources1
+    Memory_Resource_Limit: memory.resource.limit1
+Spider_VDU2:
+  Scaling-Parameter-Name: "Test_Scale_Chart_VDU.replicaCount"
+  Mciop-Name: "test-mciop2"
+  Storage:
+    SpiderStorage: eric-pc-sm.storage2_1
+  Spider_Container2:
+    Requested_CPU_Resources: requested.cpu.resources2
+    CPU_Resource_Limit: cpu.resource.limit2
+    Requested_Memory_Resources: requested.memory.resources2
+    Memory_Resource_Limit: memory.resource.limit2

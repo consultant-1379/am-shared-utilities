@@ -1,0 +1,142 @@
+{
+  "vnfc2.ingress.host": {
+    "type": "string",
+    "description": "ingress host for vnf2",
+    "required": true
+  },
+  "bro_endpoint_url": {
+    "type": "string",
+    "description": "This property contains the bro endpoint URI for backup & restore",
+    "required": false
+  },
+  "config.nbi.file.script.configMap": {
+    "description": "File parameter to add data for script to configmap",
+    "metadata": {
+      "chart_param": "config.nbi.file.script.configMap"
+    },
+    "type": "file",
+    "required": false
+  },
+  "influxdb.ext.apiAccessHostname": {
+    "description": "tags",
+    "default": "influxdb-service2.rontgen010.seli.gic.ericsson.se",
+    "type": "string",
+    "required": true
+  },
+  "vnfc1.ingress.host": {
+    "type": "string",
+    "description": "ingress host for vnf1",
+    "required": true
+  },
+  "config.nbi.file.enabled": {
+    "description": "Enabled creation of file configmap",
+    "default": false,
+    "metadata": {
+      "chart_param": "config.nbi.file.enabled"
+    },
+    "type": "boolean",
+    "required": false
+  },
+  "values.yaml": {
+    "type": "string",
+    "description": "This property can contain the contents of a values.yaml file in escaped json format",
+    "required": false
+  },
+  "tags.pm": {
+    "description": "pm tag",
+    "default": true,
+    "type": "boolean",
+    "required": true
+  },
+  "eric-adp-gs-testapp.ingress.enabled": {
+    "description": "tags",
+    "default": false,
+    "type": "boolean",
+    "required": true
+  },
+  "config.nbi.file.xml.configMap": {
+    "description": "File parameter to add data for xml to configmap",
+    "metadata": {
+      "chart_param": "config.nbi.file.xml.configMap"
+    },
+    "type": "file",
+    "required": false
+  },
+  "config.nbi.file.json.configMap": {
+    "description": "File parameter to add data for json to configmap",
+    "metadata": {
+      "chart_param": "config.nbi.file.json.configMap"
+    },
+    "type": "file",
+    "required": false
+  },
+  "backup-controller.enabled": {
+    "description": "Deploy's BRO if set to true",
+    "default": false,
+    "type": "boolean",
+    "required": false
+  },
+  "eric-adp-gs-testapp.service.replicaCount": {
+    "description": "integer value for schema.json validation",
+    "default": 1,
+    "type": "integer",
+    "required": false
+  },
+  "pm-testapp.ingress.domain": {
+    "description": "pm ingress",
+    "default": "rontgen010.seli.gic.ericsson.se",
+    "type": "string",
+    "required": true
+  },
+  "global.hosts.bro": {
+    "description": "Ingress host address for BRO",
+    "default": "bro.test.hahn061.rnd.gic.ericsson.se",
+    "type": "string",
+    "required": false
+  },
+  "vnfc4.ingress.host": {
+    "type": "string",
+    "description": "ingress host for vnf4",
+    "required": true
+  },
+  "vnfc3.ingress.host": {
+    "type": "string",
+    "description": "ingress host for vnf3",
+    "required": true
+  },
+  "tags.all": {
+    "description": "tags",
+    "default": false,
+    "type": "boolean",
+    "required": true
+  },
+  "eric-pm-server.server.ingress.enabled": {
+    "description": "tags",
+    "default": false,
+    "type": "boolean",
+    "required": true
+  },
+  "eric-adp-gs-testapp.tls.dced.enabled": {
+    "description": "enable tls for eric-adp-gs-testapp",
+    "default": false,
+    "type": "boolean",
+    "required": true
+  },
+  "bro.ingress.enabled": {
+    "description": "Enables the ingress to be created for BRO",
+    "default": false,
+    "type": "boolean",
+    "required": false
+  },
+  "vnfc1.test-cnf.ingress.host": {
+    "type": "string",
+    "description": "ingress host for vnf1",
+    "required": true
+  },
+  "eric-pm-server.server.persistentVolume.storageClass": {
+    "description": "db",
+    "default": "erikube-rbd",
+    "type": "string",
+    "required": false
+  }
+}

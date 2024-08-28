@@ -1,0 +1,7 @@
+{
+  "data_conversion_identifier": {
+    "type": "string",
+    "required": false,
+    "default": "rollback-operation-from-multi-b-to-multi-a"
+  }
+}

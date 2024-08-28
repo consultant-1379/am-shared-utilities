@@ -1,0 +1,295 @@
+#
+# COPYRIGHT Ericsson 2024
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+tosca_definitions_version: tosca_simple_yaml_1_2
+
+description: VNF Descriptor for Ericsson SGSN-MME
+
+imports:
+  - etsi_nfv_sol001_vnfd_2_5_1_types.yaml
+  - etsi_nfv_sol001_vnfd_type_for_rollback_support.yaml
+
+data_types:
+  file:
+    derived_from: string
+    properties: { }
+
+  ericsson.datatypes.nfv.VnfInfoModifiableAttributes:
+    derived_from: tosca.datatypes.nfv.VnfInfoModifiableAttributes
+    properties:
+      extensions:
+        type: ericsson.datatypes.nfv.VnfInfoModifiableAttributesExtensions
+
+  ericsson.datatypes.nfv.VnfInfoModifiableAttributesExtensions:
+    derived_from: tosca.datatypes.nfv.VnfInfoModifiableAttributesExtensions
+    properties:
+      vnfControlledScaling:
+        type: map # key: aspectId
+        description: Represents for each aspect the controlled scaling method, either Manual or CISM
+        required: false
+        entry_schema:
+          type: string
+          constraints:
+            - valid_values: [ "ManualControlled", "CISMControlled" ]
+        default: { Aspect1: "ManualControlled", Aspect2: "ManualControlled", Aspect3: "ManualControlled", Aspect5: "CISMControlled" }
+      deployableModules:
+        type: map
+        description: Represents optional deployable_module section for enabling\disabling charts
+        required: false
+        entry_schema:
+          type: string
+          constraints:
+            - valid_values: [ "enabled", "disabled" ]
+        default: { deployable_module_crd_1: "enabled", deployable_module_cnf_2: "enabled", deployable_module_crd_3: "enabled" }
+
+node_types:
+  Ericsson.SAMPLE-VNF.1_25_CXS101289_R81E08.cxp9025898_4r81e08:
+    derived_from: tosca.nodes.nfv.VNF
+
+    properties:
+      lcm_operations_configuration:
+        type: tosca.datatypes.nfv.VnfLcmOperationsConfiguration
+        default:
+          heal:
+            causes: [ Full Restore ]
+      descriptor_id:
+        type: string
+        constraints: [ valid_values: [ multi-chart-477c-aab3-2b04e6a383 ] ]
+        default: multi-chart-477c-aab3-2b04e6a383
+      descriptor_version:
+        type: string
+        constraints: [ valid_values: [ 1.0.34 ] ]
+        default: 1.0.34
+      provider:
+        type: string
+        constraints: [ valid_values: [ Ericsson ] ]
+        default: Ericsson
+      product_name:
+        type: string
+        constraints: [ valid_values: [ spider-app-multi-a-v2 ] ]
+        default: spider-app-multi-a-v2
+      software_version:
+        type: string
+        constraints: [ valid_values: [ '1.0.34s' ] ]
+        default: '1.0.34s'
+      vnfm_info:
+        type: list
+        entry_schema:
+          type: string
+          constraints: [ valid_values: [ '3881:E-VNFM' ] ]
+        default: [ '3881:E-VNFM' ]
+      flavour_id:
+        type: string
+        constraints: [ valid_values: [ default ] ]
+        default: default
+      flavour_description:
+        type: string
+        default: ''
+      modifiable_attributes:
+        type: tosca.datatypes.nfv.VnfInfoModifiableAttributes
+
+    interfaces:
+      Vnflcm:
+        type: tosca.interfaces.nfv.Vnflcm
+        instantiate:
+          inputs:
+            helm_packages:
+              type: list
+              required: true
+              description: list of all helm charts
+            additional_parameters:
+              type: ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters
+              required: false
+        terminate: { }
+        scale: { }
+        heal:
+          inputs:
+            additional_parameters:
+              type: ericsson.datatypes.nfv.HealVnfOperationAdditionalParameters
+              required: false
+        change_package:
+          inputs:
+            helm_packages:
+              type: list
+              required: true
+              description: list of all helm charts
+            additional_parameters:
+              type: ericsson.datatypes.nfv.ChangePackageVnfOperationAdditionalParameters
+              required: false
+      EricssonChangeCurrentVnfPackage:
+        type: ericsson.interfaces.nfv.EricssonChangeCurrentVnfPackage
+
+    artifacts:
+      crd_package1:
+        description: sip-tls-crd-chart package
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/eric-sec-sip-tls-crd-4.2.0+32.tgz
+      helm_package1:
+        description: test-scale package
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/test-scale-chart-1.0.0.tgz
+      crd_package2:
+        description: cert-m crd package
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/eric-sec-certm-crd-3.16.0+48.tgz
+      helm_package2:
+        description: helm package associated with spider-app
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/spider-app-1.0.1.tgz
+      crd_package3:
+        description: instantiate crd package
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/scale-crd-1.0.0.tgz
+      software_images:
+        description: Location of the software images being used in this package
+        type: tosca.artifacts.nfv.SwImage
+        file: Files/images/docker.tar
+      scaling_mapping:
+        description: Scaling Mapping file associated with this descriptor
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/scaling_mapping.yaml
+
+topology_template:
+  inputs:
+    modifiable_attributes:
+      type: ericsson.datatypes.nfv.VnfInfoModifiableAttributes
+
+  node_templates:
+    SAMPLE-VNF:
+      type: Ericsson.SAMPLE-VNF.1_25_CXS101289_R81E08.cxp9025898_4r81e08
+      properties:
+        modifiable_attributes: { get_input: modifiable_attributes }
+      interfaces:
+        Vnflcm:
+          instantiate:
+            inputs:
+              helm_packages: [ get_artifact: [ SELF, crd_package1 ], get_artifact: [ SELF, helm_package1 ], get_artifact: [ SELF, crd_package2 ], get_artifact: [ SELF, helm_package2 ],get_artifact: [ SELF, crd_package3 ] ]
+          terminate: { }
+          scale: { }
+          change_package:
+            inputs:
+              helm_packages: [ get_artifact: [ SELF, crd_package1 ], get_artifact: [ SELF, helm_package1 ], get_artifact: [ SELF, crd_package2 ], get_artifact: [ SELF, helm_package2 ],get_artifact: [ SELF, crd_package3 ] ]
+        EricssonChangeCurrentVnfPackage:
+          inputs:
+            rollback_pattern: [
+                helm_package1: rollback,
+                helm_package2: delete,
+                helm_package2: delete_pvc,
+                helm_package2: install ]
+            rollback_at_failure_pattern: [
+                helm_package1: 'helm_package1: upgrade, helm_package1: rollback',
+                helm_package2: 'crd_package3: rollback, helm_package2: delete_pvc, helm_package1: upgrade, helm_package2: install' ]
+          rollback_from_package6_to_package4:
+            inputs:
+          rollback_from_package6_to_package5:
+            inputs:
+              rollback_pattern: [
+                  helm_package1: delete,
+                  helm_package1: delete_pvc,
+                  helm_package2: upgrade,
+                  helm_package2: rollback,
+                  helm_package1: install ]
+              rollback_at_failure_pattern: [
+                  helm_package1: 'helm_package1: delete, helm_package1: install',
+                  helm_package2: 'crd_package3: rollback, helm_package2: delete_pvc[component=server], helm_package1: upgrade, helm_package2: install',
+                  crd_package3: "crd_package3: rollback" ]
+
+          upgrade_from_a_to_rel4_b:
+            inputs:
+              rollback_pattern: [
+                  helm_package1: delete,
+                  helm_package1: delete_pvc,
+                  helm_package2: rollback,
+                  helm_package1: install ]
+              rollback_at_failure_pattern: [
+                  helm_package1: 'helm_package1: delete, helm_package1: install',
+                  helm_package2: 'crd_package3: rollback, helm_package2: delete_pvc[component=server], helm_package1: upgrade, helm_package2: install',
+                  crd_package3: "crd_package3: rollback" ]
+
+    eric-pm-bulk-reporter:
+      type: tosca.nodes.nfv.Vdu.Compute
+      properties:
+        name: eric-pm-bulk-reporter
+        description: example
+        vdu_profile:
+          min_number_of_instances: 0
+          max_number_of_instances: 0
+
+    test-cnf:
+      type: tosca.nodes.nfv.Vdu.Compute
+      properties:
+        name: test-cnf
+        description: example
+        vdu_profile:
+          min_number_of_instances: 0
+          max_number_of_instances: 0
+
+    test-cnf-vnfc1:
+      type: tosca.nodes.nfv.Vdu.Compute
+      properties:
+        name: test-cnf-vnfc1
+        description: example
+        vdu_profile:
+          min_number_of_instances: 0
+          max_number_of_instances: 0
+
+    test-cnf-vnfc3:
+      type: tosca.nodes.nfv.Vdu.Compute
+      properties:
+        name: test-cnf-vnfc3
+        description: example
+        vdu_profile:
+          min_number_of_instances: 0
+          max_number_of_instances: 0
+
+    test-cnf-vnfc4:
+      type: tosca.nodes.nfv.Vdu.Compute
+      properties:
+        name: test-cnf-vnfc4
+        description: example
+        vdu_profile:
+          min_number_of_instances: 0
+          max_number_of_instances: 0
+
+    test-cnf-vnfc5:
+      type: tosca.nodes.nfv.Vdu.Compute
+      properties:
+        name: test-cnf-vnfc5
+        description: example
+        vdu_profile:
+          min_number_of_instances: 1
+          max_number_of_instances: 10
+
+    deployable_module_crd_1:
+      type: tosca.nodes.nfv.DeployableModule
+      properties:
+        name: deployable module crd 1
+        description: Crd1 and Crd2
+        associatedArtifacts: [ ]
+
+    deployable_module_cnf_2:
+      type: tosca.nodes.nfv.DeployableModule
+      properties:
+        name: deployable module cnf 2
+        description: Helm1 and Helm2
+        associatedArtifacts: [ helm_package1, helm_package2 ]
+
+    deployable_module_crd_3:
+      type: tosca.nodes.nfv.DeployableModule
+      properties:
+        name: deployable module crd 3
+        description: Crd 3
+        associatedArtifacts: [ crd_package3 ]

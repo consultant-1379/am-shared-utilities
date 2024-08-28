@@ -1,0 +1,7 @@
+{
+  "data_conversion_identifier": {
+    "type": "string",
+    "required": false,
+    "default": "rollback-operation-from-spider-c-to-spider-b"
+  }
+}

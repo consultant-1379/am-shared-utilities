@@ -1,0 +1,309 @@
+#
+# COPYRIGHT Ericsson 2024
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+tosca_definitions_version: tosca_simple_yaml_1_3
+imports:
+  - etsi_nfv_sol001_vnfd_4_2_1_types.yaml
+data_types:
+  ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters:
+    derived_from: tosca.datatypes.nfv.VnfOperationAdditionalParameters
+    properties:
+      vnfc1.test-cnf.ingress.host:
+        type: string
+        description: ingress host for vnf1
+        required: true
+
+node_types:
+  Ericsson_SAMPLE-VNF_1_24_CXS101289_R81E08_cxp9025898_4r81e08:
+    derived_from: tosca.nodes.nfv.VNF
+    properties:
+      lcm_operations_configuration:
+        type: tosca.datatypes.nfv.VnfLcmOperationsConfiguration
+        default:
+          heal:
+            causes:
+              - Full Restore
+      descriptor_id:
+        type: string
+        constraints:
+          - valid_values:
+              - multi-chart-etsi-rel4
+        default: multi-chart-etsi-rel4
+      descriptor_version:
+        type: string
+        constraints:
+          - valid_values:
+              - 1.0.24
+        default: 1.0.24
+      provider:
+        type: string
+        constraints:
+          - valid_values:
+              - Ericsson
+        default: Ericsson
+      product_name:
+        type: string
+        constraints:
+          - valid_values:
+              - spider-app-multi-a-etsi-tosca-rel4
+        default: spider-app-multi-a-etsi-tosca-rel4
+      software_version:
+        type: string
+        constraints:
+          - valid_values:
+              - 1.0.24s
+        default: 1.0.24s
+      vnfm_info:
+        type: list
+        entry_schema:
+          type: string
+          constraints:
+            - valid_values:
+                - 3881:E-VNFM
+        default:
+          - 3881:E-VNFM
+      flavour_id:
+        type: string
+        constraints:
+          - valid_values:
+              - default
+        default: default
+      flavour_description:
+        type: string
+        default: ''
+      modifiable_attributes:
+        type: tosca.datatypes.nfv.VnfInfoModifiableAttributes
+    interfaces:
+      Vnflcm:
+        type: tosca.interfaces.nfv.Vnflcm
+        operations:
+          instantiate:
+            inputs:
+              helm_packages:
+                type: list
+                entry_schema:
+                  type: map
+                required: true
+                description: list of all helm charts
+              additional_parameters:
+                type: ericsson.datatypes.nfv.InstantiateVnfOperationAdditionalParameters
+                required: false
+          terminate: {}
+          scale: {}
+    artifacts:
+      crd_package1:
+        description: sip-tls-crd-chart package
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/eric-sec-sip-tls-crd-4.0.0.tgz
+      helm_package1:
+        description: test-scale package
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/test-scale-chart-0.2.2.tgz
+      crd_package2:
+        description: cert-m crd package
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/eric-sec-certm-crd-4.0.0.tgz
+      helm_package2:
+        description: helm package associated with spider-app
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/spider-app-2.208.2.tgz
+      crd_package3:
+        description: instantiate crd package
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/scale-crd-1.0.0.tgz
+      scaling_mapping:
+        description: Scaling Mapping file associated with this descriptor
+        type: tosca.artifacts.File
+        file: Definitions/OtherTemplates/scaling_mapping.yaml
+      software_images:
+        description: Location of the software images being used in this package
+        type: tosca.artifacts.nfv.SwImage
+        file: Files/images/docker.tar
+        properties:
+          name: Docker
+          version: 1.0.0
+          container_format: docker
+          checksum:
+            algorithm: sha-512
+            hash: C2259250EAE4E9D4CDCA5BC2829D40BB2D48A89870E37D21D9364F41BB0A85081757CAAD988D5C7D6D2DC62AFE30A505DFE7827FAA52BDA2CCF5E34C3CDD8301
+          size: 99 B
+          disk_format: raw
+          min_disk: 100 B
+
+topology_template:
+  inputs:
+    modifiable_attributes:
+      type: ericsson.datatypes.nfv.VnfInfoModifiableAttributes
+  node_templates:
+    SAMPLE-VNF:
+      type: Ericsson_SAMPLE-VNF_1_24_CXS101289_R81E08_cxp9025898_4r81e08
+      properties:
+        modifiable_attributes:
+          get_input: modifiable_attributes
+      interfaces:
+        Vnflcm:
+          instantiate:
+            inputs:
+              helm_packages:
+                - get_artifact:
+                    - SELF
+                    - crd_package1
+                - get_artifact:
+                    - SELF
+                    - helm_package1
+                - get_artifact:
+                    - SELF
+                    - crd_package2
+                - get_artifact:
+                    - SELF
+                    - helm_package2
+                - get_artifact:
+                    - SELF
+                    - crd_package3
+          terminate: {}
+          scale: {}
+    test-cnf:
+      type: tosca.nodes.nfv.Vdu.Compute
+      properties:
+        name: test-cnf
+        description: example
+        vdu_profile:
+          min_number_of_instances: 0
+          max_number_of_instances: 0
+    mciop_package1:
+      type: tosca.nodes.nfv.Mciop
+      requirements:
+        - associatedVdu: Test_Scale_Chart_VDU
+      artifacts:
+        helm_package1:
+          description: Mciop Helm package for test scale chart artifact
+          type: tosca.artifacts.nfv.HelmChart
+          file: Definitions/OtherTemplates/test-scale-chart-0.2.2.tgz
+    mciop_package2:
+      type: tosca.nodes.nfv.Mciop
+      requirements:
+        - associatedVdu: Spider_App_VDU
+      artifacts:
+        helm_package3:
+          description: Mciop Helm package for spider app artifact
+          type: tosca.artifacts.nfv.HelmChart
+          file: Definitions/OtherTemplates/spider-app-2.208.2.tgz
+    Test_Scale_Chart_VDU:
+      type: tosca.nodes.nfv.Vdu.OsContainerDeployableUnit
+      properties:
+        name: Spider App VDU
+        description: Model of the Spider App VDU
+        vdu_profile:
+          min_number_of_instances: 1
+          max_number_of_instances: 2
+      requirements:
+        - container: Test_Cnf_Container_1
+        - container: Test_Cnf_With_HPA_Container_2
+        - virtual_storage: Test_Scale_Chart_Storage
+    Spider_App_VDU:
+      type: tosca.nodes.nfv.Vdu.OsContainerDeployableUnit
+      properties:
+        name: Busybox VDU
+        description: Model of the Busybox App VDU
+        vdu_profile:
+          min_number_of_instances: 1
+          max_number_of_instances: 4
+      requirements:
+        - container: Spider_App_Container
+        - virtual_storage: Spider_App_Storage
+    Test_Cnf_Container_1:
+      type: tosca.nodes.nfv.Vdu.OsContainer
+      properties:
+        name: Spider Container 1
+        description: Spider Container 1
+        requested_cpu_resources: 1000 # In Milli-Cpus, ie 1 CPU
+        cpu_resource_limit: 2500 # In Milli-Cpus, ie 2.5 CPU
+        requested_memory_resources: 100 MiB
+        memory_resource_limit: 128 MiB
+      artifacts:
+        sw_image:
+          type: tosca.artifacts.nfv.SwImage
+          file: Files/images/docker.tar
+          properties:
+            name: Docker
+            version: 1.0.0
+            container_format: docker
+            checksum:
+              algorithm: sha-512
+              hash: C2259250EAE4E9D4CDCA5BC2829D40BB2D48A89870E37D21D9364F41BB0A85081757CAAD988D5C7D6D2DC62AFE30A505DFE7827FAA52BDA2CCF5E34C3CDD8301
+            size: 99 B
+            disk_format: raw
+            min_disk: 100 B
+    Test_Cnf_With_HPA_Container_2:
+      type: tosca.nodes.nfv.Vdu.OsContainer
+      properties:
+        name: Spider Container 2
+        description: Spider Container 2
+        requested_cpu_resources: 1000 # In Milli-Cpus, ie 1 CPU
+        cpu_resource_limit: 2500 # In Milli-Cpus, ie 2.5 CPU
+        requested_memory_resources: 100 MiB
+        memory_resource_limit: 128 MiB
+      artifacts:
+        sw_image:
+          type: tosca.artifacts.nfv.SwImage
+          file: Files/images/docker.tar
+          properties:
+            name: Docker
+            version: 1.0.0
+            container_format: docker
+            checksum:
+              algorithm: sha-512
+              hash: C2259250EAE4E9D4CDCA5BC2829D40BB2D48A89870E37D21D9364F41BB0A85081757CAAD988D5C7D6D2DC62AFE30A505DFE7827FAA52BDA2CCF5E34C3CDD8301
+            size: 99 B
+            disk_format: raw
+            min_disk: 100 B
+    Spider_App_Container:
+      type: tosca.nodes.nfv.Vdu.OsContainer
+      properties:
+        name: Busybox Container
+        description: Busybox Container
+        requested_cpu_resources: 1000 # In Milli-Cpus, ie 1 CPU
+        cpu_resource_limit: 2500 # In Milli-Cpus, ie 2.5 CPU
+        requested_memory_resources: 1 GiB
+        memory_resource_limit: 10 GiB
+      artifacts:
+        sw_image:
+          type: tosca.artifacts.nfv.SwImage
+          file: Files/images/docker.tar
+          properties:
+            name: Docker
+            version: 1.0.0
+            container_format: docker
+            checksum:
+              algorithm: sha-512
+              hash: C2259250EAE4E9D4CDCA5BC2829D40BB2D48A89870E37D21D9364F41BB0A85081757CAAD988D5C7D6D2DC62AFE30A505DFE7827FAA52BDA2CCF5E34C3CDD8302
+            size: 99 B
+            disk_format: raw
+            min_disk: 100 B
+    Test_Scale_Chart_Storage:
+      type: tosca.nodes.nfv.Vdu.VirtualBlockStorage
+      properties:
+        virtual_block_storage_data:
+          size_of_storage: 1 GiB
+          rdma_enabled: false
+        per_vnfc_instance: true
+    Spider_App_Storage:
+      type: tosca.nodes.nfv.Vdu.VirtualBlockStorage
+      properties:
+        virtual_block_storage_data:
+          size_of_storage: 2 GiB
+          rdma_enabled: false
+        per_vnfc_instance: true

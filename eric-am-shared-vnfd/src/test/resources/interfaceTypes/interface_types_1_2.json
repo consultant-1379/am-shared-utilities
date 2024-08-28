@@ -1,0 +1,23 @@
+{
+  "ericsson.interfaces.nfv.ChangeCurrentVnfPackage": {
+    "derivedFrom": "tosca.interfaces.nfv.ChangeCurrentVnfPackage",
+    "operation": {
+      "rollback_to_version_c_from_b": {
+        "input": {
+          "additionalParams": {
+            "dataTypeName": "ericsson.datatypes.nfv.VnfChangeToVersion1AdditionalParameters",
+            "derivedFrom": "tosca.datatypes.nfv.VnfOperationAdditionalParameters",
+            "properties": {
+              "data_conversion_identifier": {
+                "defaultValue": "rollback-operation-from-spider-c-to-spider-b",
+                "type": "string",
+                "required": false
+              }
+            }
+          }
+        },
+        "description": "operation for change from version 3 to 1"
+      }
+    }
+  }
+}
